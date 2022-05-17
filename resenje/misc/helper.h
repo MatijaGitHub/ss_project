@@ -1,13 +1,23 @@
 #pragma once
 #include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
+
+
+
+enum dataType{literalVal,symbolVal,literalMem,symbolMem,symbolRel,regVal,regMem,rPlMem,rPsMem,noType};
+enum jmpType{literalVa,symbolAbs,symbolRe,literalMe,symbolMe,regVa,regMe,rPlMe,rPsMe,noTyp};
+
 typedef struct 
 {
-  char* label;
-  char* dir;
-  instruction* ins;
-  line* next;
-
-} line;
+  int isData;
+  enum dataType data;
+  enum jmpType jmp;
+  char* literal;
+  char* reg;
+  char* symbol;
+  
+}operand;
 typedef struct 
 {
   char* opCode;
@@ -15,19 +25,18 @@ typedef struct
   char* reg2;
   operand* operand;
 } instruction;
-
-typedef struct 
+typedef struct lin 
 {
-  int isData;
-  dataType data;
-  jmpType jmp;
-  char* literal;
-  char* reg;
-  char* symbol;
-  
-}operand;
-enum dataType{literalVal,symbolVal,literalMem,symbolMem,symbolRel,regVal,regMem,rPlMem,rPsMem,noType};
-enum jmpType{literalVal,symbolAbs,symbolRel,literalMem,symbolMem,regVal,regMem,rPlMem,rPsMem,noType};
+  char* label;
+  char* dir;
+  instruction* ins;
+  struct lin* next;
+
+} line;
+
+
+
+
 
 
 
@@ -35,9 +44,10 @@ int isOpcode(const char* opcode);
 int isRegister(const char* reg);
 int isDirective(const char* dir);
 
-line* lineList = nullptr;
 
-void addLine(line* line);
+
+void addLine(line* lin);
 line* createLine(char* label,char* dir,instruction* ins);
 instruction* createInstruction(char* opCode,char* reg1,char* reg2,operand* operand);
-operand* createOperand(int isData,dataType data,jmpType jmp,char* literal,char* reg,char* symbol);
+operand* createOperand(int isData,enum dataType data,enum jmpType jmp,char* literal,char* reg,char* symbol);
+void printLines();

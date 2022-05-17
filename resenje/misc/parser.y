@@ -1,8 +1,10 @@
 %{
   #include <stdio.h>
+  #include <stdlib.h>
   #include "helper.h"
 	int yylex(void);
 	void yyerror(const char*);
+  FILE* yyin;
 %}
 
 %output "parser.c"
@@ -13,6 +15,7 @@
 	char *symbol;
   char *string;
   instruction* instruction;
+  operand* operand;
 	
 }
 %token<number> TOKEN_LIT          
@@ -37,6 +40,8 @@
 %type <symbol> directive;
 %type <symbol> label;
 %type <instruction> instruction;
+%type <operand> operandValue;
+%type <operand> operandJump;
 
 
 %%
@@ -65,46 +70,46 @@ instruction
   :
     opCode
     {
-      $$ = createInstruction($1,nullptr,nullptr,nullptr);
+      $$ = createInstruction($1,NULL,NULL,NULL);
     }  
   | opCode rname
     {
-      $$ = createInstruction($1,$2,nullptr,nullptr);
+      $$ = createInstruction($1,$2,NULL,NULL);
     }  
   | opCode operandJump 
     {
-      $$ = createInstruction($1,nullptr,nullptr,$2);
+      $$ = createInstruction($1,NULL,NULL,$2);
     } 
   | opCode rname TOKEN_COMMA operandValue 
     {
-      $$ = createInstruction($1,$2,nullptr,$4);
+      $$ = createInstruction($1,$2,NULL,$4);
     } 
   | opCode rname TOKEN_COMMA rname 
     {
-      $$ = createInstruction($1,$2,$4,nullptr);
+      $$ = createInstruction($1,$2,$4,NULL);
     } 
   ;
 line
   :
       label
       {
-        addLine(createLine($1,nullptr,nullptr));
+        addLine(createLine($1,NULL,NULL));
       } 
     | label instruction
       {
-        addLine(createLine($1,nullptr,$2));
+        addLine(createLine($1,NULL,$2));
       } 
     | label directive 
       {
-        addLine(createLine($1,$2,nullptr));
+        addLine(createLine($1,$2,NULL));
       }
     | instruction 
       {
-        addLine(createLine(nullptr,nullptr,$1));
+        addLine(createLine(NULL,NULL,$1));
       }
     | directive
       {
-        addLine(createLine(nullptr,$1,nullptr));
+        addLine(createLine(NULL,$1,NULL));
       }
   ;
 opCode
@@ -120,39 +125,39 @@ operandValue
   :
     TOKEN_DOLLAR TOKEN_LIT
     {
-      createOperand(1,0,9,$2,nullptr,nullptr);
+      $$ = createOperand(1,0,9,$2,NULL,NULL);
     }
   | TOKEN_DOLLAR TOKEN_SYMBOL
     {
-      createOperand(1,1,9,nullptr,nullptr,$2);
+      $$ = createOperand(1,1,9,NULL,NULL,$2);
     }
   | TOKEN_LIT
     {
-      createOperand(1,2,9,$1,nullptr,nullptr);
+      $$ = createOperand(1,2,9,$1,NULL,NULL);
     }
   | TOKEN_SYMBOL
     {
-      createOperand(1,3,9,nullptr,nullptr,$1);
+      $$ = createOperand(1,3,9,NULL,NULL,$1);
     }
   | TOKEN_PERCENT TOKEN_SYMBOL
     {
-      createOperand(1,4,9,nullptr,nullptr,$2);
+      $$ = createOperand(1,4,9,NULL,NULL,$2);
     }
   | rname
     {
-      createOperand(1,5,9,nullptr,$1,nullptr);
+      $$ = createOperand(1,5,9,NULL,$1,NULL);
     }
   | TOKEN_LPAR rname TOKEN_RPAR
     {
-      createOperand(1,6,9,nullptr,$2,nullptr);
+      $$ = createOperand(1,6,9,NULL,$2,NULL);
     }
   | TOKEN_LPAR rname TOKEN_PLUS TOKEN_LIT TOKEN_RPAR
     {
-      createOperand(1,7,9,$4,$2,nullptr);
+      $$ = createOperand(1,7,9,$4,$2,NULL);
     }
   | TOKEN_LPAR rname TOKEN_PLUS TOKEN_SYMBOL TOKEN_RPAR
     {
-      createOperand(1,8,9,nullptr,$2,$4);
+      $$ = createOperand(1,8,9,NULL,$2,$4);
     }
 
   ;
@@ -160,39 +165,39 @@ operandJump
   :
       TOKEN_LIT
       {
-        createOperand(0,9,0,$1,nullptr,nullptr);
+        $$ = createOperand(0,9,0,$1,NULL,NULL);
       }
     | TOKEN_SYMBOL
       {
-        createOperand(0,9,1,nullptr,nullptr,$1);
+        $$ = createOperand(0,9,1,NULL,NULL,$1);
       }
     | TOKEN_PERCENT TOKEN_SYMBOL
       {
-        createOperand(0,9,2,nullptr,nullptr,$2);
+        $$ = createOperand(0,9,2,NULL,NULL,$2);
       }
     | TOKEN_MUL TOKEN_LIT
       {
-        createOperand(0,9,3,$2,nullptr,nullptr);
+        $$ = createOperand(0,9,3,$2,NULL,NULL);
       }
     | TOKEN_MUL TOKEN_SYMBOL
       {
-        createOperand(0,9,4,nullptr,nullptr,$2);
+        $$ = createOperand(0,9,4,NULL,NULL,$2);
       }
     | TOKEN_MUL rname
       {
-        createOperand(0,9,5,nullptr,$2,nullptr);
+        $$ = createOperand(0,9,5,NULL,$2,NULL);
       }
     | TOKEN_MUL TOKEN_LPAR rname TOKEN_RPAR
       {
-        createOperand(0,9,6,nullptr,$3,nullptr);
+        $$ = createOperand(0,9,6,NULL,$3,NULL);
       }
     | TOKEN_MUL TOKEN_LPAR rname TOKEN_PLUS TOKEN_LIT TOKEN_RPAR
       {
-        createOperand(0,9,7,$5,$3,nullptr);
+        $$ = createOperand(0,9,7,$5,$3,NULL);
       }
     | TOKEN_MUL TOKEN_LPAR rname TOKEN_PLUS TOKEN_SYMBOL TOKEN_RPAR
       {
-        createOperand(0,9,8,nullptr,$3,$5);
+        $$ = createOperand(0,9,8,NULL,$3,$5);
       }
   ;
 rname
@@ -206,3 +211,13 @@ rname
   ;
 
 %%
+
+int parser_main(){
+   FILE* fp = NULL;
+   fopen(&fp,"./test.txt","r");
+   yyin = fp;
+   yyparse();
+   fclose(fp);
+   return 0;
+
+}
