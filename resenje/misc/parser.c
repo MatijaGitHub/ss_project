@@ -474,16 +474,16 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  11
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   46
+#define YYLAST   32
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  19
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  10
+#define YYNNTS  9
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  35
+#define YYNRULES  25
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  53
+#define YYNSTATES  41
 
 #define YYUNDEFTOK  2
 #define YYMAXUTOK   273
@@ -532,9 +532,8 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    49,    49,    50,    55,    61,    71,    75,    79,    83,
-      87,    94,    98,   102,   106,   110,   117,   126,   130,   134,
-     138,   142,   146,   150,   154,   158,   166,   170,   174,   178,
+       0,    49,    49,    50,    55,    61,    71,    75,    79,    87,
+      94,    98,   102,   106,   110,   117,   166,   170,   174,   178,
      182,   186,   190,   194,   198,   205
 };
 #endif
@@ -549,7 +548,7 @@ static const char *const yytname[] =
   "TOKEN_COMMA", "TOKEN_DOT", "TOKEN_MUL", "TOKEN_DIV", "TOKEN_COLON",
   "TOKEN_NEWL", "TOKEN_DOLLAR", "TOKEN_PERCENT", "TOKEN_STRING", "$accept",
   "translation", "label", "directive", "instruction", "line", "opCode",
-  "operandValue", "operandJump", "rname", YY_NULLPTR
+  "operandJump", "rname", YY_NULLPTR
 };
 #endif
 
@@ -563,12 +562,12 @@ static const yytype_int16 yytoknum[] =
 };
 # endif
 
-#define YYPACT_NINF (-10)
+#define YYPACT_NINF (-16)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
 
-#define YYTABLE_NINF (-36)
+#define YYTABLE_NINF (-1)
 
 #define yytable_value_is_error(Yyn) \
   0
@@ -577,12 +576,11 @@ static const yytype_int16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      15,    -6,    12,    32,    16,   -10,   -10,    15,     0,   -10,
-     -10,   -10,   -10,   -10,   -10,   -10,   -10,    23,     2,    30,
-     -10,    25,   -10,   -10,    33,   -10,   -10,    -3,   -10,     4,
-     -10,   -10,    33,    18,    34,   -10,   -10,   -10,    21,    22,
-     -10,   -10,   -10,    35,    36,   -10,    27,   -10,   -10,    37,
-      38,   -10,   -10
+       0,   -12,    15,    20,     1,   -16,   -16,     0,    -3,   -16,
+     -16,   -16,   -16,   -16,   -16,   -16,   -16,     6,     3,    18,
+     -16,    13,   -16,    10,    11,    23,   -16,    16,    23,   -16,
+     -16,   -16,     9,   -16,   -16,   -16,    14,    22,    24,   -16,
+     -16
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -590,24 +588,23 @@ static const yytype_int8 yypact[] =
      means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       2,    16,     0,     0,    11,    15,    14,     2,     6,     4,
-       5,     1,    16,    13,    12,     3,    26,    27,     0,     0,
-       8,     7,    29,    30,     0,    31,    28,     0,    35,     0,
-      19,    20,     0,     0,     0,     9,    10,    32,     0,     0,
-      17,    18,    21,     0,     0,    23,     0,    33,    34,     0,
-       0,    24,    25
+       2,    15,     0,     0,    10,    14,    13,     2,     6,     4,
+       5,     1,    15,    12,    11,     3,    16,    25,     0,     0,
+       8,     7,    17,     0,    25,     0,    21,     0,     0,    19,
+      20,    25,     0,    18,     9,    22,     0,     0,     0,    23,
+      24
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -10,    29,   -10,    41,    42,   -10,   -10,   -10,   -10,    -9
+     -16,    17,   -16,    25,    28,   -16,   -16,   -16,   -15
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,     3,     4,     5,     6,     7,     8,    35,    20,    21
+      -1,     3,     4,     5,     6,     7,     8,    20,    21
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -615,20 +612,18 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-      30,    31,    32,    16,    17,    22,    23,    24,     9,    25,
-      37,    38,    18,    33,    34,    29,    10,    19,    36,     1,
-      12,    40,    41,    39,    43,    44,     2,     2,    45,    46,
-      49,    50,    11,   -35,    26,    27,    15,    28,    42,     0,
-       0,    47,    48,    51,    52,    13,    14
+      16,    17,     9,    26,     1,    12,    23,    24,    25,    18,
+      32,     2,     2,    34,    19,    35,    36,    37,    38,    10,
+      11,    22,    27,    28,    15,    29,    30,    31,    39,    13,
+      40,    33,    14
 };
 
 static const yytype_int8 yycheck[] =
 {
-       3,     4,     5,     3,     4,     3,     4,     5,    14,    18,
-       6,     7,    12,    16,    17,    24,     4,    17,    27,     4,
-       4,     3,     4,    32,     3,     4,    11,    11,     6,     7,
-       3,     4,     0,    10,     4,    10,     7,     4,     4,    -1,
-      -1,     6,     6,     6,     6,     4,     4
+       3,     4,    14,    18,     4,     4,     3,     4,     5,    12,
+      25,    11,    11,    28,    17,     6,     7,     3,     4,     4,
+       0,    15,     4,    10,     7,    15,    15,     4,     6,     4,
+       6,    15,     4
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
@@ -637,28 +632,25 @@ static const yytype_int8 yystos[] =
 {
        0,     4,    11,    20,    21,    22,    23,    24,    25,    14,
        4,     0,     4,    22,    23,    20,     3,     4,    12,    17,
-      27,    28,     3,     4,     5,    28,     4,    10,     4,    28,
-       3,     4,     5,    16,    17,    26,    28,     6,     7,    28,
-       3,     4,     4,     3,     4,     6,     7,     6,     6,     3,
-       4,     6,     6
+      26,    27,    15,     3,     4,     5,    27,     4,    10,    15,
+      15,     4,    27,    15,    27,     6,     7,     3,     4,     6,
+       6
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_int8 yyr1[] =
 {
        0,    19,    20,    20,    21,    22,    23,    23,    23,    23,
-      23,    24,    24,    24,    24,    24,    25,    26,    26,    26,
-      26,    26,    26,    26,    26,    26,    27,    27,    27,    27,
-      27,    27,    27,    27,    27,    28
+      24,    24,    24,    24,    24,    25,    26,    26,    26,    26,
+      26,    26,    26,    26,    26,    27
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_int8 yyr2[] =
 {
        0,     2,     0,     2,     2,     2,     1,     2,     2,     4,
-       4,     1,     2,     2,     1,     1,     1,     2,     2,     1,
-       1,     2,     1,     3,     5,     5,     1,     1,     2,     2,
-       2,     2,     4,     6,     6,     1
+       1,     2,     2,     1,     1,     1,     1,     2,     3,     3,
+       3,     2,     4,     6,     6,     1
 };
 
 
@@ -845,7 +837,7 @@ int yydebug;
 # define YYMAXDEPTH 10000
 #endif
 
-
+#include "./helper.h"
 #if YYERROR_VERBOSE
 
 # ifndef yystrlen
@@ -1356,7 +1348,7 @@ yyreduce:
   case 4:
 #line 56 "./resenje/misc/parser.y"
   {(yyval.symbol) = (yyvsp[-1].symbol);}
-#line 1360 "parser.c"
+#line 1352 "parser.c"
     break;
 
   case 5:
@@ -1366,7 +1358,7 @@ yyreduce:
         return;
     }
       (yyval.symbol) = (yyvsp[0].symbol);}
-#line 1370 "parser.c"
+#line 1362 "parser.c"
     break;
 
   case 6:
@@ -1374,7 +1366,7 @@ yyreduce:
     {
       (yyval.instruction) = createInstruction((yyvsp[0].symbol),NULL,NULL,NULL);
     }
-#line 1378 "parser.c"
+#line 1370 "parser.c"
     break;
 
   case 7:
@@ -1382,7 +1374,7 @@ yyreduce:
     {
       (yyval.instruction) = createInstruction((yyvsp[-1].symbol),(yyvsp[0].symbol),NULL,NULL);
     }
-#line 1386 "parser.c"
+#line 1378 "parser.c"
     break;
 
   case 8:
@@ -1390,231 +1382,151 @@ yyreduce:
     {
       (yyval.instruction) = createInstruction((yyvsp[-1].symbol),NULL,NULL,(yyvsp[0].operand));
     }
-#line 1394 "parser.c"
+#line 1386 "parser.c"
     break;
 
   case 9:
-#line 84 "./resenje/misc/parser.y"
-    {
-      (yyval.instruction) = createInstruction((yyvsp[-3].symbol),(yyvsp[-2].symbol),NULL,(yyvsp[0].operand));
-    }
-#line 1402 "parser.c"
-    break;
-
-  case 10:
 #line 88 "./resenje/misc/parser.y"
     {
       (yyval.instruction) = createInstruction((yyvsp[-3].symbol),(yyvsp[-2].symbol),(yyvsp[0].symbol),NULL);
     }
-#line 1410 "parser.c"
+#line 1394 "parser.c"
     break;
 
-  case 11:
+  case 10:
 #line 95 "./resenje/misc/parser.y"
       {
         addLine(createLine((yyvsp[0].symbol),NULL,NULL));
       }
-#line 1418 "parser.c"
+#line 1402 "parser.c"
     break;
 
-  case 12:
+  case 11:
 #line 99 "./resenje/misc/parser.y"
       {
         addLine(createLine((yyvsp[-1].symbol),NULL,(yyvsp[0].instruction)));
       }
-#line 1426 "parser.c"
+#line 1410 "parser.c"
     break;
 
-  case 13:
+  case 12:
 #line 103 "./resenje/misc/parser.y"
       {
         addLine(createLine((yyvsp[-1].symbol),(yyvsp[0].symbol),NULL));
       }
-#line 1434 "parser.c"
+#line 1418 "parser.c"
     break;
 
-  case 14:
+  case 13:
 #line 107 "./resenje/misc/parser.y"
       {
         addLine(createLine(NULL,NULL,(yyvsp[0].instruction)));
       }
-#line 1442 "parser.c"
+#line 1426 "parser.c"
     break;
 
-  case 15:
+  case 14:
 #line 111 "./resenje/misc/parser.y"
       {
         addLine(createLine(NULL,(yyvsp[0].symbol),NULL));
       }
-#line 1450 "parser.c"
+#line 1434 "parser.c"
     break;
 
-  case 16:
+  case 15:
 #line 118 "./resenje/misc/parser.y"
     {if(isOpcode((yyvsp[0].symbol))==0){
         fprintf(stderr,"Bad opcode name: %s",(yyvsp[0].symbol));
         return;
     }
       (yyval.symbol) = (yyvsp[0].symbol);}
-#line 1460 "parser.c"
+#line 1444 "parser.c"
     break;
 
-  case 17:
-#line 127 "./resenje/misc/parser.y"
-    {
-      (yyval.operand) = createOperand(1,0,9,(yyvsp[0].number),NULL,NULL);
-    }
-#line 1468 "parser.c"
-    break;
-
-  case 18:
-#line 131 "./resenje/misc/parser.y"
-    {
-      (yyval.operand) = createOperand(1,1,9,NULL,NULL,(yyvsp[0].symbol));
-    }
-#line 1476 "parser.c"
-    break;
-
-  case 19:
-#line 135 "./resenje/misc/parser.y"
-    {
-      (yyval.operand) = createOperand(1,2,9,(yyvsp[0].number),NULL,NULL);
-    }
-#line 1484 "parser.c"
-    break;
-
-  case 20:
-#line 139 "./resenje/misc/parser.y"
-    {
-      (yyval.operand) = createOperand(1,3,9,NULL,NULL,(yyvsp[0].symbol));
-    }
-#line 1492 "parser.c"
-    break;
-
-  case 21:
-#line 143 "./resenje/misc/parser.y"
-    {
-      (yyval.operand) = createOperand(1,4,9,NULL,NULL,(yyvsp[0].symbol));
-    }
-#line 1500 "parser.c"
-    break;
-
-  case 22:
-#line 147 "./resenje/misc/parser.y"
-    {
-      (yyval.operand) = createOperand(1,5,9,NULL,(yyvsp[0].symbol),NULL);
-    }
-#line 1508 "parser.c"
-    break;
-
-  case 23:
-#line 151 "./resenje/misc/parser.y"
-    {
-      (yyval.operand) = createOperand(1,6,9,NULL,(yyvsp[-1].symbol),NULL);
-    }
-#line 1516 "parser.c"
-    break;
-
-  case 24:
-#line 155 "./resenje/misc/parser.y"
-    {
-      (yyval.operand) = createOperand(1,7,9,(yyvsp[-1].number),(yyvsp[-3].symbol),NULL);
-    }
-#line 1524 "parser.c"
-    break;
-
-  case 25:
-#line 159 "./resenje/misc/parser.y"
-    {
-      (yyval.operand) = createOperand(1,8,9,NULL,(yyvsp[-3].symbol),(yyvsp[-1].symbol));
-    }
-#line 1532 "parser.c"
-    break;
-
-  case 26:
+  case 16:
 #line 167 "./resenje/misc/parser.y"
       {
         (yyval.operand) = createOperand(0,9,0,(yyvsp[0].number),NULL,NULL);
       }
-#line 1540 "parser.c"
+#line 1452 "parser.c"
     break;
 
-  case 27:
+  case 17:
 #line 171 "./resenje/misc/parser.y"
       {
-        (yyval.operand) = createOperand(0,9,1,NULL,NULL,(yyvsp[0].symbol));
+        (yyval.operand) = createOperand(0,9,1,NULL,NULL,(yyvsp[-1].symbol));
       }
-#line 1548 "parser.c"
+#line 1460 "parser.c"
     break;
 
-  case 28:
+  case 18:
 #line 175 "./resenje/misc/parser.y"
       {
-        (yyval.operand) = createOperand(0,9,2,NULL,NULL,(yyvsp[0].symbol));
+        (yyval.operand) = createOperand(0,9,2,NULL,NULL,(yyvsp[-1].symbol));
       }
-#line 1556 "parser.c"
+#line 1468 "parser.c"
     break;
 
-  case 29:
+  case 19:
 #line 179 "./resenje/misc/parser.y"
       {
-        (yyval.operand) = createOperand(0,9,3,(yyvsp[0].number),NULL,NULL);
+        (yyval.operand) = createOperand(0,9,3,(yyvsp[-1].number),NULL,NULL);
       }
-#line 1564 "parser.c"
+#line 1476 "parser.c"
     break;
 
-  case 30:
+  case 20:
 #line 183 "./resenje/misc/parser.y"
       {
-        (yyval.operand) = createOperand(0,9,4,NULL,NULL,(yyvsp[0].symbol));
+        (yyval.operand) = createOperand(0,9,4,NULL,NULL,(yyvsp[-1].symbol));
       }
-#line 1572 "parser.c"
+#line 1484 "parser.c"
     break;
 
-  case 31:
+  case 21:
 #line 187 "./resenje/misc/parser.y"
       {
         (yyval.operand) = createOperand(0,9,5,NULL,(yyvsp[0].symbol),NULL);
       }
-#line 1580 "parser.c"
+#line 1492 "parser.c"
     break;
 
-  case 32:
+  case 22:
 #line 191 "./resenje/misc/parser.y"
       {
         (yyval.operand) = createOperand(0,9,6,NULL,(yyvsp[-1].symbol),NULL);
       }
-#line 1588 "parser.c"
+#line 1500 "parser.c"
     break;
 
-  case 33:
+  case 23:
 #line 195 "./resenje/misc/parser.y"
       {
         (yyval.operand) = createOperand(0,9,7,(yyvsp[-1].number),(yyvsp[-3].symbol),NULL);
       }
-#line 1596 "parser.c"
+#line 1508 "parser.c"
     break;
 
-  case 34:
+  case 24:
 #line 199 "./resenje/misc/parser.y"
       {
         (yyval.operand) = createOperand(0,9,8,NULL,(yyvsp[-3].symbol),(yyvsp[-1].symbol));
       }
-#line 1604 "parser.c"
+#line 1516 "parser.c"
     break;
 
-  case 35:
+  case 25:
 #line 206 "./resenje/misc/parser.y"
     {if(isRegister((yyvsp[0].symbol))==0){
         fprintf(stderr,"Bad register name: %s",(yyvsp[0].symbol));
         return;
     }
       (yyval.symbol) = (yyvsp[0].symbol);}
-#line 1614 "parser.c"
+#line 1526 "parser.c"
     break;
 
 
-#line 1618 "parser.c"
+#line 1530 "parser.c"
 
       default: break;
     }
@@ -1851,7 +1763,7 @@ yyreturn:
 
 int parser_main(){
    FILE* fp = NULL;
-   fp = fopen("./resenje/misc/test.txt","r");
+   fp = fopen("./test.txt","r");
    yyin = fp;
    yyparse();
    fclose(fp);

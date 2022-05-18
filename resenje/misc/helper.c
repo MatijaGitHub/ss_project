@@ -5,24 +5,28 @@
 line* lineList = NULL;
 
 void addLine(line* lin){
-  if(lineList == NULL) lineList = lin;
-  else{
-    line* pom = lineList;
-    while(pom->next!=NULL){
-      pom = pom->next;
-    }
-    pom->next = lin;
-  }
+  // if(lineList == NULL) lineList = lin;
+  // else{
+  //   line* pom = lineList;
+  //   while(pom->next!=NULL){
+  //     pom = pom->next;
+  //   }
+  //   pom->next = lin;
+  // }
+  printf("CAO");
+  
 }
 
 
 line* createLine(char* label,char* dir,instruction* ins){
-  line* lin = malloc(sizeof(line));
-  lin->label = label;
-  lin->dir = dir;
-  lin->ins = ins;
-  lin->next = NULL;
-  return lin;
+  // line* lin = malloc(sizeof(line));
+  // lin->label = label;
+  // lin->dir = dir;
+  // lin->ins = ins;
+  // lin->next = NULL;
+  // return lin;
+  return NULL;
+ 
 }
 
 

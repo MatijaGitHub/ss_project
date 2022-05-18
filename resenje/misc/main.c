@@ -6,6 +6,6 @@ extern void yyerror();
 
 int main(int argc, char *argv[]) {
   parser_main();
-  //printLines();
+  printLines();
   return 0;
 }

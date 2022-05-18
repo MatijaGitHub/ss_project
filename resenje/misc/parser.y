@@ -35,13 +35,13 @@
 %token TOKEN_PERCENT
 %token<string> TOKEN_STRING
 
-%type <symbol> rname;
 %type <symbol> opCode;
 %type <symbol> directive;
 %type <symbol> label;
 %type <instruction> instruction;
-%type <operand> operandValue;
+/* %type <operand> operandValue; */
 %type <operand> operandJump;
+%type <symbol> rname;
 
 
 %%
@@ -68,22 +68,22 @@ directive
 
 instruction
   :
-    opCode
+    opCode 
     {
       $$ = createInstruction($1,NULL,NULL,NULL);
     }  
-  | opCode rname
+  | opCode rname 
     {
       $$ = createInstruction($1,$2,NULL,NULL);
     }  
   | opCode operandJump 
     {
-      $$ = createInstruction($1,NULL,NULL,$2);
+     $$ = createInstruction($1,NULL,NULL,$2);
     } 
-  | opCode rname TOKEN_COMMA operandValue 
+  /* | opCode rname TOKEN_COMMA operandValue  
     {
       $$ = createInstruction($1,$2,NULL,$4);
-    } 
+    }  */
   | opCode rname TOKEN_COMMA rname 
     {
       $$ = createInstruction($1,$2,$4,NULL);
@@ -91,11 +91,11 @@ instruction
   ;
 line
   :
-      label
+      label 
       {
         addLine(createLine($1,NULL,NULL));
       } 
-    | label instruction
+    | label instruction 
       {
         addLine(createLine($1,NULL,$2));
       } 
@@ -107,7 +107,7 @@ line
       {
         addLine(createLine(NULL,NULL,$1));
       }
-    | directive
+    | directive 
       {
         addLine(createLine(NULL,$1,NULL));
       }
@@ -121,81 +121,81 @@ opCode
     }
       $$ = $1;}
   ;
-operandValue
+/* operandValue
   :
-    TOKEN_DOLLAR TOKEN_LIT
+    TOKEN_DOLLAR TOKEN_LIT 
     {
       $$ = createOperand(1,0,9,$2,NULL,NULL);
     }
-  | TOKEN_DOLLAR TOKEN_SYMBOL
+  | TOKEN_DOLLAR TOKEN_SYMBOL 
     {
       $$ = createOperand(1,1,9,NULL,NULL,$2);
     }
-  | TOKEN_LIT
+  | TOKEN_LIT 
     {
       $$ = createOperand(1,2,9,$1,NULL,NULL);
     }
-  | TOKEN_SYMBOL
+  | TOKEN_SYMBOL 
     {
       $$ = createOperand(1,3,9,NULL,NULL,$1);
     }
-  | TOKEN_PERCENT TOKEN_SYMBOL
+  | TOKEN_PERCENT TOKEN_SYMBOL 
     {
       $$ = createOperand(1,4,9,NULL,NULL,$2);
     }
-  | rname
+  | rname TOKEN_DIV
     {
       $$ = createOperand(1,5,9,NULL,$1,NULL);
     }
-  | TOKEN_LPAR rname TOKEN_RPAR
+  | TOKEN_LPAR rname TOKEN_RPAR 
     {
       $$ = createOperand(1,6,9,NULL,$2,NULL);
     }
-  | TOKEN_LPAR rname TOKEN_PLUS TOKEN_LIT TOKEN_RPAR
+  | TOKEN_LPAR rname TOKEN_PLUS TOKEN_LIT TOKEN_RPAR 
     {
       $$ = createOperand(1,7,9,$4,$2,NULL);
     }
-  | TOKEN_LPAR rname TOKEN_PLUS TOKEN_SYMBOL TOKEN_RPAR
+  | TOKEN_LPAR rname TOKEN_PLUS TOKEN_SYMBOL TOKEN_RPAR 
     {
       $$ = createOperand(1,8,9,NULL,$2,$4);
     }
 
-  ;
+  ; */
 operandJump
   :
-      TOKEN_LIT
+      TOKEN_LIT 
       {
         $$ = createOperand(0,9,0,$1,NULL,NULL);
       }
-    | TOKEN_SYMBOL
+    | TOKEN_SYMBOL TOKEN_NEWL
       {
         $$ = createOperand(0,9,1,NULL,NULL,$1);
       }
-    | TOKEN_PERCENT TOKEN_SYMBOL
+    | TOKEN_PERCENT TOKEN_SYMBOL TOKEN_NEWL
       {
         $$ = createOperand(0,9,2,NULL,NULL,$2);
       }
-    | TOKEN_MUL TOKEN_LIT
+    | TOKEN_MUL TOKEN_LIT TOKEN_NEWL
       {
         $$ = createOperand(0,9,3,$2,NULL,NULL);
       }
-    | TOKEN_MUL TOKEN_SYMBOL
+    | TOKEN_MUL TOKEN_SYMBOL TOKEN_NEWL
       {
         $$ = createOperand(0,9,4,NULL,NULL,$2);
       }
-    | TOKEN_MUL rname
+    | TOKEN_MUL rname 
       {
         $$ = createOperand(0,9,5,NULL,$2,NULL);
       }
-    | TOKEN_MUL TOKEN_LPAR rname TOKEN_RPAR
+    | TOKEN_MUL TOKEN_LPAR rname TOKEN_RPAR 
       {
         $$ = createOperand(0,9,6,NULL,$3,NULL);
       }
-    | TOKEN_MUL TOKEN_LPAR rname TOKEN_PLUS TOKEN_LIT TOKEN_RPAR
+    | TOKEN_MUL TOKEN_LPAR rname TOKEN_PLUS TOKEN_LIT TOKEN_RPAR 
       {
         $$ = createOperand(0,9,7,$5,$3,NULL);
       }
-    | TOKEN_MUL TOKEN_LPAR rname TOKEN_PLUS TOKEN_SYMBOL TOKEN_RPAR
+    | TOKEN_MUL TOKEN_LPAR rname TOKEN_PLUS TOKEN_SYMBOL TOKEN_RPAR 
       {
         $$ = createOperand(0,9,8,NULL,$3,$5);
       }
@@ -214,7 +214,7 @@ rname
 
 int parser_main(){
    FILE* fp = NULL;
-   fopen(&fp,"./test.txt","r");
+   fp = fopen("./test.txt","r");
    yyin = fp;
    yyparse();
    fclose(fp);

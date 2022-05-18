@@ -1,5 +1,6 @@
 %{
   #include "parser.h"
+  #include "stdlib.h"
 %}
 
 %option outfile="lexer.c" header-file="lexer.h"
@@ -18,14 +19,15 @@ COMMA ","
 COLON ":"
 DOT "."
 STRING ".*"
-NEWL "\n"
+NEWL "\\n"
 PERCENT "%"
 DOLLAR "$"
 
 LITERAL   [1-9][0-9]*
-SYMBOL [A-Za-z_][A-Za-z0-9_]*
+SYMBOL [A-Za-z_][A-Za-z0-9_]* 
 COM   "#"[^\n\r]*
 WS    [ \r\n\t]*
+
 
 
 
@@ -40,8 +42,8 @@ WS    [ \r\n\t]*
 			  return TOKEN_LIT;
             }
 {SYMBOL}     {
-	          yylval.symbol = copy_str(yytext);
-			  return TOKEN_SYMBOL;
+	          strcpy(yylval.symbol,yytext);
+            return TOKEN_SYMBOL;
             }
 
 {LPAR}      { return TOKEN_LPAR; }
@@ -58,7 +60,7 @@ WS    [ \r\n\t]*
 {DOLLAR}    {return TOKEN_DOLLAR;}
 {PERCENT}    {return TOKEN_PERCENT;}
 {STRING}    {
-            yylval.string = copy_str(yytext);
+            strcpy(yylval.string,yytext);
             return TOKEN_STRING;
             }
 %%

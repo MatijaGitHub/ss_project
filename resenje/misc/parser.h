@@ -1,5 +1,8 @@
+/* A Bison parser, made by GNU Bison 3.5.1.  */
 
-   /*Copyright (C) 1984, 1989-1990, 2000-2015, 2018-2020 Free Software Foundation,
+/* Bison interface for Yacc-like parsers in C
+
+   Copyright (C) 1984, 1989-1990, 2000-2015, 2018-2020 Free Software Foundation,
    Inc.
 
    This program is free software: you can redistribute it and/or modify
@@ -64,12 +67,7 @@ extern int yydebug;
     TOKEN_STRING = 273
   };
 #endif
-#include <stdio.h>
-  #include <stdlib.h>
-  #include "helper.h"
-	int yylex(void);
-	//void yyerror(const char*);
-  FILE* yyin;
+
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
@@ -95,5 +93,5 @@ typedef union YYSTYPE YYSTYPE;
 extern YYSTYPE yylval;
 
 int yyparse (void);
-int parser_main();
+
 #endif /* !YY_YY_PARSER_H_INCLUDED  */
