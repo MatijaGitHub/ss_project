@@ -1,5 +1,7 @@
 #include "../hpp/Lines.hpp"
 
+Line* Lines::head = nullptr;
+Line* Lines::tail = nullptr;
 
 void Lines::initLines(){
   head = nullptr;
@@ -13,10 +15,20 @@ Line* Lines::readLine(){
 }
 
 void Lines::writeLine(Line* line){
-    tail->setNext(line);
-    tail = tail->getNext();
+    if(tail == nullptr){
+      head = line;
+      tail = line;
+    }
+    else{
+      tail->setNext(line);
+      tail = tail->getNext();
+    }
 }
 
 void Lines::readLines(){
-
+    Line* curr = head;
+    while(curr!=nullptr){
+      printf("%s",curr->readLine().c_str());
+      curr = curr->getNext();
+    }
 }

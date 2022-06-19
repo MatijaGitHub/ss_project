@@ -42,3 +42,13 @@ void Line::setNext(Line* nex){
 Line* Line::getNext(){
   return this->nextLine;
 }
+
+std::string Line::readLine(){
+  if(this->instruction!=nullptr){
+    return this->instruction->getOperand().getSymbol();
+  }
+  if(this->directive!=nullptr){
+    return this->directive->getString();
+  }
+  return "noDir\n";
+}

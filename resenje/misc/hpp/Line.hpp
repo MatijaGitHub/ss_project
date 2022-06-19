@@ -1,3 +1,4 @@
+#pragma once
 #include "./Directive.hpp"
 #include "./Instruction.hpp"
 #include "./Label.hpp"
@@ -13,6 +14,7 @@ public:
   Line(Label* l);
   Line* getNext();
   void setNext(Line* nex);
+  std::string readLine();
    
 private:
   Directive* directive;

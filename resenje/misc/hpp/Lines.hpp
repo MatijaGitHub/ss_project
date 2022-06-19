@@ -1,3 +1,4 @@
+#pragma once
 #include "./Line.hpp"
 class Lines{
   public:

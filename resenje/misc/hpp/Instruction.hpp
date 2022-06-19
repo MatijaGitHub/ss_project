@@ -1,8 +1,9 @@
+#pragma once
 #include "./Operand.hpp"
 
 enum InstructionName{
-  HALT,INT,IRET,CALL,RET,JMP,JEQ,JNE,JGT,PUSH,POP,XCHG,ADD,SUB,MUL,DIV,CMP,NOT,OR,AND,XOR,TEST,SHL,SHR,
-  LDR,STR
+  halt,intI,iret,call,ret,jmp,jeq,jne,jgt,push,pop,xchg,add,sub,mul,divI,cmp,notI,orI,andI,xorI,test,shl,shr,
+  ldr,str
 };
 
 
@@ -13,6 +14,7 @@ class Instruction{
   Instruction(InstructionName name, short reg1, short reg2);
   Instruction(InstructionName name, Operand op);
   Instruction(InstructionName name, short reg1, Operand op);
+  Operand getOperand();
 
   private:
   InstructionName name;

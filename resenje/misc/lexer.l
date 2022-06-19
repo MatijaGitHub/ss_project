@@ -1,21 +1,23 @@
 %{
-  #include "parser.h"
+  #include "parser.hpp"
   #include <stdio.h>
   #include <string>
+  #include <stdlib.h>
  
 
 
-  #define WRITE_SYMBOL yyval.symbol = std::string(yytext,yyleng)
-  #define WRITE_DECNUM yyval.number = std::atoi(yytext+1)
-  #define WRITE_HEXNUM yyval.number = std::strol(yytext+1,nullptr,16)
-  #define WRITE_REGISTER yyval.reg = std::atoi(yytext+1)
-  #define WRITE_SP yyval.reg = 6
-  #define WRITE_PC yyval.reg = 7
-  #define WRITE_PSW yyval.reg = 8
+  #define WRITE_SYMBOL yylval.symbol = new std::string(yytext,yyleng)
+  #define WRITE_DECNUM yylval.number = std::atoi(yytext+1)
+  #define WRITE_HEXNUM yylval.number = strol(yytext+1,nullptr,16)
+  #define WRITE_REGISTER yylval.reg = std::atoi(yytext+1)
+  #define WRITE_SP yylval.reg = 6
+  #define WRITE_PC yylval.reg = 7
+  #define WRITE_PSW yylval.reg = 8
 %}
 
-%option outfile="lexer.c" header-file="lexer.h"
+%option outfile="./resenje/misc/FlexAndBison/lexer.cpp" header-file="./resenje/misc/FlexAndBison/lexer.hpp"
 %option noyywrap
+
 
 %%
 
@@ -60,7 +62,7 @@
 "psw"       WRITE_PSW; return PSW;
 r[0-7]      WRITE_REGISTER; return REGISTER;
 [a-zA-Z_][a-zA-Z0-9_]* WRITE_SYMBOL; return LITERAL;
-0x[0-9A-Fa-f]+ WRITE_HEXNUM; return NUMBER;
+0x[0-9A-Fa-f]+        WRITE_HEXNUM; return NUMBER;
 [0-9]+ WRITE_DECNUM; return NUMBER;
 "%"         return PERCENT;
 "*"         return STAR;

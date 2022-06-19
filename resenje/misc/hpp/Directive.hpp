@@ -1,8 +1,9 @@
-#include <string>
-#include <vector>
+#pragma once
 #include "./Symbol_Literal_List.hpp"
+#include <string>
+
 enum DirectiveName{
-  GLOBAL,EXTERN,SECTION,WORD,SKIP,ASCII,EQU,END
+  global,externI,section,word,skip,ascii,equ,end
 };
 class Directive{
 public:
@@ -11,12 +12,10 @@ public:
   Directive(DirectiveName dirID,Symbol_Literal_List list);
   Directive(DirectiveName dirID,std::string name);
   Directive(DirectiveName dirID,std::vector<int> sym_ls);
-  
-
-protected:
   void putSymbol(std::string symbol);
-  int getDirective();
-  std::string getLiteral();
+  DirectiveName getDirectiveName();
+  int getLiteral();
+  std::string getString();
 
 private:
   DirectiveName dir;
