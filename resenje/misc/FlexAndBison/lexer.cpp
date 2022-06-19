@@ -543,7 +543,7 @@ char *yytext;
 
   #define WRITE_SYMBOL yylval.symbol = new std::string(yytext,yyleng)
   #define WRITE_DECNUM yylval.number = std::atoi(yytext+1)
-  #define WRITE_HEXNUM yylval.number = strol(yytext+1,nullptr,16)
+  #define WRITE_HEXNUM yylval.number = strtol(yytext+1,nullptr,16)
   #define WRITE_REGISTER yylval.reg = std::atoi(yytext+1)
   #define WRITE_SP yylval.reg = 6
   #define WRITE_PC yylval.reg = 7
