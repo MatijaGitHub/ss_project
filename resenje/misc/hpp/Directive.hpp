@@ -16,6 +16,7 @@ public:
   DirectiveName getDirectiveName();
   int getLiteral();
   std::string getString();
+  std::string getDirNameString();
 
 private:
   DirectiveName dir;

@@ -14,7 +14,7 @@ public:
   Line(Label* l);
   Line* getNext();
   void setNext(Line* nex);
-  std::string readLine();
+  void readLine();
    
 private:
   Directive* directive;

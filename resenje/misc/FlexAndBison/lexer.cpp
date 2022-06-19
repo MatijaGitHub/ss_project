@@ -829,268 +829,268 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 YY_RULE_SETUP
 #line 24 "./resenje/misc/lexer.l"
-return GLOBAL;
+{return GLOBAL;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
 #line 25 "./resenje/misc/lexer.l"
-return EXTERN;
+{return EXTERN;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
 #line 26 "./resenje/misc/lexer.l"
-return SECTION;
+{return SECTION;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
 #line 27 "./resenje/misc/lexer.l"
-return WORD;
+{return WORD;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
 #line 28 "./resenje/misc/lexer.l"
-return SKIP;
+{return SKIP;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
 #line 29 "./resenje/misc/lexer.l"
-return ASCII;
+{return ASCII;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
 #line 30 "./resenje/misc/lexer.l"
-return EQU;
+{return EQU;}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
 #line 31 "./resenje/misc/lexer.l"
-return END;
+{return END;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
 #line 32 "./resenje/misc/lexer.l"
-return HALT;
+{return HALT;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
 #line 33 "./resenje/misc/lexer.l"
-return INT;
+{return INT;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
 #line 34 "./resenje/misc/lexer.l"
-return IRET;
+{return IRET;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
 #line 35 "./resenje/misc/lexer.l"
-return CALL;
+{return CALL;}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
 #line 36 "./resenje/misc/lexer.l"
-return RET;
+{return RET;}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
 #line 37 "./resenje/misc/lexer.l"
-return JMP;
+{return JMP;}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
 #line 38 "./resenje/misc/lexer.l"
-return JEQ;
+{return JEQ;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
 #line 39 "./resenje/misc/lexer.l"
-return JNE;
+{return JNE;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
 #line 40 "./resenje/misc/lexer.l"
-return JGT;
+{return JGT;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
 #line 41 "./resenje/misc/lexer.l"
-return PUSH;
+{return PUSH;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
 #line 42 "./resenje/misc/lexer.l"
-return POP;
+{return POP;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
 #line 43 "./resenje/misc/lexer.l"
-return XCHG;
+{return XCHG;}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
 #line 44 "./resenje/misc/lexer.l"
-return ADD;
+{return ADD;}
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
 #line 45 "./resenje/misc/lexer.l"
-return SUB;
+{return SUB;}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
 #line 46 "./resenje/misc/lexer.l"
-return MUL;
+{return MUL;}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
 #line 47 "./resenje/misc/lexer.l"
-return DIV;
+{return DIV;}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
 #line 48 "./resenje/misc/lexer.l"
-return CMP;
+{return CMP;}
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
 #line 49 "./resenje/misc/lexer.l"
-return NOT;
+{return NOT;}
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
 #line 50 "./resenje/misc/lexer.l"
-return AND;
+{return AND;}
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
 #line 51 "./resenje/misc/lexer.l"
-return OR;
+{return OR;}
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
 #line 52 "./resenje/misc/lexer.l"
-return XOR;
+{return XOR;}
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
 #line 53 "./resenje/misc/lexer.l"
-return TEST;
+{return TEST;}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
 #line 54 "./resenje/misc/lexer.l"
-return SHL;
+{return SHL;}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
 #line 55 "./resenje/misc/lexer.l"
-return SHR;
+{return SHR;}
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
 #line 56 "./resenje/misc/lexer.l"
-return LDR;
+{return LDR;}
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
 #line 57 "./resenje/misc/lexer.l"
-return STR;
+{return STR;}
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
 #line 58 "./resenje/misc/lexer.l"
-return PLUS;
+{return PLUS;}
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
 #line 59 "./resenje/misc/lexer.l"
-return COMMENT;
+{return COMMENT;}
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
 #line 60 "./resenje/misc/lexer.l"
-WRITE_SP; return SP;
+{WRITE_SP; return REGISTER;}
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
 #line 61 "./resenje/misc/lexer.l"
-WRITE_PC; return PC;
+{WRITE_PC; return REGISTER;}
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
 #line 62 "./resenje/misc/lexer.l"
-WRITE_PSW; return PSW;
+{WRITE_PSW; return REGISTER;}
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
 #line 63 "./resenje/misc/lexer.l"
-WRITE_REGISTER; return REGISTER;
+{WRITE_REGISTER; return REGISTER;}
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
 #line 64 "./resenje/misc/lexer.l"
-WRITE_SYMBOL; return SYMBOL;
+{WRITE_SYMBOL; return SYMBOL;}
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
 #line 65 "./resenje/misc/lexer.l"
-WRITE_HEXNUM; return NUMBER;
+{WRITE_HEXNUM; return NUMBER;}
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
 #line 66 "./resenje/misc/lexer.l"
-WRITE_DECNUM; return NUMBER;
+WRITE_DECNUM; {return NUMBER;}
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
 #line 67 "./resenje/misc/lexer.l"
-return PERCENT;
+{return PERCENT;}
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
 #line 68 "./resenje/misc/lexer.l"
-return STAR;
+{return STAR;}
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
 #line 69 "./resenje/misc/lexer.l"
-return DOLLAR;
+{return DOLLAR;}
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
 #line 70 "./resenje/misc/lexer.l"
-return LEFT_BR;
+{return LEFT_BR;}
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
 #line 71 "./resenje/misc/lexer.l"
-return RIGHT_BR;
+{return RIGHT_BR;}
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
 #line 72 "./resenje/misc/lexer.l"
-return COLON;
+{return COLON;}
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
 #line 73 "./resenje/misc/lexer.l"
-return SEMI_COLON;
+{return SEMI_COLON;}
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
 #line 74 "./resenje/misc/lexer.l"
-return COMMA;
+{return COMMA;}
 	YY_BREAK
 case 52:
 /* rule 52 can match eol */
 YY_RULE_SETUP
 #line 75 "./resenje/misc/lexer.l"
-return NEW_LINE;
+{return NEW_LINE;}
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
 #line 76 "./resenje/misc/lexer.l"
-;
+{;}
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
@@ -2108,9 +2108,3 @@ void yyfree (void * ptr )
 
 
 
-int
-yyerror(const char* msg)
-{
-    fprintf(stderr, "lexer error: %s\n", msg);
-    return 0;
-}

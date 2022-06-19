@@ -1,12 +1,19 @@
 %{
   #include <stdio.h>
   #include <stdlib.h>
- 
+
 
 
 	extern int yylex(void);
 	extern void yyerror(const char*);
   extern FILE* yyin;
+  extern int yylineno;
+  int yydebug = 1;
+    extern char *yytext;
+
+    void yyerror(const char *s) { 
+        printf("Syntax error on line: %d\n", yylineno);
+    }
 
 %}
 %code requires {
@@ -34,7 +41,7 @@
   int token;
 }
 
-%token<reg> REGISTER SP PC PSW;
+%token<reg> REGISTER;
 %token<symbol> SYMBOL;
 %token<number> NUMBER;
 %token<token> GLOBAL EXTERN SECTION WORD SKIP ASCII EQU END;
@@ -64,25 +71,31 @@
 %%
 code:
   lines{
-    Lines::initLines();
+    //Lines::initLines();
   }
   ;
 lines:
   line{
     if($1 != nullptr){
+      
       Lines::writeLine($1);
+      
+      yylineno++;
     }
   }
   |
   lines line{
     if($2 != nullptr){
+     
       Lines::writeLine($2);
+      yylineno++;
     }
   }
   ;
 line:
   label NEW_LINE{
     $$ = new Line($1);
+    
   }
   |
   label directive NEW_LINE{
@@ -91,6 +104,7 @@ line:
   |
   label instruction NEW_LINE{
     $$ = new Line($1,$2);
+
   }
   | 
   instruction NEW_LINE{

@@ -43,12 +43,11 @@ Line* Line::getNext(){
   return this->nextLine;
 }
 
-std::string Line::readLine(){
+void Line::readLine(){
   if(this->instruction!=nullptr){
-    return this->instruction->getOperand().getSymbol();
+    printf("%s\n",this->instruction->getInstrNameString().c_str());
   }
   if(this->directive!=nullptr){
-    return this->directive->getString();
+    printf("%s\n",this->directive->getDirNameString().c_str());
   }
-  return "noDir\n";
 }

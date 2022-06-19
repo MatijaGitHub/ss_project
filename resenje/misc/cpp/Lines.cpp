@@ -27,8 +27,10 @@ void Lines::writeLine(Line* line){
 
 void Lines::readLines(){
     Line* curr = head;
+    printf("START_PRINT!\n");
     while(curr!=nullptr){
-      printf("%s",curr->readLine().c_str());
+      curr->readLine();
       curr = curr->getNext();
     }
+    printf("PRINTED_ALL_LINES!\n");
 }

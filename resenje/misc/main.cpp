@@ -1,17 +1,16 @@
-
- #include "./hpp/Lines.hpp"
-
+#include "./hpp/Lines.hpp"
 #include <vector>
 #include <string>
+#include <iostream>
+#include <fstream>
+
+extern int yyparse();
+extern FILE* yyin;
 
 int main()
 {
-  Operand op(std::string("SEKS"));
-  Instruction *ins = new Instruction(call,op);
-  Line *l = new Line(ins); 
-  Lines::initLines();
-  Lines::writeLine(l);
+  yyin = fopen("test.txt","r");
+  int ret = yyparse();
   Lines::readLines();
   return 0;
-
 }

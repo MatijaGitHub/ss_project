@@ -15,6 +15,7 @@ class Instruction{
   Instruction(InstructionName name, Operand op);
   Instruction(InstructionName name, short reg1, Operand op);
   Operand getOperand();
+  std::string getInstrNameString();
 
   private:
   InstructionName name;
