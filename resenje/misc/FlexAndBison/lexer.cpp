@@ -1029,7 +1029,7 @@ WRITE_REGISTER; return REGISTER;
 case 41:
 YY_RULE_SETUP
 #line 64 "./resenje/misc/lexer.l"
-WRITE_SYMBOL; return LITERAL;
+WRITE_SYMBOL; return SYMBOL;
 	YY_BREAK
 case 42:
 YY_RULE_SETUP

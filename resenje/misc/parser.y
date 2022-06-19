@@ -4,9 +4,9 @@
  
 
 
-	int yylex(void);
-	void yyerror(const char*);
-  FILE* yyin;
+	extern int yylex(void);
+	extern void yyerror(const char*);
+  extern FILE* yyin;
 
 %}
 %code requires {
@@ -34,7 +34,7 @@
   int token;
 }
 
-%token<reg> REGISTER;
+%token<reg> REGISTER SP PC PSW;
 %token<symbol> SYMBOL;
 %token<number> NUMBER;
 %token<token> GLOBAL EXTERN SECTION WORD SKIP ASCII EQU END;

@@ -61,7 +61,7 @@
 "pc"        WRITE_PC; return PC;
 "psw"       WRITE_PSW; return PSW;
 r[0-7]      WRITE_REGISTER; return REGISTER;
-[a-zA-Z_][a-zA-Z0-9_]* WRITE_SYMBOL; return LITERAL;
+[a-zA-Z_][a-zA-Z0-9_]* WRITE_SYMBOL; return SYMBOL;
 0x[0-9A-Fa-f]+        WRITE_HEXNUM; return NUMBER;
 [0-9]+ WRITE_DECNUM; return NUMBER;
 "%"         return PERCENT;
