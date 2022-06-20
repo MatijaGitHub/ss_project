@@ -32,6 +32,7 @@ private:
   void initializeSpace(Symbol_Literal_List* symbolsAndLiterals,Section* currentSection);
   void initializeSpaceWithZeros(int literal,Section* currentSection);
   void initializeSpaceForString(std::string string,Section* currentSection);
+  void endCurrentSection();
   static std::string turnIntTo2Byte(int twobyte);
   
 };

@@ -28,14 +28,14 @@ Assembler::Assembler(std::string input, std::string output){
 int Assembler::firstPass(){
     Line* currLine = Lines::getHead();
     while(currLine!=nullptr){
-      if(currLine->getLabel()){
-        this->handleLabel(currLine->getLabel());
-      }
       if(currLine->getInstruction()){
         this->handleInstruction(currLine->getInstruction());
       }
       if(currLine->getDirective()){
         this->handleDirective(currLine->getDirective());
+      }
+      if(currLine->getLabel()){
+        this->handleLabel(currLine->getLabel());
       }
       currLine = currLine->getNext();
     }
@@ -78,6 +78,11 @@ void Assembler::handleDirective(Directive* directive){
     case 5:
       {
         initializeSpaceForString(directive->getString(),currentSection);
+        break;
+      }
+    case 7:
+      {
+        endCurrentSection();
         break;
       }
     default:
@@ -148,18 +153,30 @@ void Assembler::initializeSpaceForString(std::string string,Section* currentSect
   std::stringstream stream;
   int counter = -1;
   int length = string.length();
+  bool isNewLine = false;
   for(char& c : string){
     counter++;
     if(counter == 0 || counter == length - 1) continue;
+    if(isNewLine){
+      isNewLine = false;
+      continue;
+    }
     currentSection->locationCounter++;
+    if(string.at(counter) == '\\' && string.at(counter+1) == 'n'){
+      currentSection->writeOneByteContent("0a");
+      isNewLine = true;
+      continue;
+    }
     stream << std::setfill ('0') << std::setw(sizeof(short))
            << std::hex << (int)c;
-    printf("%s\n",stream.str().c_str());
     currentSection->writeOneByteContent(stream.str());
     stream.str("");
     
     
   }
+  currentSection->locationCounter++;
+  currentSection->writeOneByteContent("00");
+
 }
 std::string Assembler::turnIntTo2Byte(int twobyte){
   std::stringstream stream;
@@ -167,5 +184,9 @@ std::string Assembler::turnIntTo2Byte(int twobyte){
          << std::hex << twobyte;
   return stream.str();
   
+}
+
+void Assembler::endCurrentSection(){
+  this->currentSection = nullptr;
 }
 
