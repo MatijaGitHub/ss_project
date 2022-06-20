@@ -38,7 +38,6 @@ SymbolTableEntry* SymbolTable::declareSymbolLocal(std::string symbol,int isSecti
     else{
       
       newEntry->belongsTo = this->getValueBySymbolName(currentSection->sectionName);
-      printf("%d\n",newEntry->belongsTo);
       newEntry->value = currentSection->locationCounter;
       newEntry->type = "NOTYP";
     }
