@@ -143,12 +143,12 @@ line:
 
 directive:
   GLOBAL list_of_symbols{
-    $$ = new Directive(global,*$2);
+    $$ = new Directive(global,$2);
     delete $2;
   }
   |
   EXTERN list_of_symbols{
-    $$ = new Directive(externI,*$2);
+    $$ = new Directive(externI,$2);
     delete $2;
   }
   |
@@ -157,7 +157,7 @@ directive:
   }
   |
   WORD list_of_symbols_and_literals{
-    $$ = new Directive(word,*$2);
+    $$ = new Directive(word,$2);
     delete $2;
   }
   |
@@ -377,7 +377,7 @@ list_of_symbols_and_literals:
   |
   NUMBER{
     $$ = new Symbol_Literal_List();
-    $$->pushLiteral($1);
+    $$->pushLiteral(&$1);
   }
   |
   list_of_symbols_and_literals COMMA SYMBOL{
@@ -385,7 +385,7 @@ list_of_symbols_and_literals:
   }
   |
   list_of_symbols_and_literals COMMA NUMBER{
-      $$->pushLiteral($3);
+      $$->pushLiteral(&$3);
   }
   ;
   

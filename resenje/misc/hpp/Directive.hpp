@@ -9,19 +9,18 @@ class Directive{
 public:
   Directive(DirectiveName dirID);
   Directive(DirectiveName dirID,int lit);
-  Directive(DirectiveName dirID,Symbol_Literal_List list);
+  Directive(DirectiveName dirID,Symbol_Literal_List *list);
   Directive(DirectiveName dirID,std::string name);
-  Directive(DirectiveName dirID,std::vector<int> sym_ls);
   void putSymbol(std::string symbol);
   DirectiveName getDirectiveName();
   int getLiteral();
   std::string getString();
   std::string getDirNameString();
+  Symbol_Literal_List *getSymLitList();
 
 private:
   DirectiveName dir;
-  std::vector<int> symbolList;
-  Symbol_Literal_List sym_lit_list;
+  Symbol_Literal_List *sym_lit_list;
   std::string stringUse;
   int literal;
 };

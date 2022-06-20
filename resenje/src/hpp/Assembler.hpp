@@ -15,4 +15,6 @@ private:
   void reset();
   int firstPass();
   void handleDirective(Directive* directive);
+  void handleLabel(Label* label);
+  void handleInstruction(Instruction* ins);
 };

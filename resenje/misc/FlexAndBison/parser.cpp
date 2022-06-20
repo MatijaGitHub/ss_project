@@ -1619,7 +1619,7 @@ yyreduce:
   case 16:
 #line 145 "./resenje/misc/parser.y"
                         {
-    (yyval.dir) = new Directive(global,*(yyvsp[0].list_of_symbols));
+    (yyval.dir) = new Directive(global,(yyvsp[0].list_of_symbols));
     delete (yyvsp[0].list_of_symbols);
   }
 #line 1626 "./resenje/misc/FlexAndBison/parser.cpp"
@@ -1628,7 +1628,7 @@ yyreduce:
   case 17:
 #line 150 "./resenje/misc/parser.y"
                         {
-    (yyval.dir) = new Directive(externI,*(yyvsp[0].list_of_symbols));
+    (yyval.dir) = new Directive(externI,(yyvsp[0].list_of_symbols));
     delete (yyvsp[0].list_of_symbols);
   }
 #line 1635 "./resenje/misc/FlexAndBison/parser.cpp"
@@ -1645,7 +1645,7 @@ yyreduce:
   case 19:
 #line 159 "./resenje/misc/parser.y"
                                    {
-    (yyval.dir) = new Directive(word,*(yyvsp[0].sym_lit_list));
+    (yyval.dir) = new Directive(word,(yyvsp[0].sym_lit_list));
     delete (yyvsp[0].sym_lit_list);
   }
 #line 1652 "./resenje/misc/FlexAndBison/parser.cpp"
@@ -2059,7 +2059,7 @@ yyreduce:
 #line 378 "./resenje/misc/parser.y"
         {
     (yyval.sym_lit_list) = new Symbol_Literal_List();
-    (yyval.sym_lit_list)->pushLiteral((yyvsp[0].number));
+    (yyval.sym_lit_list)->pushLiteral(&(yyvsp[0].number));
   }
 #line 2065 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
@@ -2075,7 +2075,7 @@ yyreduce:
   case 72:
 #line 387 "./resenje/misc/parser.y"
                                            {
-      (yyval.sym_lit_list)->pushLiteral((yyvsp[0].number));
+      (yyval.sym_lit_list)->pushLiteral(&(yyvsp[0].number));
   }
 #line 2081 "./resenje/misc/FlexAndBison/parser.cpp"
     break;

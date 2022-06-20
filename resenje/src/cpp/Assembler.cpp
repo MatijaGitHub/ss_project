@@ -27,17 +27,42 @@ Assembler::Assembler(std::string input, std::string output){
 int Assembler::firstPass(){
     Line* currLine = Lines::getHead();
     while(currLine!=nullptr){
+      if(currLine->getLabel()){
+        this->handleLabel(currLine->getLabel());
+      }
+      if(currLine->getInstruction()){
+        this->handleInstruction(currLine->getInstruction());
+      }
       if(currLine->getDirective()){
         this->handleDirective(currLine->getDirective());
       }
-
       currLine = currLine->getNext();
     }
     return 0;
 }
 
 void Assembler::handleDirective(Directive* directive){
-    printf("%s",directive->getDirNameString().c_str());
+    printf("%s\n",directive->getDirNameString().c_str());
+    switch (directive->getDirectiveName())
+    {
+    case 0:
+      {
+        Symbol_Literal_List *dirSymList = directive->getSymLitList();
+        break;
+      }
+    
+    default:
+      {
+        printf("Not defined");
+        break;
+      }
+    }
+}
+void Assembler::handleLabel(Label* label){
+
+}
+void Assembler::handleInstruction(Instruction* ins){
+
 }
 
 int Assembler::assemble(){

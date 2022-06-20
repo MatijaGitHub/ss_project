@@ -8,8 +8,11 @@ class Symbol_Literal_List{
   public:
   Symbol_Literal_List();
   void pushSymbol(std::string* sym);
-  void pushLiteral(int lit);
+  void pushLiteral(int* lit);
+  std::string* popSymbol();
+  int* popLiteral();
+
   private:
   std::vector<std::string*> *symbols;
-  std::vector<int> *literals;
+  std::vector<int*> *literals;
 };
