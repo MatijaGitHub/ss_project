@@ -70,6 +70,11 @@ void Assembler::handleDirective(Directive* directive){
         initializeSpace(directive->getSymLitList(),currentSection);
         break;
       }
+    case 4:
+      {
+        initializeSpaceWithZeros(directive->getLiteral(),currentSection);
+        break;
+      }
     default:
       {
         printf("Directive %s not defined\n" , directive->getDirNameString().c_str());
@@ -113,21 +118,27 @@ int Assembler::assemble(){
  SymbolTable* Assembler::getSymbolTable(){
     return this->mySymbolTable;
  }
-
- void Assembler::initializeSpace(Symbol_Literal_List* symbolsAndLiterals,Section* currentSection){
-    std::string* symbol = symbolsAndLiterals->popSymbol();
-    int* literal = symbolsAndLiterals->popLiteral();
-    while(symbol!=nullptr){
-      currentSection->locationCounter+=2;
-      int value = this->mySymbolTable->getValueBySymbolName(*symbol);
-      currentSection->writeTwoByteContent(turnIntTo2Byte(this->mySymbolTable->getValueBySymbolName(*symbol)));
-      symbol = symbolsAndLiterals->popSymbol();
-    }
-    while(literal!=nullptr){
-      currentSection->writeTwoByteContent(turnIntTo2Byte(*literal));
-      literal = symbolsAndLiterals->popLiteral();
-    }
- }
+void Assembler::initializeSpace(Symbol_Literal_List* symbolsAndLiterals,Section* currentSection){
+  std::string* symbol = symbolsAndLiterals->popSymbol();
+  int* literal = symbolsAndLiterals->popLiteral();
+  while(symbol!=nullptr){
+    currentSection->locationCounter+=2;
+    int value = this->mySymbolTable->getValueBySymbolName(*symbol);
+    currentSection->writeTwoByteContent(turnIntTo2Byte(this->mySymbolTable->getValueBySymbolName(*symbol)));
+    symbol = symbolsAndLiterals->popSymbol();
+  }
+  while(literal!=nullptr){
+    currentSection->locationCounter+=2;
+    currentSection->writeTwoByteContent(turnIntTo2Byte(*literal));
+    literal = symbolsAndLiterals->popLiteral();
+  }
+}
+void Assembler::initializeSpaceWithZeros(int literal,Section* currentSection){
+  for(int i = 0;i < literal;i++){
+    currentSection->locationCounter++;
+    currentSection->writeOneByteContent("00");
+  }
+}
 std::string Assembler::turnIntTo2Byte(int twobyte){
   printf("%d\n",twobyte);
   std::stringstream stream;

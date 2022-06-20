@@ -30,6 +30,7 @@ private:
   void handleInstruction(Instruction* ins);
   void declareSymbolsGlobal(Symbol_Literal_List* globalSymbolList,int isExtern);
   void initializeSpace(Symbol_Literal_List* symbolsAndLiterals,Section* currentSection);
+  void initializeSpaceWithZeros(int literal,Section* currentSection);
   static std::string turnIntTo2Byte(int twobyte);
   
 };
