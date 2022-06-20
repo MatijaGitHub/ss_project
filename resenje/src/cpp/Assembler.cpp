@@ -129,10 +129,10 @@ int Assembler::assemble(){
     }
  }
 std::string Assembler::turnIntTo2Byte(int twobyte){
+  printf("%d\n",twobyte);
   std::stringstream stream;
-  stream << std::setfill ('0') << std::setw(sizeof(int)*2) 
+  stream << std::setfill ('0') << std::setw(sizeof(short)) 
          << std::hex << twobyte;
-  printf("%s %d\n",stream.str().c_str(),twobyte);
   return stream.str();
   
 }

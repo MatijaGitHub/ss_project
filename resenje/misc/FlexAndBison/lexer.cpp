@@ -542,8 +542,8 @@ char *yytext;
 
 
   #define WRITE_SYMBOL yylval.symbol = new std::string(yytext,yyleng)
-  #define WRITE_DECNUM yylval.number = std::atoi(yytext+1)
-  #define WRITE_HEXNUM yylval.number = strtol(yytext+1,nullptr,16)
+  #define WRITE_DECNUM yylval.number = std::atoi(yytext)
+  #define WRITE_HEXNUM yylval.number = strtol(yytext+2,nullptr,16)
   #define WRITE_REGISTER yylval.reg = std::atoi(yytext+1)
   #define WRITE_SP yylval.reg = 6
   #define WRITE_PC yylval.reg = 7
@@ -1039,7 +1039,7 @@ YY_RULE_SETUP
 case 43:
 YY_RULE_SETUP
 #line 66 "./resenje/misc/lexer.l"
-WRITE_DECNUM; {return NUMBER;}
+{WRITE_DECNUM; return NUMBER;}
 	YY_BREAK
 case 44:
 YY_RULE_SETUP

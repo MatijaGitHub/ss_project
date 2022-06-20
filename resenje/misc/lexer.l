@@ -7,8 +7,8 @@
 
 
   #define WRITE_SYMBOL yylval.symbol = new std::string(yytext,yyleng)
-  #define WRITE_DECNUM yylval.number = std::atoi(yytext+1)
-  #define WRITE_HEXNUM yylval.number = strtol(yytext+1,nullptr,16)
+  #define WRITE_DECNUM yylval.number = std::atoi(yytext)
+  #define WRITE_HEXNUM yylval.number = strtol(yytext+2,nullptr,16)
   #define WRITE_REGISTER yylval.reg = std::atoi(yytext+1)
   #define WRITE_SP yylval.reg = 6
   #define WRITE_PC yylval.reg = 7
@@ -63,7 +63,7 @@
 r[0-7]      {WRITE_REGISTER; return REGISTER;}
 [a-zA-Z_][a-zA-Z0-9_]* {WRITE_SYMBOL; return SYMBOL;}
 0x[0-9A-Fa-f]+        {WRITE_HEXNUM; return NUMBER;}
-[0-9]+ WRITE_DECNUM; {return NUMBER;}
+[0-9]+      {WRITE_DECNUM; return NUMBER;}
 "%"         {return PERCENT;}
 "*"         {return STAR;}
 "$"         {return DOLLAR;}
