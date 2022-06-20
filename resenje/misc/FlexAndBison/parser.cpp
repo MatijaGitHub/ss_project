@@ -145,53 +145,54 @@ extern int yydebug;
   {
     REGISTER = 258,
     SYMBOL = 259,
-    NUMBER = 260,
-    GLOBAL = 261,
-    EXTERN = 262,
-    SECTION = 263,
-    WORD = 264,
-    SKIP = 265,
-    ASCII = 266,
-    EQU = 267,
-    END = 268,
-    HALT = 269,
-    INT = 270,
-    IRET = 271,
-    RET = 272,
-    CALL = 273,
-    JMP = 274,
-    JGT = 275,
-    JEQ = 276,
-    JNE = 277,
-    PUSH = 278,
-    POP = 279,
-    XCHG = 280,
-    ADD = 281,
-    SUB = 282,
-    MUL = 283,
-    DIV = 284,
-    CMP = 285,
-    NOT = 286,
-    AND = 287,
-    OR = 288,
-    XOR = 289,
-    TEST = 290,
-    SHL = 291,
-    SHR = 292,
-    LDR = 293,
-    STR = 294,
-    PLUS = 295,
-    COMMENT = 296,
-    PERCENT = 297,
-    STAR = 298,
-    DOLLAR = 299,
-    LEFT_BR = 300,
-    RIGHT_BR = 301,
-    COLON = 302,
-    SEMI_COLON = 303,
-    NEW_LINE = 304,
-    COMMA = 305,
-    DOT = 306
+    STRING = 260,
+    NUMBER = 261,
+    GLOBAL = 262,
+    EXTERN = 263,
+    SECTION = 264,
+    WORD = 265,
+    SKIP = 266,
+    ASCII = 267,
+    EQU = 268,
+    END = 269,
+    HALT = 270,
+    INT = 271,
+    IRET = 272,
+    RET = 273,
+    CALL = 274,
+    JMP = 275,
+    JGT = 276,
+    JEQ = 277,
+    JNE = 278,
+    PUSH = 279,
+    POP = 280,
+    XCHG = 281,
+    ADD = 282,
+    SUB = 283,
+    MUL = 284,
+    DIV = 285,
+    CMP = 286,
+    NOT = 287,
+    AND = 288,
+    OR = 289,
+    XOR = 290,
+    TEST = 291,
+    SHL = 292,
+    SHR = 293,
+    LDR = 294,
+    STR = 295,
+    PLUS = 296,
+    COMMENT = 297,
+    PERCENT = 298,
+    STAR = 299,
+    DOLLAR = 300,
+    LEFT_BR = 301,
+    RIGHT_BR = 302,
+    COLON = 303,
+    SEMI_COLON = 304,
+    NEW_LINE = 305,
+    COMMA = 306,
+    DOT = 307
   };
 #endif
 
@@ -214,7 +215,7 @@ union YYSTYPE
   int number;
   int token;
 
-#line 218 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 219 "./resenje/misc/FlexAndBison/parser.cpp"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -531,21 +532,21 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  78
+#define YYFINAL  80
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   183
+#define YYLAST   185
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  52
+#define YYNTOKENS  53
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  11
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  72
+#define YYNRULES  73
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  159
+#define YYNSTATES  161
 
 #define YYUNDEFTOK  2
-#define YYMAXUTOK   306
+#define YYMAXUTOK   307
 
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
@@ -587,7 +588,7 @@ static const yytype_int8 yytranslate[] =
       15,    16,    17,    18,    19,    20,    21,    22,    23,    24,
       25,    26,    27,    28,    29,    30,    31,    32,    33,    34,
       35,    36,    37,    38,    39,    40,    41,    42,    43,    44,
-      45,    46,    47,    48,    49,    50,    51
+      45,    46,    47,    48,    49,    50,    51,    52
 };
 
 #if YYDEBUG
@@ -596,12 +597,12 @@ static const yytype_int16 yyrline[] =
 {
        0,    73,    73,    78,    87,    96,   101,   105,   110,   114,
      118,   122,   126,   130,   134,   138,   145,   150,   155,   159,
-     164,   168,   174,   178,   182,   186,   190,   194,   198,   202,
+     164,   168,   172,   178,   182,   186,   190,   194,   198,   202,
      206,   210,   214,   218,   222,   226,   230,   234,   238,   242,
-     246,   250,   254,   258,   262,   266,   270,   274,   279,   283,
-     287,   291,   295,   299,   303,   307,   311,   317,   321,   325,
-     329,   333,   337,   341,   345,   349,   355,   361,   367,   373,
-     378,   383,   387
+     246,   250,   254,   258,   262,   266,   270,   274,   278,   283,
+     287,   291,   295,   299,   303,   307,   311,   315,   321,   325,
+     329,   333,   337,   341,   345,   349,   353,   359,   365,   371,
+     377,   382,   387,   391
 };
 #endif
 
@@ -610,15 +611,15 @@ static const yytype_int16 yyrline[] =
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
-  "$end", "error", "$undefined", "REGISTER", "SYMBOL", "NUMBER", "GLOBAL",
-  "EXTERN", "SECTION", "WORD", "SKIP", "ASCII", "EQU", "END", "HALT",
-  "INT", "IRET", "RET", "CALL", "JMP", "JGT", "JEQ", "JNE", "PUSH", "POP",
-  "XCHG", "ADD", "SUB", "MUL", "DIV", "CMP", "NOT", "AND", "OR", "XOR",
-  "TEST", "SHL", "SHR", "LDR", "STR", "PLUS", "COMMENT", "PERCENT", "STAR",
-  "DOLLAR", "LEFT_BR", "RIGHT_BR", "COLON", "SEMI_COLON", "NEW_LINE",
-  "COMMA", "DOT", "$accept", "code", "lines", "line", "directive",
-  "instruction", "operandData", "operandJump", "label", "list_of_symbols",
-  "list_of_symbols_and_literals", YY_NULLPTR
+  "$end", "error", "$undefined", "REGISTER", "SYMBOL", "STRING", "NUMBER",
+  "GLOBAL", "EXTERN", "SECTION", "WORD", "SKIP", "ASCII", "EQU", "END",
+  "HALT", "INT", "IRET", "RET", "CALL", "JMP", "JGT", "JEQ", "JNE", "PUSH",
+  "POP", "XCHG", "ADD", "SUB", "MUL", "DIV", "CMP", "NOT", "AND", "OR",
+  "XOR", "TEST", "SHL", "SHR", "LDR", "STR", "PLUS", "COMMENT", "PERCENT",
+  "STAR", "DOLLAR", "LEFT_BR", "RIGHT_BR", "COLON", "SEMI_COLON",
+  "NEW_LINE", "COMMA", "DOT", "$accept", "code", "lines", "line",
+  "directive", "instruction", "operandData", "operandJump", "label",
+  "list_of_symbols", "list_of_symbols_and_literals", YY_NULLPTR
 };
 #endif
 
@@ -632,11 +633,11 @@ static const yytype_int16 yytoknum[] =
      275,   276,   277,   278,   279,   280,   281,   282,   283,   284,
      285,   286,   287,   288,   289,   290,   291,   292,   293,   294,
      295,   296,   297,   298,   299,   300,   301,   302,   303,   304,
-     305,   306
+     305,   306,   307
 };
 # endif
 
-#define YYPACT_NINF (-8)
+#define YYPACT_NINF (-43)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -650,22 +651,23 @@ static const yytype_int16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int16 yypact[] =
 {
-      80,    22,    49,    49,    19,     1,    66,    -8,    -8,    69,
-      -8,    -8,    40,    40,    40,    40,    40,    70,    71,    73,
-      76,    77,    82,    88,    89,   117,   119,   120,   121,   122,
-     123,   124,   125,   126,    81,   131,    80,    -8,    -7,     5,
-      -6,    -8,    -8,    83,    83,   128,    -8,    -8,    84,    -8,
-      -8,    -8,    -8,   132,    36,    -8,    -8,    -8,    -8,    -8,
-      -8,    -8,    85,    87,    90,    91,    92,    93,    -8,    94,
-      95,    96,    97,    98,    99,   100,   101,    -8,    -8,    -8,
-     103,    -8,   104,    -8,   105,    -8,     6,     7,   134,    -8,
-      45,    -8,    -8,    -8,    -8,   136,   152,   153,   154,   155,
-     156,   157,   158,   159,   160,   161,   162,   163,    33,    33,
-      -8,    -8,    -8,   118,    -8,   127,    -8,    -8,    -8,    -8,
-      11,    -8,    -8,    -8,    -8,    -8,    -8,    -8,    -8,    -8,
-      -8,    -8,    -8,    -8,    -8,    -8,   164,    59,   166,    -8,
-      -8,    -8,    -8,    61,    -8,    -8,    -8,    -8,    12,   129,
-     133,    63,    -8,    -8,    -8,   135,   137,    -8,    -8
+      83,   -42,    30,    30,    -1,    34,    46,    69,   -43,   -43,
+      72,   -43,   -43,    42,    42,    42,    42,    42,    74,    77,
+      78,    79,    80,    85,    86,    93,   121,   123,   124,   125,
+     126,   127,   128,   129,   130,    22,   134,    83,   -43,     3,
+       5,    -7,   -43,   -43,    84,    84,   132,   -43,   -43,    87,
+     -43,   -43,   -43,   -43,   -43,   133,    38,   -43,   -43,   -43,
+     -43,   -43,   -43,   -43,    88,    89,    90,    91,    92,    94,
+     -43,    95,    96,    97,    98,    99,   100,   101,   102,   -43,
+     -43,   -43,   104,   -43,   105,   -43,   106,   -43,     7,     8,
+     140,   -43,    55,   -43,   -43,   -43,   -43,   154,   155,   156,
+     157,   158,   159,   160,   161,   162,   163,   164,   165,   166,
+      33,    33,   -43,   -43,   -43,   120,   -43,   122,   -43,   -43,
+     -43,   -43,    13,   -43,   -43,   -43,   -43,   -43,   -43,   -43,
+     -43,   -43,   -43,   -43,   -43,   -43,   -43,   -43,   167,    63,
+     170,   -43,   -43,   -43,   -43,    64,   -43,   -43,   -43,   -43,
+      15,   131,   135,    67,   -43,   -43,   -43,   136,   137,   -43,
+     -43
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -673,36 +675,37 @@ static const yytype_int16 yypact[] =
      means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       0,     0,     0,     0,     0,     0,     0,    21,    22,     0,
-      24,    26,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,    22,    23,
+       0,    25,    27,     0,     0,     0,     0,     0,     0,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     2,     3,     0,     0,
-       0,    66,    67,    16,    17,     0,    69,    70,    19,    20,
-      23,    58,    57,     0,     0,    25,    27,    28,    29,    30,
-      31,    32,     0,     0,     0,     0,     0,     0,    39,     0,
-       0,     0,     0,     0,     0,     0,     0,    13,     1,     4,
-       0,     9,     0,     8,     0,     5,     0,     0,     0,    18,
-       0,    59,    62,    61,    60,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     2,     3,     0,
+       0,     0,    67,    68,    16,    17,     0,    70,    71,    19,
+      20,    21,    24,    59,    58,     0,     0,    26,    28,    29,
+      30,    31,    32,    33,     0,     0,     0,     0,     0,     0,
+      40,     0,     0,     0,     0,     0,     0,     0,     0,    13,
+       1,     4,     0,     9,     0,     8,     0,     5,     0,     0,
+       0,    18,     0,    60,    63,    62,    61,     0,     0,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-      15,    14,    10,     0,     6,     0,     7,    68,    71,    72,
-       0,    33,    34,    35,    36,    37,    38,    40,    41,    42,
-      43,    44,    45,    53,    51,    50,     0,     0,     0,    46,
-      47,    11,    12,     0,    63,    52,    49,    48,     0,     0,
-       0,     0,    54,    64,    65,     0,     0,    56,    55
+       0,     0,    15,    14,    10,     0,     6,     0,     7,    69,
+      72,    73,     0,    34,    35,    36,    37,    38,    39,    41,
+      42,    43,    44,    45,    46,    54,    52,    51,     0,     0,
+       0,    47,    48,    11,    12,     0,    64,    53,    50,    49,
+       0,     0,     0,     0,    55,    65,    66,     0,     0,    57,
+      56
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int16 yypgoto[] =
 {
-      -8,    -8,    -8,   138,   130,   140,    62,    46,    -8,   169,
-      -8
+     -43,   -43,   -43,   138,   139,   144,    65,    49,   -43,   171,
+     -43
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int16 yydefgoto[] =
 {
-      -1,    35,    36,    37,    38,    39,   139,    55,    40,    43,
-      48
+      -1,    36,    37,    38,    39,    40,   141,    57,    41,    44,
+      49
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -710,83 +713,84 @@ static const yytype_int16 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_uint8 yytable[] =
 {
-       2,     3,     4,     5,     6,    46,    47,     7,     8,     9,
-      10,    11,    12,    13,    14,    15,    16,    17,    18,    19,
-      20,    21,    22,    23,    24,    25,    26,    27,    28,    29,
-      30,    31,    32,    33,    80,    84,   133,   134,   135,    92,
-      93,    94,    81,    85,    51,    52,    82,   113,   115,   118,
-     119,   143,   151,    42,    83,   114,   116,   144,   152,    56,
-      57,    58,    59,   146,   147,   149,   150,   155,   156,    41,
-      45,    49,    50,    60,    61,   136,    62,   137,   138,    63,
-      64,    95,    53,    54,     1,    65,     2,     3,     4,     5,
-       6,    66,    67,     7,     8,     9,    10,    11,    12,    13,
-      14,    15,    16,    17,    18,    19,    20,    21,    22,    23,
-      24,    25,    26,    27,    28,    29,    30,    31,    32,    33,
-      68,    34,    69,    70,    71,    72,    73,    74,    75,    76,
-      77,    78,    89,    88,    90,    96,    91,    97,   117,   120,
-      98,    99,   100,   101,   102,   103,   104,   105,   106,   107,
-     108,   109,   110,   111,   112,   121,   122,   123,   124,   125,
-     126,   127,   128,   129,   130,   131,   132,   141,   145,   148,
-      86,   140,    44,     0,    79,   153,   142,     0,     0,   154,
-      87,   157,     0,   158
+       2,     3,     4,     5,     6,     7,    42,     8,     9,    10,
+      11,    12,    13,    14,    15,    16,    17,    18,    19,    20,
+      21,    22,    23,    24,    25,    26,    27,    28,    29,    30,
+      31,    32,    33,    34,    43,    86,   135,   136,    47,   137,
+      48,    94,    95,    87,    96,    82,    53,    84,    54,   115,
+     117,    46,    50,    83,   145,    85,   153,   116,   118,   120,
+     146,   121,   154,    58,    59,    60,    61,   148,   151,   149,
+     152,   157,    79,   158,    51,    52,   138,    62,   139,   140,
+      63,    64,    65,    66,    97,    55,    56,     1,    67,    68,
+       2,     3,     4,     5,     6,     7,    69,     8,     9,    10,
+      11,    12,    13,    14,    15,    16,    17,    18,    19,    20,
+      21,    22,    23,    24,    25,    26,    27,    28,    29,    30,
+      31,    32,    33,    34,    70,    35,    71,    72,    73,    74,
+      75,    76,    77,    78,    80,    90,    91,    93,    92,    98,
+      99,   100,   101,   102,   119,   103,   104,   105,   106,   107,
+     108,   109,   110,   111,   112,   113,   114,   122,   123,   124,
+     125,   126,   127,   128,   129,   130,   131,   132,   133,   134,
+     143,   147,   144,   150,    45,    81,   142,     0,   155,     0,
+      88,     0,   156,   159,   160,    89
 };
 
 static const yytype_int8 yycheck[] =
 {
-       6,     7,     8,     9,    10,     4,     5,    13,    14,    15,
-      16,    17,    18,    19,    20,    21,    22,    23,    24,    25,
-      26,    27,    28,    29,    30,    31,    32,    33,    34,    35,
-      36,    37,    38,    39,    41,    41,     3,     4,     5,     3,
-       4,     5,    49,    49,     4,     5,    41,    41,    41,     4,
-       5,    40,    40,     4,    49,    49,    49,    46,    46,    13,
-      14,    15,    16,     4,     5,     4,     5,     4,     5,    47,
-      51,     5,     3,     3,     3,    42,     3,    44,    45,     3,
-       3,    45,    42,    43,     4,     3,     6,     7,     8,     9,
-      10,     3,     3,    13,    14,    15,    16,    17,    18,    19,
-      20,    21,    22,    23,    24,    25,    26,    27,    28,    29,
-      30,    31,    32,    33,    34,    35,    36,    37,    38,    39,
-       3,    41,     3,     3,     3,     3,     3,     3,     3,     3,
-      49,     0,     4,    50,    50,    50,     4,    50,     4,     3,
-      50,    50,    50,    50,    50,    50,    50,    50,    50,    50,
-      50,    50,    49,    49,    49,     3,     3,     3,     3,     3,
-       3,     3,     3,     3,     3,     3,     3,    49,     4,     3,
-      40,   109,     3,    -1,    36,    46,    49,    -1,    -1,    46,
-      40,    46,    -1,    46
+       7,     8,     9,    10,    11,    12,    48,    14,    15,    16,
+      17,    18,    19,    20,    21,    22,    23,    24,    25,    26,
+      27,    28,    29,    30,    31,    32,    33,    34,    35,    36,
+      37,    38,    39,    40,     4,    42,     3,     4,     4,     6,
+       6,     3,     4,    50,     6,    42,     4,    42,     6,    42,
+      42,    52,     6,    50,    41,    50,    41,    50,    50,     4,
+      47,     6,    47,    14,    15,    16,    17,     4,     4,     6,
+       6,     4,    50,     6,     5,     3,    43,     3,    45,    46,
+       3,     3,     3,     3,    46,    43,    44,     4,     3,     3,
+       7,     8,     9,    10,    11,    12,     3,    14,    15,    16,
+      17,    18,    19,    20,    21,    22,    23,    24,    25,    26,
+      27,    28,    29,    30,    31,    32,    33,    34,    35,    36,
+      37,    38,    39,    40,     3,    42,     3,     3,     3,     3,
+       3,     3,     3,     3,     0,    51,     4,     4,    51,    51,
+      51,    51,    51,    51,     4,    51,    51,    51,    51,    51,
+      51,    51,    51,    51,    50,    50,    50,     3,     3,     3,
+       3,     3,     3,     3,     3,     3,     3,     3,     3,     3,
+      50,     4,    50,     3,     3,    37,   111,    -1,    47,    -1,
+      41,    -1,    47,    47,    47,    41
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,     4,     6,     7,     8,     9,    10,    13,    14,    15,
+       0,     4,     7,     8,     9,    10,    11,    12,    14,    15,
       16,    17,    18,    19,    20,    21,    22,    23,    24,    25,
       26,    27,    28,    29,    30,    31,    32,    33,    34,    35,
-      36,    37,    38,    39,    41,    53,    54,    55,    56,    57,
-      60,    47,     4,    61,    61,    51,     4,     5,    62,     5,
-       3,     4,     5,    42,    43,    59,    59,    59,    59,    59,
-       3,     3,     3,     3,     3,     3,     3,     3,     3,     3,
-       3,     3,     3,     3,     3,     3,     3,    49,     0,    55,
-      41,    49,    41,    49,    41,    49,    56,    57,    50,     4,
-      50,     4,     3,     4,     5,    45,    50,    50,    50,    50,
-      50,    50,    50,    50,    50,    50,    50,    50,    50,    50,
-      49,    49,    49,    41,    49,    41,    49,     4,     4,     5,
-       3,     3,     3,     3,     3,     3,     3,     3,     3,     3,
-       3,     3,     3,     3,     4,     5,    42,    44,    45,    58,
-      58,    49,    49,    40,    46,     4,     4,     5,     3,     4,
-       5,    40,    46,    46,    46,     4,     5,    46,    46
+      36,    37,    38,    39,    40,    42,    54,    55,    56,    57,
+      58,    61,    48,     4,    62,    62,    52,     4,     6,    63,
+       6,     5,     3,     4,     6,    43,    44,    60,    60,    60,
+      60,    60,     3,     3,     3,     3,     3,     3,     3,     3,
+       3,     3,     3,     3,     3,     3,     3,     3,     3,    50,
+       0,    56,    42,    50,    42,    50,    42,    50,    57,    58,
+      51,     4,    51,     4,     3,     4,     6,    46,    51,    51,
+      51,    51,    51,    51,    51,    51,    51,    51,    51,    51,
+      51,    51,    50,    50,    50,    42,    50,    42,    50,     4,
+       4,     6,     3,     3,     3,     3,     3,     3,     3,     3,
+       3,     3,     3,     3,     3,     3,     4,     6,    43,    45,
+      46,    59,    59,    50,    50,    41,    47,     4,     4,     6,
+       3,     4,     6,    41,    47,    47,    47,     4,     6,    47,
+      47
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    52,    53,    54,    54,    55,    55,    55,    55,    55,
-      55,    55,    55,    55,    55,    55,    56,    56,    56,    56,
-      56,    56,    57,    57,    57,    57,    57,    57,    57,    57,
-      57,    57,    57,    57,    57,    57,    57,    57,    57,    57,
-      57,    57,    57,    57,    57,    57,    57,    57,    58,    58,
-      58,    58,    58,    58,    58,    58,    58,    59,    59,    59,
-      59,    59,    59,    59,    59,    59,    60,    61,    61,    62,
-      62,    62,    62
+       0,    53,    54,    55,    55,    56,    56,    56,    56,    56,
+      56,    56,    56,    56,    56,    56,    57,    57,    57,    57,
+      57,    57,    57,    58,    58,    58,    58,    58,    58,    58,
+      58,    58,    58,    58,    58,    58,    58,    58,    58,    58,
+      58,    58,    58,    58,    58,    58,    58,    58,    58,    59,
+      59,    59,    59,    59,    59,    59,    59,    59,    60,    60,
+      60,    60,    60,    60,    60,    60,    60,    61,    62,    62,
+      63,    63,    63,    63
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
@@ -794,12 +798,12 @@ static const yytype_int8 yyr2[] =
 {
        0,     2,     1,     1,     2,     2,     3,     3,     2,     2,
        3,     4,     4,     2,     3,     3,     2,     2,     3,     2,
-       2,     1,     1,     2,     1,     2,     1,     2,     2,     2,
-       2,     2,     2,     4,     4,     4,     4,     4,     4,     2,
-       4,     4,     4,     4,     4,     4,     4,     4,     2,     2,
-       1,     1,     2,     1,     3,     5,     5,     1,     1,     2,
-       2,     2,     2,     4,     6,     6,     2,     1,     3,     1,
-       1,     3,     3
+       2,     2,     1,     1,     2,     1,     2,     1,     2,     2,
+       2,     2,     2,     2,     4,     4,     4,     4,     4,     4,
+       2,     4,     4,     4,     4,     4,     4,     4,     4,     2,
+       2,     1,     1,     2,     1,     3,     5,     5,     1,     1,
+       2,     2,     2,     2,     4,     6,     6,     2,     1,     3,
+       1,     1,     3,     3
 };
 
 
@@ -1499,7 +1503,7 @@ yyreduce:
        {
     //Lines::initLines();
   }
-#line 1503 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1507 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 3:
@@ -1512,7 +1516,7 @@ yyreduce:
       yylineno++;
     }
   }
-#line 1516 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1520 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 4:
@@ -1524,7 +1528,7 @@ yyreduce:
       yylineno++;
     }
   }
-#line 1528 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1532 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 5:
@@ -1533,7 +1537,7 @@ yyreduce:
     (yyval.line) = new Line((yyvsp[-1].lbl));
     
   }
-#line 1537 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1541 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 6:
@@ -1541,7 +1545,7 @@ yyreduce:
                           {
     (yyval.line) = new Line((yyvsp[-2].lbl),(yyvsp[-1].dir));
   }
-#line 1545 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1549 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 7:
@@ -1550,7 +1554,7 @@ yyreduce:
     (yyval.line) = new Line((yyvsp[-2].lbl),(yyvsp[-1].ins));
 
   }
-#line 1554 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1558 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 8:
@@ -1558,7 +1562,7 @@ yyreduce:
                       {
     (yyval.line) = new Line((yyvsp[-1].ins));
   }
-#line 1562 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1566 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 9:
@@ -1566,7 +1570,7 @@ yyreduce:
                     {
     (yyval.line) = new Line((yyvsp[-1].dir));
   }
-#line 1570 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1574 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 10:
@@ -1574,7 +1578,7 @@ yyreduce:
                         {
     (yyval.line) = new Line((yyvsp[-2].lbl));
   }
-#line 1578 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1582 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 11:
@@ -1582,7 +1586,7 @@ yyreduce:
                                   {
     (yyval.line) = new Line((yyvsp[-3].lbl),(yyvsp[-2].dir));
   }
-#line 1586 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1590 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 12:
@@ -1590,7 +1594,7 @@ yyreduce:
                                     {
     (yyval.line) = new Line((yyvsp[-3].lbl),(yyvsp[-2].ins));
   }
-#line 1594 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1598 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 13:
@@ -1598,7 +1602,7 @@ yyreduce:
                   {
     (yyval.line) = nullptr;
   }
-#line 1602 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1606 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 14:
@@ -1606,7 +1610,7 @@ yyreduce:
                               {
     (yyval.line) = new Line((yyvsp[-2].ins));
   }
-#line 1610 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1614 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 15:
@@ -1614,7 +1618,7 @@ yyreduce:
                             {
     (yyval.line) = new Line((yyvsp[-2].dir));
   }
-#line 1618 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1622 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 16:
@@ -1623,7 +1627,7 @@ yyreduce:
     (yyval.dir) = new Directive(global,(yyvsp[0].sym_lit_list));
     
   }
-#line 1627 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1631 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 17:
@@ -1632,7 +1636,7 @@ yyreduce:
     (yyval.dir) = new Directive(externI,(yyvsp[0].sym_lit_list));
     
   }
-#line 1636 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1640 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 18:
@@ -1640,7 +1644,7 @@ yyreduce:
                     {
     (yyval.dir) = new Directive(section,*(yyvsp[0].symbol));
   }
-#line 1644 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1648 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 19:
@@ -1649,7 +1653,7 @@ yyreduce:
     (yyval.dir) = new Directive(word,(yyvsp[0].sym_lit_list));
     
   }
-#line 1653 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1657 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 20:
@@ -1657,432 +1661,440 @@ yyreduce:
              {
     (yyval.dir) = new Directive(skip,(yyvsp[0].number));
   }
-#line 1661 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1665 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 21:
 #line 168 "./resenje/misc/parser.y"
-     {
-    (yyval.dir) = new Directive(end);
+              {
+    (yyval.dir) = new Directive(ascii,*(yyvsp[0].symbol));
   }
-#line 1669 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1673 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 22:
-#line 174 "./resenje/misc/parser.y"
-      {
-      (yyval.ins) = new Instruction(InstructionName::halt);
+#line 172 "./resenje/misc/parser.y"
+     {
+    (yyval.dir) = new Directive(end);
   }
-#line 1677 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1681 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 23:
 #line 178 "./resenje/misc/parser.y"
-              {
-       (yyval.ins) = new Instruction(InstructionName::intI,(yyvsp[0].reg));
+      {
+      (yyval.ins) = new Instruction(InstructionName::halt);
   }
-#line 1685 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1689 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 24:
 #line 182 "./resenje/misc/parser.y"
-      {
-    (yyval.ins) = new Instruction(InstructionName::iret);
+              {
+       (yyval.ins) = new Instruction(InstructionName::intI,(yyvsp[0].reg));
   }
-#line 1693 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1697 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 25:
 #line 186 "./resenje/misc/parser.y"
-                  {
-    (yyval.ins) = new Instruction(InstructionName::call,*(yyvsp[0].jmpOp));
+      {
+    (yyval.ins) = new Instruction(InstructionName::iret);
   }
-#line 1701 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1705 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 26:
 #line 190 "./resenje/misc/parser.y"
-     {
-    (yyval.ins) = new Instruction(InstructionName::ret);
+                  {
+    (yyval.ins) = new Instruction(InstructionName::call,*(yyvsp[0].jmpOp));
   }
-#line 1709 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1713 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 27:
 #line 194 "./resenje/misc/parser.y"
-                 {
-    (yyval.ins) = new Instruction(InstructionName::jmp,*(yyvsp[0].jmpOp));
+     {
+    (yyval.ins) = new Instruction(InstructionName::ret);
   }
-#line 1717 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1721 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 28:
 #line 198 "./resenje/misc/parser.y"
                  {
-    (yyval.ins) = new Instruction(InstructionName::jgt,*(yyvsp[0].jmpOp));
+    (yyval.ins) = new Instruction(InstructionName::jmp,*(yyvsp[0].jmpOp));
   }
-#line 1725 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1729 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 29:
 #line 202 "./resenje/misc/parser.y"
                  {
-    (yyval.ins) = new Instruction(InstructionName::jeq,*(yyvsp[0].jmpOp));
+    (yyval.ins) = new Instruction(InstructionName::jgt,*(yyvsp[0].jmpOp));
   }
-#line 1733 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1737 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 30:
 #line 206 "./resenje/misc/parser.y"
                  {
-    (yyval.ins) = new Instruction(InstructionName::jne,*(yyvsp[0].jmpOp));
+    (yyval.ins) = new Instruction(InstructionName::jeq,*(yyvsp[0].jmpOp));
   }
-#line 1741 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1745 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 31:
 #line 210 "./resenje/misc/parser.y"
-               {
-      (yyval.ins) = new Instruction(InstructionName::push,(yyvsp[0].reg));
+                 {
+    (yyval.ins) = new Instruction(InstructionName::jne,*(yyvsp[0].jmpOp));
   }
-#line 1749 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1753 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 32:
 #line 214 "./resenje/misc/parser.y"
-              {
-      (yyval.ins) = new Instruction(InstructionName::pop,(yyvsp[0].reg));
+               {
+      (yyval.ins) = new Instruction(InstructionName::push,(yyvsp[0].reg));
   }
-#line 1757 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1761 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 33:
 #line 218 "./resenje/misc/parser.y"
-                               {
-      (yyval.ins) = new Instruction(InstructionName::xchg,(yyvsp[-2].reg),(yyvsp[0].reg));
+              {
+      (yyval.ins) = new Instruction(InstructionName::pop,(yyvsp[0].reg));
   }
-#line 1765 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1769 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 34:
 #line 222 "./resenje/misc/parser.y"
-                              {
-      (yyval.ins) = new Instruction(InstructionName::add,(yyvsp[-2].reg),(yyvsp[0].reg));
+                               {
+      (yyval.ins) = new Instruction(InstructionName::xchg,(yyvsp[-2].reg),(yyvsp[0].reg));
   }
-#line 1773 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1777 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 35:
 #line 226 "./resenje/misc/parser.y"
-                             {
-      (yyval.ins) = new Instruction(InstructionName::sub,(yyvsp[-2].reg),(yyvsp[0].reg));
+                              {
+      (yyval.ins) = new Instruction(InstructionName::add,(yyvsp[-2].reg),(yyvsp[0].reg));
   }
-#line 1781 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1785 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 36:
 #line 230 "./resenje/misc/parser.y"
                              {
-      (yyval.ins) = new Instruction(InstructionName::mul,(yyvsp[-2].reg),(yyvsp[0].reg));
+      (yyval.ins) = new Instruction(InstructionName::sub,(yyvsp[-2].reg),(yyvsp[0].reg));
   }
-#line 1789 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1793 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 37:
 #line 234 "./resenje/misc/parser.y"
                              {
-      (yyval.ins) = new Instruction(InstructionName::divI,(yyvsp[-2].reg),(yyvsp[0].reg));
+      (yyval.ins) = new Instruction(InstructionName::mul,(yyvsp[-2].reg),(yyvsp[0].reg));
   }
-#line 1797 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1801 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 38:
 #line 238 "./resenje/misc/parser.y"
                              {
-      (yyval.ins) = new Instruction(InstructionName::cmp,(yyvsp[-2].reg),(yyvsp[0].reg));
+      (yyval.ins) = new Instruction(InstructionName::divI,(yyvsp[-2].reg),(yyvsp[0].reg));
   }
-#line 1805 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1809 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 39:
 #line 242 "./resenje/misc/parser.y"
-              {
-      (yyval.ins) = new Instruction(InstructionName::notI,(yyvsp[0].reg));
+                             {
+      (yyval.ins) = new Instruction(InstructionName::cmp,(yyvsp[-2].reg),(yyvsp[0].reg));
   }
-#line 1813 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1817 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 40:
 #line 246 "./resenje/misc/parser.y"
-                             {
-      (yyval.ins) = new Instruction(InstructionName::andI,(yyvsp[-2].reg),(yyvsp[0].reg));
+              {
+      (yyval.ins) = new Instruction(InstructionName::notI,(yyvsp[0].reg));
   }
-#line 1821 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1825 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 41:
 #line 250 "./resenje/misc/parser.y"
-                            {
-      (yyval.ins) = new Instruction(InstructionName::orI,(yyvsp[-2].reg),(yyvsp[0].reg));
+                             {
+      (yyval.ins) = new Instruction(InstructionName::andI,(yyvsp[-2].reg),(yyvsp[0].reg));
   }
-#line 1829 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1833 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 42:
 #line 254 "./resenje/misc/parser.y"
-                             {
-      (yyval.ins) = new Instruction(InstructionName::xorI,(yyvsp[-2].reg),(yyvsp[0].reg));
+                            {
+      (yyval.ins) = new Instruction(InstructionName::orI,(yyvsp[-2].reg),(yyvsp[0].reg));
   }
-#line 1837 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1841 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 43:
 #line 258 "./resenje/misc/parser.y"
-                              {
-      (yyval.ins) = new Instruction(InstructionName::test,(yyvsp[-2].reg),(yyvsp[0].reg));
+                             {
+      (yyval.ins) = new Instruction(InstructionName::xorI,(yyvsp[-2].reg),(yyvsp[0].reg));
   }
-#line 1845 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1849 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 44:
 #line 262 "./resenje/misc/parser.y"
-                             {
-      (yyval.ins) = new Instruction(InstructionName::shl,(yyvsp[-2].reg),(yyvsp[0].reg));
+                              {
+      (yyval.ins) = new Instruction(InstructionName::test,(yyvsp[-2].reg),(yyvsp[0].reg));
   }
-#line 1853 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1857 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 45:
 #line 266 "./resenje/misc/parser.y"
                              {
-      (yyval.ins) = new Instruction(InstructionName::shr,(yyvsp[-2].reg),(yyvsp[0].reg));
+      (yyval.ins) = new Instruction(InstructionName::shl,(yyvsp[-2].reg),(yyvsp[0].reg));
   }
-#line 1861 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1865 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 46:
 #line 270 "./resenje/misc/parser.y"
-                                {
-      (yyval.ins) = new Instruction(InstructionName::ldr,(yyvsp[-2].reg),*(yyvsp[0].dataOp));
+                             {
+      (yyval.ins) = new Instruction(InstructionName::shr,(yyvsp[-2].reg),(yyvsp[0].reg));
   }
-#line 1869 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1873 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 47:
 #line 274 "./resenje/misc/parser.y"
                                 {
-      (yyval.ins) = new Instruction(InstructionName::str,(yyvsp[-2].reg),*(yyvsp[0].dataOp));
+      (yyval.ins) = new Instruction(InstructionName::ldr,(yyvsp[-2].reg),*(yyvsp[0].dataOp));
   }
-#line 1877 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1881 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 48:
-#line 279 "./resenje/misc/parser.y"
-               {
-    (yyval.dataOp) = new DataOperand(LIT_VALUE,(yyvsp[0].number));
+#line 278 "./resenje/misc/parser.y"
+                                {
+      (yyval.ins) = new Instruction(InstructionName::str,(yyvsp[-2].reg),*(yyvsp[0].dataOp));
   }
-#line 1885 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1889 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 49:
 #line 283 "./resenje/misc/parser.y"
                {
-      (yyval.dataOp) = new DataOperand(SYM_VALUE,*(yyvsp[0].symbol));
+    (yyval.dataOp) = new DataOperand(LIT_VALUE,(yyvsp[0].number));
   }
-#line 1893 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1897 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 50:
 #line 287 "./resenje/misc/parser.y"
-        {
-      (yyval.dataOp) = new DataOperand(LIT_MEMORY,(yyvsp[0].number));
+               {
+      (yyval.dataOp) = new DataOperand(SYM_VALUE,*(yyvsp[0].symbol));
   }
-#line 1901 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1905 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 51:
 #line 291 "./resenje/misc/parser.y"
         {
-      (yyval.dataOp) = new DataOperand(SYM_MEMORY,*(yyvsp[0].symbol));
+      (yyval.dataOp) = new DataOperand(LIT_MEMORY,(yyvsp[0].number));
   }
-#line 1909 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1913 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 52:
 #line 295 "./resenje/misc/parser.y"
-                {
-      (yyval.dataOp) = new DataOperand(SYM_RELATIVE,*(yyvsp[0].symbol));
+        {
+      (yyval.dataOp) = new DataOperand(SYM_MEMORY,*(yyvsp[0].symbol));
   }
-#line 1917 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1921 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 53:
 #line 299 "./resenje/misc/parser.y"
-          {
-      (yyval.dataOp) = new DataOperand(REG_VALUE,(yyvsp[0].reg));
+                {
+      (yyval.dataOp) = new DataOperand(SYM_RELATIVE,*(yyvsp[0].symbol));
   }
-#line 1925 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1929 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 54:
 #line 303 "./resenje/misc/parser.y"
-                           {
-      (yyval.dataOp) = new DataOperand(REG_MEMORY,(yyvsp[-1].reg));
+          {
+      (yyval.dataOp) = new DataOperand(REG_VALUE,(yyvsp[0].reg));
   }
-#line 1933 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1937 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 55:
 #line 307 "./resenje/misc/parser.y"
-                                       {
-      (yyval.dataOp) = new DataOperand(REG_LITERAL,(yyvsp[-3].reg),(yyvsp[-1].number));
+                           {
+      (yyval.dataOp) = new DataOperand(REG_MEMORY,(yyvsp[-1].reg));
   }
-#line 1941 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1945 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 56:
 #line 311 "./resenje/misc/parser.y"
                                        {
-      (yyval.dataOp) = new DataOperand(REG_SYMBOL,(yyvsp[-3].reg),*(yyvsp[-1].symbol));
+      (yyval.dataOp) = new DataOperand(REG_LITERAL,(yyvsp[-3].reg),(yyvsp[-1].number));
   }
-#line 1949 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1953 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 57:
-#line 317 "./resenje/misc/parser.y"
-        {
-      (yyval.jmpOp) = new JumpOperand(LIT_VAL,(yyvsp[0].number));
+#line 315 "./resenje/misc/parser.y"
+                                       {
+      (yyval.dataOp) = new DataOperand(REG_SYMBOL,(yyvsp[-3].reg),*(yyvsp[-1].symbol));
   }
-#line 1957 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1961 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 58:
 #line 321 "./resenje/misc/parser.y"
         {
-      (yyval.jmpOp) = new JumpOperand(ABS_SYM,*(yyvsp[0].symbol));
+      (yyval.jmpOp) = new JumpOperand(LIT_VAL,(yyvsp[0].number));
   }
-#line 1965 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1969 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 59:
 #line 325 "./resenje/misc/parser.y"
-                {
-      (yyval.jmpOp) = new JumpOperand(REL_SYM,*(yyvsp[0].symbol));
+        {
+      (yyval.jmpOp) = new JumpOperand(ABS_SYM,*(yyvsp[0].symbol));
   }
-#line 1973 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1977 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 60:
 #line 329 "./resenje/misc/parser.y"
-             {
-      (yyval.jmpOp) = new JumpOperand(LIT_MEM,(yyvsp[0].number));
+                {
+      (yyval.jmpOp) = new JumpOperand(REL_SYM,*(yyvsp[0].symbol));
   }
-#line 1981 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1985 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 61:
 #line 333 "./resenje/misc/parser.y"
              {
-      (yyval.jmpOp) = new JumpOperand(SYM_MEM,*(yyvsp[0].symbol));
+      (yyval.jmpOp) = new JumpOperand(LIT_MEM,(yyvsp[0].number));
   }
-#line 1989 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 1993 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 62:
 #line 337 "./resenje/misc/parser.y"
-               {
-      (yyval.jmpOp) = new JumpOperand(REG_VAL,(yyvsp[0].reg));
+             {
+      (yyval.jmpOp) = new JumpOperand(SYM_MEM,*(yyvsp[0].symbol));
   }
-#line 1997 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 2001 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 63:
 #line 341 "./resenje/misc/parser.y"
-                                {
-      (yyval.jmpOp) = new JumpOperand(REG_MEM,(yyvsp[-1].reg));
+               {
+      (yyval.jmpOp) = new JumpOperand(REG_VAL,(yyvsp[0].reg));
   }
-#line 2005 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 2009 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 64:
 #line 345 "./resenje/misc/parser.y"
-                                            {
-      (yyval.jmpOp) = new JumpOperand(REG_SYM,(yyvsp[-3].reg),*(yyvsp[-1].symbol));
+                                {
+      (yyval.jmpOp) = new JumpOperand(REG_MEM,(yyvsp[-1].reg));
   }
-#line 2013 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 2017 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 65:
 #line 349 "./resenje/misc/parser.y"
                                             {
-      (yyval.jmpOp) = new JumpOperand(REG_LIT,(yyvsp[-3].reg),(yyvsp[-1].number));
+      (yyval.jmpOp) = new JumpOperand(REG_SYM,(yyvsp[-3].reg),*(yyvsp[-1].symbol));
   }
-#line 2021 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 2025 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 66:
-#line 355 "./resenje/misc/parser.y"
-              {
-    (yyval.lbl) = new Label(*(yyvsp[-1].symbol));
+#line 353 "./resenje/misc/parser.y"
+                                            {
+      (yyval.jmpOp) = new JumpOperand(REG_LIT,(yyvsp[-3].reg),(yyvsp[-1].number));
   }
-#line 2029 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 2033 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 67:
-#line 361 "./resenje/misc/parser.y"
+#line 359 "./resenje/misc/parser.y"
+              {
+    (yyval.lbl) = new Label(*(yyvsp[-1].symbol));
+  }
+#line 2041 "./resenje/misc/FlexAndBison/parser.cpp"
+    break;
+
+  case 68:
+#line 365 "./resenje/misc/parser.y"
         {
       (yyval.sym_lit_list) = new Symbol_Literal_List();
       (yyval.sym_lit_list)->pushSymbol((yyvsp[0].symbol));
       
   }
-#line 2039 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 2051 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
-  case 68:
-#line 367 "./resenje/misc/parser.y"
+  case 69:
+#line 371 "./resenje/misc/parser.y"
                               {
       (yyval.sym_lit_list)->pushSymbol((yyvsp[0].symbol));
       
   }
-#line 2048 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 2060 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
-  case 69:
-#line 373 "./resenje/misc/parser.y"
+  case 70:
+#line 377 "./resenje/misc/parser.y"
         {
     (yyval.sym_lit_list) = new Symbol_Literal_List();
     (yyval.sym_lit_list)->pushSymbol((yyvsp[0].symbol));
   }
-#line 2057 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 2069 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
-  case 70:
-#line 378 "./resenje/misc/parser.y"
+  case 71:
+#line 382 "./resenje/misc/parser.y"
         {
     (yyval.sym_lit_list) = new Symbol_Literal_List();
     (yyval.sym_lit_list)->pushLiteral((yyvsp[0].number));
   }
-#line 2066 "./resenje/misc/FlexAndBison/parser.cpp"
-    break;
-
-  case 71:
-#line 383 "./resenje/misc/parser.y"
-                                           {
-      (yyval.sym_lit_list)->pushSymbol((yyvsp[0].symbol));
-  }
-#line 2074 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 2078 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
   case 72:
 #line 387 "./resenje/misc/parser.y"
                                            {
+      (yyval.sym_lit_list)->pushSymbol((yyvsp[0].symbol));
+  }
+#line 2086 "./resenje/misc/FlexAndBison/parser.cpp"
+    break;
+
+  case 73:
+#line 391 "./resenje/misc/parser.y"
+                                           {
       (yyval.sym_lit_list)->pushLiteral((yyvsp[0].number));
   }
-#line 2082 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 2094 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
 
 
-#line 2086 "./resenje/misc/FlexAndBison/parser.cpp"
+#line 2098 "./resenje/misc/FlexAndBison/parser.cpp"
 
       default: break;
     }
@@ -2314,4 +2326,4 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 394 "./resenje/misc/parser.y"
+#line 398 "./resenje/misc/parser.y"

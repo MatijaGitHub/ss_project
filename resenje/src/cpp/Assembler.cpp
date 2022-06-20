@@ -75,6 +75,11 @@ void Assembler::handleDirective(Directive* directive){
         initializeSpaceWithZeros(directive->getLiteral(),currentSection);
         break;
       }
+    case 5:
+      {
+        initializeSpaceForString(directive->getString(),currentSection);
+        break;
+      }
     default:
       {
         printf("Directive %s not defined\n" , directive->getDirNameString().c_str());
@@ -139,11 +144,28 @@ void Assembler::initializeSpaceWithZeros(int literal,Section* currentSection){
     currentSection->writeOneByteContent("00");
   }
 }
+void Assembler::initializeSpaceForString(std::string string,Section* currentSection){
+  std::stringstream stream;
+  int counter = -1;
+  int length = string.length();
+  for(char& c : string){
+    counter++;
+    if(counter == 0 || counter == length - 1) continue;
+    currentSection->locationCounter++;
+    stream << std::setfill ('0') << std::setw(sizeof(short))
+           << std::hex << (int)c;
+    printf("%s\n",stream.str().c_str());
+    currentSection->writeOneByteContent(stream.str());
+    stream.str("");
+    
+    
+  }
+}
 std::string Assembler::turnIntTo2Byte(int twobyte){
-  printf("%d\n",twobyte);
   std::stringstream stream;
   stream << std::setfill ('0') << std::setw(sizeof(short)) 
          << std::hex << twobyte;
   return stream.str();
   
 }
+

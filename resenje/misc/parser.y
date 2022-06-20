@@ -42,7 +42,7 @@
 }
 
 %token<reg> REGISTER;
-%token<symbol> SYMBOL;
+%token<symbol> SYMBOL STRING;
 %token<number> NUMBER;
 %token<token> GLOBAL EXTERN SECTION WORD SKIP ASCII EQU END;
 %token<token> HALT INT IRET RET CALL JMP JGT JEQ JNE PUSH POP XCHG ADD SUB MUL DIV CMP NOT AND OR XOR;
@@ -163,6 +163,10 @@ directive:
   |
   SKIP NUMBER{
     $$ = new Directive(skip,$2);
+  }
+  |
+  ASCII STRING{
+    $$ = new Directive(ascii,*$2);
   }
   |
   END{
