@@ -355,8 +355,8 @@ static void yynoreturn yy_fatal_error ( const char* msg  );
 	(yy_hold_char) = *yy_cp; \
 	*yy_cp = '\0'; \
 	(yy_c_buf_p) = yy_cp;
-#define YY_NUM_RULES 54
-#define YY_END_OF_BUFFER 55
+#define YY_NUM_RULES 55
+#define YY_END_OF_BUFFER 56
 /* This struct is not used in this scanner,
    but its presence is necessary. */
 struct yy_trans_info
@@ -366,10 +366,10 @@ struct yy_trans_info
 	};
 static const flex_int16_t yy_accept[139] =
     {   0,
-        0,    0,   55,   54,   53,   52,   36,   46,   44,   45,
-       35,   51,   54,   43,   43,   49,   50,   41,   47,   48,
+        0,    0,   56,   55,   54,   53,   36,   46,   44,   45,
+       35,   51,   52,   43,   43,   49,   50,   41,   47,   48,
        41,   41,   41,   41,   41,   41,   41,   41,   41,   41,
-       41,   41,   41,   41,   41,   53,   36,    0,    0,    0,
+       41,   41,   41,   41,   41,   54,   36,    0,    0,    0,
         0,    0,   43,    0,   41,   41,   41,   41,   41,   41,
        41,   41,   41,   41,   41,   41,   41,   41,   41,   41,
        28,   38,   41,   41,   41,   40,   41,   41,   37,   41,
@@ -1082,22 +1082,27 @@ YY_RULE_SETUP
 {return COMMA;}
 	YY_BREAK
 case 52:
-/* rule 52 can match eol */
 YY_RULE_SETUP
 #line 75 "./resenje/misc/lexer.l"
-{return NEW_LINE;}
+{return DOT;}
 	YY_BREAK
 case 53:
+/* rule 53 can match eol */
 YY_RULE_SETUP
 #line 76 "./resenje/misc/lexer.l"
-{;}
+{return NEW_LINE;}
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 81 "./resenje/misc/lexer.l"
+#line 77 "./resenje/misc/lexer.l"
+{;}
+	YY_BREAK
+case 55:
+YY_RULE_SETUP
+#line 82 "./resenje/misc/lexer.l"
 ECHO;
 	YY_BREAK
-#line 1101 "./resenje/misc/FlexAndBison/lexer.cpp"
+#line 1106 "./resenje/misc/FlexAndBison/lexer.cpp"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -2102,7 +2107,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 81 "./resenje/misc/lexer.l"
+#line 82 "./resenje/misc/lexer.l"
 
 
 

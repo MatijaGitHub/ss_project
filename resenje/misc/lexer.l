@@ -72,6 +72,7 @@ r[0-7]      {WRITE_REGISTER; return REGISTER;}
 ":"         {return COLON;}
 ";"         {return SEMI_COLON;}
 ","         {return COMMA;}
+"."         {return DOT;}
 "\n"        {return NEW_LINE;}
 [ \t]+      {;}
 

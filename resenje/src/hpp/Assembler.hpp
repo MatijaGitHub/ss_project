@@ -7,6 +7,7 @@
 #include "./RelocationTableEntry.hpp"
 #include "./SectionTable.hpp"
 #include <string>
+#include <iomanip>
 
 class Assembler{
 public:
@@ -27,6 +28,8 @@ private:
   void handleDirective(Directive* directive);
   void handleLabel(Label* label);
   void handleInstruction(Instruction* ins);
-  void declareSymbolsGlobal(Symbol_Literal_List* globalSymbolList);
+  void declareSymbolsGlobal(Symbol_Literal_List* globalSymbolList,int isExtern);
+  void initializeSpace(Symbol_Literal_List* symbolsAndLiterals,Section* currentSection);
+  static std::string turnIntTo2Byte(int twobyte);
   
 };

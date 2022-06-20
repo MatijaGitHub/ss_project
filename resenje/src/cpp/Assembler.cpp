@@ -47,18 +47,32 @@ void Assembler::handleDirective(Directive* directive){
     {
     case 0:
       {
-        declareSymbolsGlobal(directive->getSymLitList());
+        declareSymbolsGlobal(directive->getSymLitList(),0);
+        break;
+      }
+    case 1:
+      {
+        declareSymbolsGlobal(directive->getSymLitList(),1);
         break;
       }
     case 2:
       {
         this->currentSection = new Section();
         this->currentSection->sectionName = directive->getString();
-        this->currentSection->myEntry = this->mySymbolTable->declareSymbolLocal(directive->getString(),1);
+        this->currentSection->myEntry = this->mySymbolTable->declareSymbolLocal(directive->getString(),1,currentSection);
+
+        this->sectionTable->addSectionToTail(this->currentSection);
+     
+        break;
+      }
+    case 3:
+      {
+        initializeSpace(directive->getSymLitList(),currentSection);
+        break;
       }
     default:
       {
-        printf("Directive not defined\n");
+        printf("Directive %s not defined\n" , directive->getDirNameString().c_str());
         break;
       }
     }
@@ -77,19 +91,48 @@ int Assembler::assemble(){
       mySymbolTable->printSymbolTable();
   }
   else{
-      printf("Symbol table is NULL\n");
+      printf("Symbol table is NULL!\n");
+  }
+  if(sectionTable){
+    sectionTable->printSectionTable();
+  }
+  else{
+    printf("Section table is NULL!\n");
   }
   return res;
   
 }
 
- void Assembler::declareSymbolsGlobal(Symbol_Literal_List* globalSymbolList){
+ void Assembler::declareSymbolsGlobal(Symbol_Literal_List* globalSymbolList,int isExtern){
       std::string* symbol = globalSymbolList->popSymbol();
       while(symbol!=nullptr){
-        this->getSymbolTable()->declareSymbolGlobal(*symbol,currentSection);
+        this->getSymbolTable()->declareSymbolGlobal(*symbol,isExtern,currentSection);
         symbol = globalSymbolList->popSymbol();
       }
  }
  SymbolTable* Assembler::getSymbolTable(){
     return this->mySymbolTable;
  }
+
+ void Assembler::initializeSpace(Symbol_Literal_List* symbolsAndLiterals,Section* currentSection){
+    std::string* symbol = symbolsAndLiterals->popSymbol();
+    int* literal = symbolsAndLiterals->popLiteral();
+    while(symbol!=nullptr){
+      currentSection->locationCounter+=2;
+      int value = this->mySymbolTable->getValueBySymbolName(*symbol);
+      currentSection->writeTwoByteContent(turnIntTo2Byte(this->mySymbolTable->getValueBySymbolName(*symbol)));
+      symbol = symbolsAndLiterals->popSymbol();
+    }
+    while(literal!=nullptr){
+      currentSection->writeTwoByteContent(turnIntTo2Byte(*literal));
+      literal = symbolsAndLiterals->popLiteral();
+    }
+ }
+std::string Assembler::turnIntTo2Byte(int twobyte){
+  std::stringstream stream;
+  stream << std::setfill ('0') << std::setw(sizeof(int)*2) 
+         << std::hex << twobyte;
+  printf("%s %d\n",stream.str().c_str(),twobyte);
+  return stream.str();
+  
+}

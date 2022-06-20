@@ -48,7 +48,7 @@
 %token<token> HALT INT IRET RET CALL JMP JGT JEQ JNE PUSH POP XCHG ADD SUB MUL DIV CMP NOT AND OR XOR;
 %token<token> TEST SHL SHR LDR STR PLUS COMMENT PERCENT STAR DOLLAR LEFT_BR RIGHT_BR COLON SEMI_COLON;
 %token<token> NEW_LINE;
-%token<token> COMMA;
+%token<token> COMMA DOT;
 
 
 %type<line> line;
@@ -152,8 +152,8 @@ directive:
     
   }
   |
-  SECTION SYMBOL{
-    $$ = new Directive(section,*$2);
+  SECTION DOT SYMBOL{
+    $$ = new Directive(section,*$3);
   }
   |
   WORD list_of_symbols_and_literals{
@@ -377,7 +377,7 @@ list_of_symbols_and_literals:
   |
   NUMBER{
     $$ = new Symbol_Literal_List();
-    $$->pushLiteral(&$1);
+    $$->pushLiteral($1);
   }
   |
   list_of_symbols_and_literals COMMA SYMBOL{
@@ -385,7 +385,7 @@ list_of_symbols_and_literals:
   }
   |
   list_of_symbols_and_literals COMMA NUMBER{
-      $$->pushLiteral(&$3);
+      $$->pushLiteral($3);
   }
   ;
   

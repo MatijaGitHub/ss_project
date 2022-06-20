@@ -6,7 +6,7 @@ SymbolTable::SymbolTable(){
   this->firstEntry = nullptr;
   this->indexCounter = 0;
 }
-SymbolTableEntry* SymbolTable::declareSymbolLocal(std::string symbol,int isSection){
+SymbolTableEntry* SymbolTable::declareSymbolLocal(std::string symbol,int isSection,Section* currentSection){
     bool found = false;
   SymbolTableEntry* currentEntry = this->firstEntry;
   SymbolTableEntry* prev = nullptr;
@@ -16,6 +16,9 @@ SymbolTableEntry* SymbolTable::declareSymbolLocal(std::string symbol,int isSecti
       currentEntry->bind = 'l';
       found = true;
       retEntry = currentEntry;
+      if(!currentEntry->defined){
+        currentEntry->flink->putForwardReferenceEntry(currentSection->locationCounter);
+      }
       break;
     }
     prev = currentEntry;
@@ -27,8 +30,9 @@ SymbolTableEntry* SymbolTable::declareSymbolLocal(std::string symbol,int isSecti
     newEntry->defined = false;
     newEntry->bind = 'l';
     newEntry->index = this->indexCounter++;
-    newEntry->belongsTo = -1;
+    
     if(isSection == 1){
+      newEntry->belongsTo = newEntry->index;
       newEntry->type = "SECT";
     }
     else{
@@ -36,7 +40,7 @@ SymbolTableEntry* SymbolTable::declareSymbolLocal(std::string symbol,int isSecti
     }
     newEntry->value = 0;
     newEntry->size = 0;
-    //TODO: INIT FLINK
+    newEntry->flink = new ForwardReferenceTableEntry(currentSection->locationCounter);
     if(prev){
       prev->nextEntry = newEntry;
     }
@@ -47,7 +51,7 @@ SymbolTableEntry* SymbolTable::declareSymbolLocal(std::string symbol,int isSecti
   }
   return retEntry;
 }
-void SymbolTable::declareSymbolGlobal(std::string symbol, Section* currentSection){
+void SymbolTable::declareSymbolGlobal(std::string symbol,int isExtern ,Section* currentSection){
   bool found = false;
   SymbolTableEntry* currentEntry = this->firstEntry;
   SymbolTableEntry* prev = nullptr;
@@ -55,6 +59,9 @@ void SymbolTable::declareSymbolGlobal(std::string symbol, Section* currentSectio
     if(currentEntry->name == symbol){
       currentEntry->bind = 'g';
       found = true;
+      if(!currentEntry->defined){
+        currentEntry->flink->putForwardReferenceEntry(currentSection->locationCounter);
+      }
       break;
     }
     prev = currentEntry;
@@ -66,7 +73,10 @@ void SymbolTable::declareSymbolGlobal(std::string symbol, Section* currentSectio
     newEntry->defined = false;
     newEntry->bind = 'g';
     newEntry->index = this->indexCounter++;
-    if(currentSection){
+    if(isExtern){
+      newEntry->belongsTo = -1;
+    }
+    else if(currentSection){
       newEntry->belongsTo = currentSection->myEntry->index;
     }
     else{
@@ -75,7 +85,10 @@ void SymbolTable::declareSymbolGlobal(std::string symbol, Section* currentSectio
     newEntry->type = "NOTYP";
     newEntry->value = 0;
     newEntry->size = 0;
-    //TODO: INIT FLINK
+    newEntry->flink = new ForwardReferenceTableEntry(currentSection->locationCounter);
+    
+    
+    
     if(prev){
       prev->nextEntry = newEntry;
     }
@@ -118,4 +131,17 @@ std::string SymbolTable::getSymbolNameOfIndex(unsigned int idx){
     curr = curr->nextEntry;
   }
   return "";
+}
+
+int SymbolTable::getValueBySymbolName(std::string name){
+  SymbolTableEntry* entry = this->firstEntry;
+  while (entry!=nullptr)
+  {
+    if(entry->name == name){
+      return entry->value;
+    }
+    entry = entry->nextEntry;
+  }
+  return -1;
+  
 }

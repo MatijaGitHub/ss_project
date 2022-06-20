@@ -106,7 +106,8 @@ extern int yydebug;
     COLON = 302,
     SEMI_COLON = 303,
     NEW_LINE = 304,
-    COMMA = 305
+    COMMA = 305,
+    DOT = 306
   };
 #endif
 
@@ -129,7 +130,7 @@ union YYSTYPE
   int number;
   int token;
 
-#line 133 "./resenje/misc/FlexAndBison/parser.hpp"
+#line 134 "./resenje/misc/FlexAndBison/parser.hpp"
 
 };
 typedef union YYSTYPE YYSTYPE;
