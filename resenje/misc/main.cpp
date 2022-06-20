@@ -9,7 +9,7 @@ extern FILE* yyin;
 
 int main()
 {
-  yyin = fopen("test.txt","r");
+  yyin = fopen("test.s","r");
   int ret = yyparse();
   Lines::readLines();
   return 0;
