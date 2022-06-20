@@ -1,16 +1,15 @@
-#include "./hpp/Lines.hpp"
+#include "../src/hpp/Assembler.hpp"
 #include <vector>
 #include <string>
 #include <iostream>
 #include <fstream>
 
-extern int yyparse();
-extern FILE* yyin;
+
 
 int main()
 {
-  yyin = fopen("test.s","r");
-  int ret = yyparse();
-  Lines::readLines();
+  Assembler * as = new Assembler("test.s");
+  as->assemble();
+  
   return 0;
 }

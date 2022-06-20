@@ -51,3 +51,22 @@ void Line::readLine(){
     printf("%s\n",this->directive->getDirNameString().c_str());
   }
 }
+
+Directive* Line::getDirective(){
+  if(this->directive){
+    return this->directive;
+  }
+  return nullptr;
+}
+Instruction* Line::getInstruction(){
+  if(this->instruction){
+    return this->instruction;
+  }
+  return nullptr;
+}
+Label* Line::getLabel(){
+  if(this->label){
+    return this->label;
+  }
+  return nullptr;
+}

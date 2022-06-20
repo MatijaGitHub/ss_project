@@ -34,3 +34,7 @@ void Lines::readLines(){
     }
     printf("PRINTED_ALL_LINES!\n");
 }
+
+Line* Lines::getHead(){
+  return head;
+}

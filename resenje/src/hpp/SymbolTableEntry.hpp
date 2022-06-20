@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include "./RelocationTableEntry.hpp"
+#include "./ForwardReferenceTableEntry.hpp"
 
 
 class SymbolTableEntry{
@@ -13,4 +14,7 @@ public:
   int belongsTo; //Has value -1 if UND
   std::string name;
   RelocationTableEntry * myRelocationTable;
+  bool defined;
+  ForwardReferenceTableEntry * flink;
+  SymbolTableEntry *nextEntry;
 };

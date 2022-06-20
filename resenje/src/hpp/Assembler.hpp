@@ -13,4 +13,6 @@ protected:
 private:
   int init();
   void reset();
+  int firstPass();
+  void handleDirective(Directive* directive);
 };

@@ -15,6 +15,9 @@ public:
   Line* getNext();
   void setNext(Line* nex);
   void readLine();
+  Directive* getDirective();
+  Instruction* getInstruction();
+  Label* getLabel();
    
 private:
   Directive* directive;
