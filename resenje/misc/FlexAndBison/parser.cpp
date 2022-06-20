@@ -202,7 +202,7 @@ union YYSTYPE
 
   Line *line;
   Symbol_Literal_List * sym_lit_list;
-  Symbol_Literal_List *list_of_symbols;
+  //Symbol_Literal_List *list_of_symbols;
   std::string *symbol;
   Directive* dir;
   Instruction* ins;
@@ -1619,8 +1619,8 @@ yyreduce:
   case 16:
 #line 145 "./resenje/misc/parser.y"
                         {
-    (yyval.dir) = new Directive(global,(yyvsp[0].list_of_symbols));
-    delete (yyvsp[0].list_of_symbols);
+    (yyval.dir) = new Directive(global,(yyvsp[0].sym_lit_list));
+    //delete $2;
   }
 #line 1626 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
@@ -1628,8 +1628,8 @@ yyreduce:
   case 17:
 #line 150 "./resenje/misc/parser.y"
                         {
-    (yyval.dir) = new Directive(externI,(yyvsp[0].list_of_symbols));
-    delete (yyvsp[0].list_of_symbols);
+    (yyval.dir) = new Directive(externI,(yyvsp[0].sym_lit_list));
+    delete (yyvsp[0].sym_lit_list);
   }
 #line 1635 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
@@ -2030,9 +2030,9 @@ yyreduce:
   case 67:
 #line 361 "./resenje/misc/parser.y"
         {
-      (yyval.list_of_symbols) = new Symbol_Literal_List();
-      (yyval.list_of_symbols)->pushSymbol((yyvsp[0].symbol));
-      delete (yyvsp[0].symbol);
+      (yyval.sym_lit_list) = new Symbol_Literal_List();
+      (yyval.sym_lit_list)->pushSymbol((yyvsp[0].symbol));
+      
   }
 #line 2038 "./resenje/misc/FlexAndBison/parser.cpp"
     break;
@@ -2040,8 +2040,8 @@ yyreduce:
   case 68:
 #line 367 "./resenje/misc/parser.y"
                               {
-      (yyval.list_of_symbols)->pushSymbol((yyvsp[0].symbol));
-      delete (yyvsp[0].symbol);
+      (yyval.sym_lit_list)->pushSymbol((yyvsp[0].symbol));
+      
   }
 #line 2047 "./resenje/misc/FlexAndBison/parser.cpp"
     break;

@@ -1,7 +1,5 @@
 #include "../hpp/Assembler.hpp"
-#include "../hpp/SymbolTableEntry.hpp"
-#include "../hpp/ForwardReferenceTableEntry.hpp"
-#include "../hpp/RelocationTableEntry.hpp"
+
 
 extern int yyparse();
 extern FILE* yyin;
@@ -10,6 +8,9 @@ int Assembler::init(){
   yyin = fopen(this->inputFile.c_str(),"r");
   int ret = yyparse();
   fclose(yyin);
+  this->mySymbolTable = new SymbolTable();
+  this->currentSection = nullptr;
+  this->sectionTable = new SectionTable();
   return ret;
 }
 
@@ -42,7 +43,6 @@ int Assembler::firstPass(){
 }
 
 void Assembler::handleDirective(Directive* directive){
-    printf("%s\n",directive->getDirNameString().c_str());
     switch (directive->getDirectiveName())
     {
     case 0:
@@ -50,10 +50,15 @@ void Assembler::handleDirective(Directive* directive){
         declareSymbolsGlobal(directive->getSymLitList());
         break;
       }
-    
+    case 2:
+      {
+        this->currentSection = new Section();
+        this->currentSection->sectionName = directive->getString();
+        this->currentSection->myEntry = this->mySymbolTable->declareSymbolLocal(directive->getString(),1);
+      }
     default:
       {
-        printf("Not defined");
+        printf("Directive not defined\n");
         break;
       }
     }
@@ -67,17 +72,24 @@ void Assembler::handleInstruction(Instruction* ins){
 
 int Assembler::assemble(){
   this->init();
-  return this->firstPass();
+  int res =  this->firstPass();
+  if(mySymbolTable){
+      mySymbolTable->printSymbolTable();
+  }
+  else{
+      printf("Symbol table is NULL\n");
+  }
+  return res;
+  
 }
 
  void Assembler::declareSymbolsGlobal(Symbol_Literal_List* globalSymbolList){
       std::string* symbol = globalSymbolList->popSymbol();
       while(symbol!=nullptr){
-        this->getSymbolTable()->declareSymbolGlobal(*symbol);
+        this->getSymbolTable()->declareSymbolGlobal(*symbol,currentSection);
         symbol = globalSymbolList->popSymbol();
       }
  }
-
  SymbolTable* Assembler::getSymbolTable(){
     return this->mySymbolTable;
  }

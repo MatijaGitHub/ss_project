@@ -118,7 +118,7 @@ union YYSTYPE
 
   Line *line;
   Symbol_Literal_List * sym_lit_list;
-  Symbol_Literal_List *list_of_symbols;
+  //Symbol_Literal_List *list_of_symbols;
   std::string *symbol;
   Directive* dir;
   Instruction* ins;

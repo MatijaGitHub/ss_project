@@ -29,7 +29,7 @@
 %union{
   Line *line;
   Symbol_Literal_List * sym_lit_list;
-  Symbol_Literal_List *list_of_symbols;
+  //Symbol_Literal_List *list_of_symbols;
   std::string *symbol;
   Directive* dir;
   Instruction* ins;
@@ -52,7 +52,7 @@
 
 
 %type<line> line;
-%type<list_of_symbols> list_of_symbols;
+%type<sym_lit_list> list_of_symbols;
 %type<sym_lit_list> list_of_symbols_and_literals;
 %type<dir> directive;
 %type<ins> instruction;
@@ -144,12 +144,12 @@ line:
 directive:
   GLOBAL list_of_symbols{
     $$ = new Directive(global,$2);
-    delete $2;
+    
   }
   |
   EXTERN list_of_symbols{
     $$ = new Directive(externI,$2);
-    delete $2;
+    
   }
   |
   SECTION SYMBOL{
@@ -158,7 +158,7 @@ directive:
   |
   WORD list_of_symbols_and_literals{
     $$ = new Directive(word,$2);
-    delete $2;
+    
   }
   |
   SKIP NUMBER{
@@ -361,12 +361,12 @@ list_of_symbols:
   SYMBOL{
       $$ = new Symbol_Literal_List();
       $$->pushSymbol($1);
-      delete $1;
+      
   }
   |
   list_of_symbols COMMA SYMBOL{
       $$->pushSymbol($3);
-      delete $3;
+      
   }
   ;
 list_of_symbols_and_literals:

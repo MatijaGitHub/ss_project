@@ -1,6 +1,11 @@
 #pragma once
 #include "../../misc/hpp/Lines.hpp"
 #include "./SymbolTable.hpp"
+#include "./Section.hpp"
+#include "./SymbolTableEntry.hpp"
+#include "./ForwardReferenceTableEntry.hpp"
+#include "./RelocationTableEntry.hpp"
+#include "./SectionTable.hpp"
 #include <string>
 
 class Assembler{
@@ -13,6 +18,8 @@ protected:
   std::string inputFile;
   std::string outputFile;
   SymbolTable* mySymbolTable;
+  Section* currentSection;
+  SectionTable* sectionTable;
 private:
   int init();
   void reset();
@@ -21,4 +28,5 @@ private:
   void handleLabel(Label* label);
   void handleInstruction(Instruction* ins);
   void declareSymbolsGlobal(Symbol_Literal_List* globalSymbolList);
+  
 };
