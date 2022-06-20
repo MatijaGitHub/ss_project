@@ -148,3 +148,15 @@ int SymbolTable::getValueBySymbolName(std::string name){
   return -1;
   
 }
+SymbolTableEntry* SymbolTable::getEntryBySymbolName(std::string name){
+  SymbolTableEntry* entry = this->firstEntry;
+  while (entry!=nullptr)
+  {
+    if(entry->name == name){
+      return entry;
+    }
+    entry = entry->nextEntry;
+  }
+  return nullptr;
+  
+}

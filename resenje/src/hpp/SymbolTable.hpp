@@ -11,6 +11,7 @@ public:
   SymbolTableEntry* getFirstEntry();
   std::string getSymbolNameOfIndex(unsigned int idx);
   int getValueBySymbolName(std::string name);
+  SymbolTableEntry* getEntryBySymbolName(std::string name);
 private:
   SymbolTableEntry* firstEntry;
   int indexCounter;

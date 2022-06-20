@@ -129,27 +129,35 @@ int Assembler::assemble(){
     return this->mySymbolTable;
  }
 void Assembler::initializeSpace(Symbol_Literal_List* symbolsAndLiterals,Section* currentSection){
+  int size = 0;
   std::string* symbol = symbolsAndLiterals->popSymbol();
   int* literal = symbolsAndLiterals->popLiteral();
   while(symbol!=nullptr){
     currentSection->locationCounter+=2;
+    size+=2;
     int value = this->mySymbolTable->getValueBySymbolName(*symbol);
     currentSection->writeTwoByteContent(turnIntTo2Byte(this->mySymbolTable->getValueBySymbolName(*symbol)));
     symbol = symbolsAndLiterals->popSymbol();
   }
   while(literal!=nullptr){
+    size+=2;
     currentSection->locationCounter+=2;
     currentSection->writeTwoByteContent(turnIntTo2Byte(*literal));
     literal = symbolsAndLiterals->popLiteral();
   }
+  this->mySymbolTable->getEntryBySymbolName(currentSection->sectionName)->size+=size;
 }
 void Assembler::initializeSpaceWithZeros(int literal,Section* currentSection){
+  int size = 0;
   for(int i = 0;i < literal;i++){
     currentSection->locationCounter++;
+    size++;
     currentSection->writeOneByteContent("00");
   }
+  this->mySymbolTable->getEntryBySymbolName(currentSection->sectionName)->size+=size;
 }
 void Assembler::initializeSpaceForString(std::string string,Section* currentSection){
+  int size = 0;
   std::stringstream stream;
   int counter = -1;
   int length = string.length();
@@ -162,6 +170,7 @@ void Assembler::initializeSpaceForString(std::string string,Section* currentSect
       continue;
     }
     currentSection->locationCounter++;
+    size++;
     if(string.at(counter) == '\\' && string.at(counter+1) == 'n'){
       currentSection->writeOneByteContent("0a");
       isNewLine = true;
@@ -175,7 +184,9 @@ void Assembler::initializeSpaceForString(std::string string,Section* currentSect
     
   }
   currentSection->locationCounter++;
+  size++;
   currentSection->writeOneByteContent("00");
+  this->mySymbolTable->getEntryBySymbolName(currentSection->sectionName)->size+=size;
 
 }
 std::string Assembler::turnIntTo2Byte(int twobyte){
