@@ -47,7 +47,7 @@ void Assembler::handleDirective(Directive* directive){
     {
     case 0:
       {
-        Symbol_Literal_List *dirSymList = directive->getSymLitList();
+        declareSymbolsGlobal(directive->getSymLitList());
         break;
       }
     
@@ -69,3 +69,15 @@ int Assembler::assemble(){
   this->init();
   return this->firstPass();
 }
+
+ void Assembler::declareSymbolsGlobal(Symbol_Literal_List* globalSymbolList){
+      std::string* symbol = globalSymbolList->popSymbol();
+      while(symbol!=nullptr){
+        this->getSymbolTable()->declareSymbolGlobal(*symbol);
+        symbol = globalSymbolList->popSymbol();
+      }
+ }
+
+ SymbolTable* Assembler::getSymbolTable(){
+    return this->mySymbolTable;
+ }

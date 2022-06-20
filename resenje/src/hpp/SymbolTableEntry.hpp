@@ -6,6 +6,7 @@
 
 class SymbolTableEntry{
 public:
+  SymbolTableEntry();
   unsigned index;
   unsigned long value;
   unsigned size;
