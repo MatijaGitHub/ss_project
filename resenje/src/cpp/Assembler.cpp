@@ -28,14 +28,14 @@ Assembler::Assembler(std::string input, std::string output){
 int Assembler::firstPass(){
     Line* currLine = Lines::getHead();
     while(currLine!=nullptr){
+      if(currLine->getLabel()){
+        this->handleLabel(currLine->getLabel());
+      }
       if(currLine->getInstruction()){
         this->handleInstruction(currLine->getInstruction());
       }
       if(currLine->getDirective()){
         this->handleDirective(currLine->getDirective());
-      }
-      if(currLine->getLabel()){
-        this->handleLabel(currLine->getLabel());
       }
       currLine = currLine->getNext();
     }
@@ -93,7 +93,7 @@ void Assembler::handleDirective(Directive* directive){
     }
 }
 void Assembler::handleLabel(Label* label){
-
+   this->mySymbolTable->declareSymbolLocal(label->getLabel(),0,this->currentSection);
 }
 void Assembler::handleInstruction(Instruction* ins){
 

@@ -30,15 +30,18 @@ SymbolTableEntry* SymbolTable::declareSymbolLocal(std::string symbol,int isSecti
     newEntry->defined = false;
     newEntry->bind = 'l';
     newEntry->index = this->indexCounter++;
-    
+    newEntry->value = 0;
     if(isSection == 1){
       newEntry->belongsTo = newEntry->index;
       newEntry->type = "SECT";
     }
     else{
+      
+      newEntry->belongsTo = this->getValueBySymbolName(currentSection->sectionName);
+      printf("%d\n",newEntry->belongsTo);
+      newEntry->value = currentSection->locationCounter;
       newEntry->type = "NOTYP";
     }
-    newEntry->value = 0;
     newEntry->size = 0;
     newEntry->flink = new ForwardReferenceTableEntry(currentSection->locationCounter);
     if(prev){
@@ -138,7 +141,7 @@ int SymbolTable::getValueBySymbolName(std::string name){
   while (entry!=nullptr)
   {
     if(entry->name == name){
-      return entry->value;
+      return entry->index;
     }
     entry = entry->nextEntry;
   }
