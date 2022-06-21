@@ -10,6 +10,7 @@ sym1:
 .end
 .section .data
 .skip 5
+.word testLabel2
 testLabel3:
 .word 12
 push r0

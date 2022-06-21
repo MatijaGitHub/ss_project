@@ -59,7 +59,7 @@ void Assembler::handleDirective(Directive* directive){
       {
         this->currentSection = new Section();
         this->currentSection->sectionName = directive->getString();
-        this->currentSection->myEntry = this->mySymbolTable->declareSection(directive->getString(),1,currentSection);
+        this->currentSection->myEntry = this->mySymbolTable->declareSection(directive->getString(),currentSection);
         this->sectionTable->addSectionToTail(this->currentSection);
      
         break;
@@ -99,9 +99,11 @@ void Assembler::handleInstruction(Instruction* ins){
     int length = ins->getInstructionLength();
     AddressMode adr = ins->getAddressMode();
     for(int i = 0; i < length; i++){
-      printf("%s ",ins->generateByteOfInstructions(i).c_str());
+      //printf("%s ",ins->generateByteOfInstructions(i).c_str());
+      this->currentSection->locationCounter++;
+      this->currentSection->writeOneByteContent(ins->generateByteOfInstructions(i));
     }
-    printf("\n");
+    
 }
 
 int Assembler::assemble(){
@@ -138,6 +140,10 @@ void Assembler::initializeSpace(Symbol_Literal_List* symbolsAndLiterals,Section*
   std::string* symbol = symbolsAndLiterals->popSymbol();
   int* literal = symbolsAndLiterals->popLiteral();
   while(symbol!=nullptr){
+    SymbolTableEntry* symbolEntry = this->mySymbolTable->declareSymbolLocal(*symbol,currentSection);
+    if(!symbolEntry->defined || currentSection->myEntry->index!=symbolEntry->index){
+      
+    }
     currentSection->locationCounter+=2;
     size+=2;
     int value = this->mySymbolTable->getValueBySymbolName(*symbol);
