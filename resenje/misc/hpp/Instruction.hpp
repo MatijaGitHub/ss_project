@@ -1,5 +1,6 @@
 #pragma once
 #include "./Operand.hpp"
+#include <iomanip>
 
 
 enum InstructionName{
@@ -25,6 +26,13 @@ class Instruction{
   int getAdressTypeLength();
   AddressMode getAddressMode();
   bool isJumpIns();
+  std::string generateByteOfInstructions(int i);
+  std::string generateFirstByte();
+  std::string generateSecondByte();
+  std::string generateThirdByte();
+  std::string generateFourthByte();
+  std::string generateFifthByte();
+  int getOpCode();
 
   
 

@@ -14,4 +14,5 @@ or r1,r2
 xor r3,r4
 jmp %sym1
 ldr r3,%sym1
+halt
 .end

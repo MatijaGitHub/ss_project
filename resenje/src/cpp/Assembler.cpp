@@ -98,7 +98,10 @@ void Assembler::handleLabel(Label* label){
 void Assembler::handleInstruction(Instruction* ins){
     int length = ins->getInstructionLength();
     AddressMode adr = ins->getAddressMode();
-    printf("Inst type: %d\nLength: %d\n",adr,length);
+    for(int i = 0; i < length; i++){
+      printf("%s ",ins->generateByteOfInstructions(i).c_str());
+    }
+    printf("\n");
 }
 
 int Assembler::assemble(){

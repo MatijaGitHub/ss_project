@@ -8,6 +8,7 @@
   Instruction::Instruction(InstructionName name, short reg1){
     this->name = name;
     this->reg1 = reg1;
+    this->reg2 = -1;
     this->operand = Operand();
    
   }
@@ -21,10 +22,13 @@
   Instruction::Instruction(InstructionName name, Operand op){
     this->name = name;
     this->operand = op;
+    this->reg1 = -1;
+    this->reg2 = -1;
   }
   Instruction::Instruction(InstructionName name, short reg1, Operand op){
     this->name = name;
     this->reg1 = reg1;
+    this->reg2 = -1;
     this->operand = op;
   }
 
@@ -192,4 +196,106 @@
     default:
       return "undfInstr";
     }
+  }
+  std::string Instruction::generateByteOfInstructions(int i){
+      switch (i)
+      {
+      case 0:
+        return this->generateFirstByte();
+      case 1:
+        return this->generateSecondByte();
+      case 2:
+        return this->generateThirdByte();
+      case 3:
+        return this->generateFourthByte();
+      case 4:
+        return this->generateFifthByte();
+      default:
+        return "";
+      }
+  }
+  int Instruction::getOpCode(){
+      switch (this->name)
+      {
+        case 0:
+          return 0;
+        case 1:
+          return 16;
+        case 2:
+          return 32;
+        case 3:
+          return 48;
+        case 4:
+          return 64;
+        case 5:
+          return 80;
+        case 6:
+          return 81;
+        case 7:
+          return 82;
+        case 8:
+          return 83;
+        case 9:
+          return 176;
+        case 10:
+          return 160;
+        case 11:
+          return 96;
+        case 12:
+          return 112;
+        case 13:
+          return 113;
+        case 14:
+          return 114;
+        case 15:
+          return 115;
+        case 16:
+          return 116;
+        case 17:
+          return 128;
+        case 18:
+          return 130;
+        case 19:
+          return 129;
+        case 20:
+          return 131;                                                   
+        case 21:
+          return 132;
+        case 22:
+          return 144;
+        case 23:
+          return 145;
+        case 24:
+          return 160;
+        case 25:
+          return 176;
+        default:
+          return -1;
+      }
+      
+  }
+  std::string Instruction::generateFirstByte(){
+    int opCode = this->getOpCode();
+    std::stringstream stream;
+    stream << std::setfill ('0') << std::setw(sizeof(short)) 
+         << std::hex << opCode;
+    return stream.str();
+  }
+  std::string Instruction::generateSecondByte(){
+    short regDest = this->reg1!=-1?this->reg1:15;
+    short regSource = this->reg2!=-1?this->reg2:15;
+    int secondByte = (regDest << 4)|regSource;
+    std::stringstream stream;
+    stream << std::setfill ('0') << std::setw(sizeof(short)) 
+         << std::hex << secondByte;
+    return stream.str();
+  }
+  std::string Instruction::generateThirdByte(){
+    return "";
+  }
+  std::string Instruction::generateFourthByte(){
+    return "";
+  }
+  std::string Instruction::generateFifthByte(){
+    return "";
   }
