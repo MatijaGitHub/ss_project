@@ -10,9 +10,8 @@ testLabel: .word 1,2,3
 .skip 5
 testLabel3:
 .word 12
-or r1,r2
-xor r3,r4
-jmp %sym1
-ldr r3,%sym1
+push r0
+pop r0
+ldr r0 , sym1
 halt
 .end

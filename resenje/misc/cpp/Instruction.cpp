@@ -57,7 +57,7 @@
   }
   AddressMode Instruction::getAddressMode(){
     OperandType op = this->operand.getType();
-    if(op == LIT_VALUE || op == SYM_MEMORY){
+    if(op == LIT_VALUE || op == SYM_VALUE){
       return immed;
     }
     else if(op == LIT_MEMORY || op == SYM_MEMORY){
@@ -76,7 +76,8 @@
       return regindpom;
     }
     else{
-      return no_adr;
+      if(this->name == push || this->name == pop) return regind;
+      else return no_adr;
     }
   }
   int Instruction::getInstructionLength(){
@@ -284,6 +285,7 @@
   std::string Instruction::generateSecondByte(){
     short regDest = this->reg1!=-1?this->reg1:15;
     short regSource = this->reg2!=-1?this->reg2:15;
+    if(this->name == push || this->name == pop) regSource = 6;
     int secondByte = (regDest << 4)|regSource;
     std::stringstream stream;
     stream << std::setfill ('0') << std::setw(sizeof(short)) 
@@ -291,7 +293,44 @@
     return stream.str();
   }
   std::string Instruction::generateThirdByte(){
-    return "";
+    AddressMode adrMode = this->getAddressMode();
+    int adrModeCode;
+    int update = 0;
+    switch (adrMode)
+    {
+    case immed:
+      adrModeCode = 0;
+      break;
+    case regdir:
+      adrModeCode = 1;
+      break;
+    case regdirpom:
+      adrModeCode = 5;
+      break;
+    case regind:
+      adrModeCode = 2;
+      break;
+    case regindpom:
+      adrModeCode = 3;
+      break;
+    case memory:
+      adrModeCode = 4;
+    break;
+    default:
+      return "Error!\n";
+    }
+    InstructionName insName = this->name;
+    if(insName == pop){
+      update = 4;
+    }
+    else if(insName == push){
+      update = 1;
+    }
+    int thirdByte = (update << 4)|adrModeCode;
+    std::stringstream stream;
+    stream << std::setfill ('0') << std::setw(sizeof(short)) 
+         << std::hex << thirdByte;
+    return stream.str();
   }
   std::string Instruction::generateFourthByte(){
     return "";

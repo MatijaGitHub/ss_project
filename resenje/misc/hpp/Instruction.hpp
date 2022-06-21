@@ -41,6 +41,5 @@ class Instruction{
   short reg1;
   short reg2;
   Operand operand;
-  AddressMode addressMode;
 
 };
