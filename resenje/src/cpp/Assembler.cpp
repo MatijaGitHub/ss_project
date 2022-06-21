@@ -96,7 +96,9 @@ void Assembler::handleLabel(Label* label){
    this->mySymbolTable->declareSymbolLocal(label->getLabel(),0,this->currentSection);
 }
 void Assembler::handleInstruction(Instruction* ins){
-
+    int length = ins->getInstructionLength();
+    AddressMode adr = ins->getAddressMode();
+    printf("Inst type: %d\nLength: %d\n",adr,length);
 }
 
 int Assembler::assemble(){

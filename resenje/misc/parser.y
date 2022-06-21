@@ -9,18 +9,17 @@
   extern FILE* yyin;
   extern int yylineno;
   int yydebug = 1;
-    extern char *yytext;
+  extern char *yytext;
 
-    void yyerror(const char *s) { 
-        printf("Syntax error on line: %d\n", yylineno);
-    }
+  void yyerror(const char *s) { 
+      printf("Syntax error on line: %d\n", yylineno);
+  }
 
 %}
 %code requires {
 
 #include "../hpp/Lines.hpp"
-#include "../hpp/JumpOperand.hpp"
-#include "../hpp/DataOperand.hpp"
+
 
 }
 %output "./resenje/misc/FlexAndBison/parser.cpp"
@@ -34,8 +33,9 @@
   Directive* dir;
   Instruction* ins;
   Label* lbl;
-  JumpOperand* jmpOp;
-  DataOperand* dataOp;
+  Operand* operand;
+  // JumpOperand* jmpOp;
+  // DataOperand* dataOp;
   short reg;
   int number;
   int token;
@@ -49,6 +49,7 @@
 %token<token> TEST SHL SHR LDR STR PLUS COMMENT PERCENT STAR DOLLAR LEFT_BR RIGHT_BR COLON SEMI_COLON;
 %token<token> NEW_LINE;
 %token<token> COMMA DOT;
+%token<symbol> DIR;
 
 
 %type<line> line;
@@ -57,8 +58,10 @@
 %type<dir> directive;
 %type<ins> instruction;
 %type<lbl> label;
-%type<dataOp> operandData;
-%type<jmpOp> operandJump;
+%type<operand> operandData;
+%type<operand> operandJump;
+/* %type<dataOp> operandData;
+%type<jmpOp> operandJump; */
 
 
 
@@ -93,6 +96,10 @@ lines:
   }
   ;
 line:
+  NEW_LINE{
+    $$ = nullptr;
+  }
+  |
   label NEW_LINE{
     $$ = new Line($1);
     
@@ -152,8 +159,8 @@ directive:
     
   }
   |
-  SECTION DOT SYMBOL{
-    $$ = new Directive(section,*$3);
+  SECTION DIR{
+    $$ = new Directive(section,*$2);
   }
   |
   WORD list_of_symbols_and_literals{
@@ -281,77 +288,77 @@ instruction:
   ;
 operandData:
   DOLLAR NUMBER{
-    $$ = new DataOperand(LIT_VALUE,$2);
+    $$ = new Operand(LIT_VALUE,$2);
   }
   |
   DOLLAR SYMBOL{
-      $$ = new DataOperand(SYM_VALUE,*$2);
+      $$ = new Operand(SYM_VALUE,*$2);
   }
   |
   NUMBER{
-      $$ = new DataOperand(LIT_MEMORY,$1);
+      $$ = new Operand(LIT_MEMORY,$1);
   }
   |
   SYMBOL{
-      $$ = new DataOperand(SYM_MEMORY,*$1);
+      $$ = new Operand(SYM_MEMORY,*$1);
   }
   |
   PERCENT SYMBOL{
-      $$ = new DataOperand(SYM_RELATIVE,*$2);
+      $$ = new Operand(SYM_RELATIVE,*$2);
   }
   |
   REGISTER{
-      $$ = new DataOperand(REG_VALUE,$1);
+      $$ = new Operand(REG_VALUE,$1);
   }
   |
   LEFT_BR REGISTER RIGHT_BR{
-      $$ = new DataOperand(REG_MEMORY,$2);
+      $$ = new Operand(REG_MEMORY,$2);
   }
   |
   LEFT_BR REGISTER PLUS NUMBER RIGHT_BR{
-      $$ = new DataOperand(REG_LITERAL,$2,$4);
+      $$ = new Operand(REG_LITERAL,$2,$4);
   }
   |
   LEFT_BR REGISTER PLUS SYMBOL RIGHT_BR{
-      $$ = new DataOperand(REG_SYMBOL,$2,*$4);
+      $$ = new Operand(REG_SYMBOL,$2,*$4);
   }
   ;
 
 operandJump:
   NUMBER{
-      $$ = new JumpOperand(LIT_VAL,$1);
+      $$ = new Operand(LIT_VALUE,$1);
   }
   |
   SYMBOL{
-      $$ = new JumpOperand(ABS_SYM,*$1);
+      $$ = new Operand(SYM_VALUE,*$1);
   }
   |
   PERCENT SYMBOL{
-      $$ = new JumpOperand(REL_SYM,*$2);
+      $$ = new Operand(SYM_RELATIVE,*$2);
   }
   |
   STAR NUMBER{
-      $$ = new JumpOperand(LIT_MEM,$2);
+      $$ = new Operand(LIT_MEMORY,$2);
   }
   |
   STAR SYMBOL{
-      $$ = new JumpOperand(SYM_MEM,*$2);
+      $$ = new Operand(SYM_MEMORY,*$2);
   }
   |
   STAR REGISTER{
-      $$ = new JumpOperand(REG_VAL,$2);
+      $$ = new Operand(REG_VALUE,$2);
   }
   |
   STAR LEFT_BR REGISTER RIGHT_BR{
-      $$ = new JumpOperand(REG_MEM,$3);
+      $$ = new Operand(REG_MEMORY,$3);
   }
   |
   STAR LEFT_BR REGISTER PLUS SYMBOL RIGHT_BR{
-      $$ = new JumpOperand(REG_SYM,$3,*$5);
+      $$ = new Operand(REG_SYMBOL,$3,*$5);
   }
   |
   STAR LEFT_BR REGISTER PLUS NUMBER RIGHT_BR{
-      $$ = new JumpOperand(REG_LIT,$3,$5);
+      $$ = new Operand(REG_LITERAL,$3,$5);
   }
   ;
 

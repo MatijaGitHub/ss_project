@@ -48,11 +48,10 @@ extern int yydebug;
 
 
 #include "../hpp/Lines.hpp"
-#include "../hpp/JumpOperand.hpp"
-#include "../hpp/DataOperand.hpp"
 
 
-#line 56 "./resenje/misc/FlexAndBison/parser.hpp"
+
+#line 55 "./resenje/misc/FlexAndBison/parser.hpp"
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -108,7 +107,8 @@ extern int yydebug;
     SEMI_COLON = 304,
     NEW_LINE = 305,
     COMMA = 306,
-    DOT = 307
+    DOT = 307,
+    DIR = 308
   };
 #endif
 
@@ -116,7 +116,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 29 "./resenje/misc/parser.y"
+#line 28 "./resenje/misc/parser.y"
 
   Line *line;
   Symbol_Literal_List * sym_lit_list;
@@ -125,13 +125,14 @@ union YYSTYPE
   Directive* dir;
   Instruction* ins;
   Label* lbl;
-  JumpOperand* jmpOp;
-  DataOperand* dataOp;
+  Operand* operand;
+  // JumpOperand* jmpOp;
+  // DataOperand* dataOp;
   short reg;
   int number;
   int token;
 
-#line 135 "./resenje/misc/FlexAndBison/parser.hpp"
+#line 136 "./resenje/misc/FlexAndBison/parser.hpp"
 
 };
 typedef union YYSTYPE YYSTYPE;

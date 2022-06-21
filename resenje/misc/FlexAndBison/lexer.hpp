@@ -469,7 +469,7 @@ extern int yylex (void);
 #undef yyTABLES_NAME
 #endif
 
-#line 83 "./resenje/misc/lexer.l"
+#line 84 "./resenje/misc/lexer.l"
 
 
 #line 476 "./resenje/misc/FlexAndBison/lexer.hpp"

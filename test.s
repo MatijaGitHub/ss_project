@@ -2,6 +2,7 @@
 .global sym1, sym2, sym3
 .global sym4
 .extern sym5
+
 testLabel2: .ascii "Hi\n"
 testLabel: .word 1,2,3
 .end
@@ -11,4 +12,6 @@ testLabel3:
 .word 12
 or r1,r2
 xor r3,r4
+jmp %sym1
+ldr r3,%sym1
 .end
