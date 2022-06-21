@@ -8,6 +8,7 @@ Section::Section(){
   this->sectionContent = "";
   this->myEntry = nullptr;
   this->sectionContentCounter = 0;
+  this->myRelocationTable = new RelocationTable();
 }
 
 void Section::writeOneByteContent(std::string byte){

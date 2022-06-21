@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include "./SymbolTableEntry.hpp"
+#include "./RelocationTable.hpp"
 
 
 class Section{
@@ -14,5 +15,6 @@ public:
   void writeTwoByteContent(std::string twobyte);
   void writeOneByteContent(std::string byte);
   void readContent();
+  RelocationTable* myRelocationTable;
 
 };

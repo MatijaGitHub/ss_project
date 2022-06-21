@@ -141,9 +141,6 @@ void Assembler::initializeSpace(Symbol_Literal_List* symbolsAndLiterals,Section*
   int* literal = symbolsAndLiterals->popLiteral();
   while(symbol!=nullptr){
     SymbolTableEntry* symbolEntry = this->mySymbolTable->declareSymbolLocal(*symbol,currentSection);
-    if(!symbolEntry->defined || currentSection->myEntry->index!=symbolEntry->index){
-      
-    }
     currentSection->locationCounter+=2;
     size+=2;
     int value = this->mySymbolTable->getValueBySymbolName(*symbol);
