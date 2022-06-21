@@ -333,8 +333,33 @@
     return stream.str();
   }
   std::string Instruction::generateFourthByte(){
-    return "";
+    int value;
+    if(this->operand.isSymbol()){
+        return "Error!";
+    }
+    else{
+      value = this->operand.getLiteral();
+      unsigned temp = value;
+      temp>>=8;
+      value = temp;
+    }
+    std::stringstream stream;
+    stream << std::setfill ('0') << std::setw(sizeof(short)) 
+         << std::hex << value;
+    return stream.str();
   }
   std::string Instruction::generateFifthByte(){
-    return "";
+    int value;
+    if(this->operand.isSymbol()){
+        return "Error!";
+    }
+    else{
+      value = this->operand.getLiteral();
+      int mask = 0b000000011111111;
+      value&=mask;
+    }
+    std::stringstream stream;
+    stream << std::setfill ('0') << std::setw(sizeof(short)) 
+         << std::hex << value;
+    return stream.str();
   }

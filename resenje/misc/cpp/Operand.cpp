@@ -41,3 +41,16 @@
        }
        return false;
   }
+  bool Operand::isSymbol(){
+    if(this->type == SYM_MEMORY || this->type == SYM_RELATIVE || this->type == SYM_VALUE
+        || this->type == REG_SYMBOL){
+          return true;
+    }
+    return false;
+  }
+  short Operand::getRegister(){
+    return this->reg;
+  }
+  int Operand::getLiteral(){
+    return this->literal;
+  }

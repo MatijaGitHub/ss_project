@@ -6,8 +6,47 @@ SymbolTable::SymbolTable(){
   this->firstEntry = nullptr;
   this->indexCounter = 0;
 }
-SymbolTableEntry* SymbolTable::declareSymbolLocal(std::string symbol,int isSection,Section* currentSection){
-    bool found = false;
+SymbolTableEntry* SymbolTable::defineSymbolLocal(std::string symbol, Section* currentSection){
+bool found = false;
+  SymbolTableEntry* currentEntry = this->firstEntry;
+  SymbolTableEntry* prev = nullptr;
+  SymbolTableEntry* retEntry = nullptr;
+  while(currentEntry!=nullptr){
+    if(currentEntry->name == symbol){
+      found = true;
+      retEntry = currentEntry;
+      currentEntry->belongsTo = currentSection->myEntry->index;
+      currentEntry->defined = true;
+      currentEntry->value = currentSection->locationCounter;
+      break;
+      
+    }
+    prev = currentEntry;
+    currentEntry = currentEntry->nextEntry;
+    
+  }
+  if(!found){
+    SymbolTableEntry* newEntry = new SymbolTableEntry();
+    newEntry->name = symbol;
+    newEntry->defined = true;
+    newEntry->bind = 'l';
+    newEntry->index = this->indexCounter++;
+    newEntry->value = currentSection->locationCounter;
+    newEntry->belongsTo = currentSection->myEntry->index;
+    newEntry->type = "NOTYP";
+    newEntry->size = 0;
+    if(prev){
+      prev->nextEntry = newEntry;
+    }
+    else{
+      this->firstEntry = newEntry;
+    }
+    retEntry = newEntry;
+  }
+  return retEntry;
+}
+SymbolTableEntry* SymbolTable::declareSection(std::string symbol,int isSection,Section* currentSection){
+  bool found = false;
   SymbolTableEntry* currentEntry = this->firstEntry;
   SymbolTableEntry* prev = nullptr;
   SymbolTableEntry* retEntry = nullptr;
@@ -16,9 +55,10 @@ SymbolTableEntry* SymbolTable::declareSymbolLocal(std::string symbol,int isSecti
       currentEntry->bind = 'l';
       found = true;
       retEntry = currentEntry;
-      if(!currentEntry->defined){
-        currentEntry->flink->putForwardReferenceEntry(currentSection->locationCounter);
-      }
+      currentEntry->belongsTo = currentSection->myEntry->index;
+      // if(!currentEntry->defined){
+      //   currentEntry->flink->putForwardReferenceEntry(currentSection->locationCounter);
+      // }
       break;
     }
     prev = currentEntry;
@@ -42,7 +82,7 @@ SymbolTableEntry* SymbolTable::declareSymbolLocal(std::string symbol,int isSecti
       newEntry->type = "NOTYP";
     }
     newEntry->size = 0;
-    newEntry->flink = new ForwardReferenceTableEntry(currentSection->locationCounter);
+    // newEntry->flink = new ForwardReferenceTableEntry(currentSection->locationCounter);
     if(prev){
       prev->nextEntry = newEntry;
     }
@@ -61,9 +101,9 @@ void SymbolTable::declareSymbolGlobal(std::string symbol,int isExtern ,Section* 
     if(currentEntry->name == symbol){
       currentEntry->bind = 'g';
       found = true;
-      if(!currentEntry->defined){
-        currentEntry->flink->putForwardReferenceEntry(currentSection->locationCounter);
-      }
+      // if(!currentEntry->defined){
+      //   currentEntry->flink->putForwardReferenceEntry(currentSection->locationCounter);
+      // }
       break;
     }
     prev = currentEntry;
@@ -75,19 +115,20 @@ void SymbolTable::declareSymbolGlobal(std::string symbol,int isExtern ,Section* 
     newEntry->defined = false;
     newEntry->bind = 'g';
     newEntry->index = this->indexCounter++;
-    if(isExtern){
-      newEntry->belongsTo = -1;
-    }
-    else if(currentSection){
-      newEntry->belongsTo = currentSection->myEntry->index;
-    }
-    else{
-      newEntry->belongsTo = -1;
-    }
+    newEntry->belongsTo = -1;
+    // if(isExtern){
+    //   newEntry->belongsTo = -1;
+    // }
+    // else if(currentSection){
+    //   newEntry->belongsTo = currentSection->myEntry->index;
+    // }
+    // else{
+    //   newEntry->belongsTo = -1;
+    // }
     newEntry->type = "NOTYP";
     newEntry->value = 0;
     newEntry->size = 0;
-    newEntry->flink = new ForwardReferenceTableEntry(currentSection->locationCounter);
+    //newEntry->flink = new ForwardReferenceTableEntry(currentSection->locationCounter);
     
     
     

@@ -59,8 +59,7 @@ void Assembler::handleDirective(Directive* directive){
       {
         this->currentSection = new Section();
         this->currentSection->sectionName = directive->getString();
-        this->currentSection->myEntry = this->mySymbolTable->declareSymbolLocal(directive->getString(),1,currentSection);
-
+        this->currentSection->myEntry = this->mySymbolTable->declareSection(directive->getString(),1,currentSection);
         this->sectionTable->addSectionToTail(this->currentSection);
      
         break;
@@ -93,7 +92,8 @@ void Assembler::handleDirective(Directive* directive){
     }
 }
 void Assembler::handleLabel(Label* label){
-   this->mySymbolTable->declareSymbolLocal(label->getLabel(),0,this->currentSection);
+    
+     this->mySymbolTable->defineSymbolLocal(label->getLabel(),this->currentSection);
 }
 void Assembler::handleInstruction(Instruction* ins){
     int length = ins->getInstructionLength();

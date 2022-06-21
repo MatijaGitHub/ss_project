@@ -15,6 +15,9 @@ class Operand{
   std::string getSymbol();
   OperandType getType();
   bool needsPayload();
+  bool isSymbol();
+  short getRegister();
+  int getLiteral();
 
   private:
       short reg;
