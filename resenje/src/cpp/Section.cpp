@@ -55,3 +55,27 @@ void Section::readContent(){
   printf("Section %s read!\n",this->sectionName.c_str());
 }
 
+void Section::patchContent(unsigned long content, int patch){
+  printf("The patch location is %d\n",patch);
+  int mask = 0b0000000011111111;
+  unsigned firstByte = content;
+  firstByte>>=8;
+  unsigned secondByte = content&mask;
+  std::stringstream stream;
+  stream << std::setfill ('0') << std::setw(sizeof(short)) 
+         << std::hex << firstByte;
+  std::string firstByteWritable = stream.str();
+  stream.str("");
+  stream << std::setfill ('0') << std::setw(sizeof(short)) 
+         << std::hex << secondByte;
+  std::string secondByteWritable =  stream.str();
+  int location = 0;
+  for(int i = 0; i<patch; i++){
+      location+=3;
+  }
+  this->sectionContent.at(location) = firstByteWritable.at(0);
+  this->sectionContent.at(location + 1) = firstByteWritable.at(1);
+  location+=3;
+  this->sectionContent.at(location) = secondByteWritable.at(0);
+  this->sectionContent.at(location + 1) = secondByteWritable.at(1);
+}

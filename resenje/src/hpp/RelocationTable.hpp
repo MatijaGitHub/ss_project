@@ -1,7 +1,7 @@
 #pragma once
 #include "./RelocationTableEntry.hpp"
 
-
+class RelocationTableEntry;
 class RelocationTable{
   public:
   RelocationTable();

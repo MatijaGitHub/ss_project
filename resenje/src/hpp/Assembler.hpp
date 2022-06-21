@@ -9,6 +9,7 @@
 #include <string>
 #include <iomanip>
 
+
 class Assembler{
 public:
   Assembler(std::string input);
@@ -25,6 +26,7 @@ private:
   int init();
   void reset();
   int firstPass();
+  int backpatch();
   void handleDirective(Directive* directive);
   void handleLabel(Label* label);
   void handleInstruction(Instruction* ins);

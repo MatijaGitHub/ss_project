@@ -2,7 +2,7 @@
 #include "./Section.hpp"
 #include <string>
 
-
+class Section;
 class RelocationTableEntry{
 public: 
   RelocationTableEntry();

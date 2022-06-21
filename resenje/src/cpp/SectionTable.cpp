@@ -23,7 +23,7 @@ void SectionTable::printSectionTable(){
   Section* current = currentTable->section;
   while (current!=nullptr)
   {
-    printf("#.%s\n",current->sectionName.c_str());
+    printf("#%s\n",current->sectionName.c_str());
     current->readContent();
     currentTable = currentTable->nextEntry;
     if(currentTable == nullptr) break;

@@ -1,7 +1,9 @@
 #pragma once
 #include "./SymbolTableEntry.hpp"
 #include  "./Section.hpp"
-#include  "./ForwardReferenceTableEntry.hpp"
+
+class SymbolTableEntry;
+class Section;
 class SymbolTable{
 public:
   SymbolTable();
@@ -13,7 +15,7 @@ public:
   int getValueBySymbolName(std::string name);
   SymbolTableEntry* getEntryBySymbolName(std::string name);
   SymbolTableEntry* defineSymbolLocal(std::string symbol, Section* currentSection);
-  SymbolTableEntry* declareSymbolLocal(std::string symbol, Section* currentSection);
+  SymbolTableEntry* declareSymbolLocal(std::string symbol, Section* currentSection,bool isIns);
 private:
   SymbolTableEntry* firstEntry;
   int indexCounter;

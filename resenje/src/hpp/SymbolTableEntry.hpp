@@ -3,7 +3,8 @@
 #include "./RelocationTableEntry.hpp"
 #include "./ForwardReferenceTableEntry.hpp"
 
-
+class RelocationTableEntry;
+class ForwardReferenceTableEntry;
 class SymbolTableEntry{
 public:
   SymbolTableEntry();

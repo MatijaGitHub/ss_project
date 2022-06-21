@@ -26,12 +26,12 @@ class Instruction{
   int getAdressTypeLength();
   AddressMode getAddressMode();
   bool isJumpIns();
-  std::string generateByteOfInstructions(int i);
+  std::string generateByteOfInstructions(int i,unsigned long symVal);
   std::string generateFirstByte();
   std::string generateSecondByte();
   std::string generateThirdByte();
-  std::string generateFourthByte();
-  std::string generateFifthByte();
+  std::string generateFourthByte(unsigned long symVal);
+  std::string generateFifthByte(unsigned long symVal);
   int getOpCode();
 
   

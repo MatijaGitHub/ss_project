@@ -2,8 +2,10 @@
 #include <string>
 #include "./SymbolTableEntry.hpp"
 #include "./RelocationTable.hpp"
+#include <iomanip>
 
-
+class SymbolTableEntry;
+class RelocationTable;
 class Section{
 public:
   Section();
@@ -14,6 +16,7 @@ public:
   int sectionContentCounter;
   void writeTwoByteContent(std::string twobyte);
   void writeOneByteContent(std::string byte);
+  void patchContent(unsigned long content, int location);
   void readContent();
   RelocationTable* myRelocationTable;
 

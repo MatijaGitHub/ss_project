@@ -1,7 +1,7 @@
 #pragma once
 #include "./Section.hpp"
 
-
+class Section;
 class SectionTable{
 public:
 SectionTable();

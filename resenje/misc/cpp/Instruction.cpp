@@ -198,7 +198,7 @@
       return "undfInstr";
     }
   }
-  std::string Instruction::generateByteOfInstructions(int i){
+  std::string Instruction::generateByteOfInstructions(int i,unsigned long symVal){
       switch (i)
       {
       case 0:
@@ -208,9 +208,9 @@
       case 2:
         return this->generateThirdByte();
       case 3:
-        return this->generateFourthByte();
+        return this->generateFourthByte(symVal);
       case 4:
-        return this->generateFifthByte();
+        return this->generateFifthByte(symVal);
       default:
         return "";
       }
@@ -332,32 +332,32 @@
          << std::hex << thirdByte;
     return stream.str();
   }
-  std::string Instruction::generateFourthByte(){
+  std::string Instruction::generateFourthByte(unsigned long symVal){
     int value;
     if(this->operand.isSymbol()){
-        return "Error!";
+        value = symVal;
     }
     else{
       value = this->operand.getLiteral();
-      unsigned temp = value;
-      temp>>=8;
-      value = temp;
     }
+    unsigned temp = value;
+    temp>>=8;
+    value = temp;
     std::stringstream stream;
     stream << std::setfill ('0') << std::setw(sizeof(short)) 
          << std::hex << value;
     return stream.str();
   }
-  std::string Instruction::generateFifthByte(){
+  std::string Instruction::generateFifthByte(unsigned long symVal){
     int value;
     if(this->operand.isSymbol()){
-        return "Error!";
+        value = symVal;
     }
     else{
       value = this->operand.getLiteral();
-      int mask = 0b000000011111111;
-      value&=mask;
     }
+    int mask = 0b000000011111111;
+    value&=mask;
     std::stringstream stream;
     stream << std::setfill ('0') << std::setw(sizeof(short)) 
          << std::hex << value;

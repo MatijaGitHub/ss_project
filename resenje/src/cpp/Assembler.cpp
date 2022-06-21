@@ -4,6 +4,27 @@
 extern int yyparse();
 extern FILE* yyin;
 
+int Assembler::assemble(){
+  this->init();
+  int res =  this->firstPass();
+  int res2 = this->backpatch();
+  if(mySymbolTable){
+      mySymbolTable->printSymbolTable();
+  }
+  else{
+      printf("Symbol table is NULL!\n");
+  }
+  if(sectionTable){
+    sectionTable->printSectionTable();
+  }
+  else{
+    printf("Section table is NULL!\n");
+  }
+  return res;
+  
+}
+
+
 int Assembler::init(){
   yyin = fopen(this->inputFile.c_str(),"r");
   int ret = yyparse();
@@ -96,35 +117,23 @@ void Assembler::handleLabel(Label* label){
      this->mySymbolTable->defineSymbolLocal(label->getLabel(),this->currentSection);
 }
 void Assembler::handleInstruction(Instruction* ins){
+    int size = 0;
     int length = ins->getInstructionLength();
     AddressMode adr = ins->getAddressMode();
+    unsigned long symbolVal = -1;
+    if(ins->getOperand().isSymbol()){
+      SymbolTableEntry* entry = this->mySymbolTable->declareSymbolLocal(ins->getOperand().getSymbol(),this->currentSection,true);
+      symbolVal = entry->value;
+    }
     for(int i = 0; i < length; i++){
       //printf("%s ",ins->generateByteOfInstructions(i).c_str());
+      size++;
       this->currentSection->locationCounter++;
-      this->currentSection->writeOneByteContent(ins->generateByteOfInstructions(i));
+      this->currentSection->writeOneByteContent(ins->generateByteOfInstructions(i,symbolVal));
     }
+    this->mySymbolTable->getEntryBySymbolName(currentSection->sectionName)->size+=size;
     
 }
-
-int Assembler::assemble(){
-  this->init();
-  int res =  this->firstPass();
-  if(mySymbolTable){
-      mySymbolTable->printSymbolTable();
-  }
-  else{
-      printf("Symbol table is NULL!\n");
-  }
-  if(sectionTable){
-    sectionTable->printSectionTable();
-  }
-  else{
-    printf("Section table is NULL!\n");
-  }
-  return res;
-  
-}
-
  void Assembler::declareSymbolsGlobal(Symbol_Literal_List* globalSymbolList,int isExtern){
       std::string* symbol = globalSymbolList->popSymbol();
       while(symbol!=nullptr){
@@ -140,7 +149,7 @@ void Assembler::initializeSpace(Symbol_Literal_List* symbolsAndLiterals,Section*
   std::string* symbol = symbolsAndLiterals->popSymbol();
   int* literal = symbolsAndLiterals->popLiteral();
   while(symbol!=nullptr){
-    SymbolTableEntry* symbolEntry = this->mySymbolTable->declareSymbolLocal(*symbol,currentSection);
+    SymbolTableEntry* symbolEntry = this->mySymbolTable->declareSymbolLocal(*symbol,currentSection,false);
     currentSection->locationCounter+=2;
     size+=2;
     int value = this->mySymbolTable->getValueBySymbolName(*symbol);
@@ -207,5 +216,26 @@ std::string Assembler::turnIntTo2Byte(int twobyte){
 
 void Assembler::endCurrentSection(){
   this->currentSection = nullptr;
+}
+
+int Assembler::backpatch(){
+  SymbolTableEntry* entry = this->mySymbolTable->getFirstEntry();
+  while (entry)
+  {
+    ForwardReferenceTableEntry* flinkEntry = entry->flink;
+    while(flinkEntry){
+      if(entry->defined && entry->belongsTo == flinkEntry->getAtSection()->myEntry->index){
+        flinkEntry->getAtSection()->patchContent(entry->value,flinkEntry->getPatch());
+      }
+      else{
+        //RELOCATION_TABLE_ENTRY_ADD
+      }
+      flinkEntry = flinkEntry->getNextEntry();
+    }
+    entry = entry->nextEntry;
+  }
+  
+
+  return 0;
 }
 
