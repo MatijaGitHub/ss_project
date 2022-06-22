@@ -5,7 +5,7 @@ NUMBER OF SYMBOLS
 NUMBER OF SECTIONS
 2
 NUMBER OF RELOCATION RECORDS
-3
+4
 ---------------------------------
 SYMBOL TABLE
 ////////////////////////////////////////////////////////////
@@ -18,9 +18,9 @@ l
 TYPE
 SECT
 SIZE
-15
+25
 VALUE
-15
+25
 SYMBOL NAME
 labela1
 BELONGS TO
@@ -52,7 +52,9 @@ SECTION NAME
 .text
 SECTION CONTENT
 50 f7 05 00	00 a0 07 03
-00 00 a0 0f	04 00 00 
+00 00 a0 0f	04 00 00 a0
+00 03 00 05	50 f1 03 00
+00 
 SECTION NAME
 .data
 SECTION CONTENT
@@ -69,7 +71,7 @@ R_X86_64_PC32
 SYMBOL
 2
 ADDEND
-0
+-2
 SECTION NAME
 .text
 OFFSET
@@ -79,7 +81,7 @@ R_X86_64_PC32
 SYMBOL
 2
 ADDEND
-0
+-2
 SECTION NAME
 .text
 OFFSET
@@ -89,5 +91,15 @@ R_X86_64_32S
 SYMBOL
 2
 ADDEND
+0
+SECTION NAME
+.text
+OFFSET
+23
+TYPE
+R_X86_64_32S
+SYMBOL
 2
+ADDEND
+0
 ////////////////////////////////////////////////////////////

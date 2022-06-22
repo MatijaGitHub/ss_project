@@ -104,7 +104,6 @@ void Assembler::handleDirective(Directive* directive){
     }
 }
 void Assembler::handleLabel(Label* label){
-    
      this->mySymbolTable->defineSymbolLocal(label->getLabel(),this->currentSection);
 }
 void Assembler::handleInstruction(Instruction* ins){
