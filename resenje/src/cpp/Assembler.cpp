@@ -125,6 +125,9 @@ void Assembler::handleInstruction(Instruction* ins){
     if(ins->getOperand().isSymbol()){
       SymbolTableEntry* entry = this->mySymbolTable->declareSymbolLocal(ins->getOperand().getSymbol(),this->currentSection,true,!ins->isPCRelative());
       symbolVal = entry->value;
+      if(entry->defined && entry->belongsTo==currentSection->myEntry->index && ins->isPCRelative()){
+        symbolVal-=currentSection->locationCounter;
+      }
     }
     for(int i = 0; i < length; i++){
       //printf("%s ",ins->generateByteOfInstructions(i).c_str());
@@ -227,7 +230,8 @@ int Assembler::backpatch(){
     ForwardReferenceTableEntry* flinkEntry = entry->flink;
     while(flinkEntry){
       if(entry->defined && entry->belongsTo == flinkEntry->getAtSection()->myEntry->index && !flinkEntry->isAbsoluteAddressing()){
-        flinkEntry->getAtSection()->patchContent(entry->value,flinkEntry->getPatch());
+        int value = entry->value - (flinkEntry->getPatch() + 2);
+        flinkEntry->getAtSection()->patchContent(value,flinkEntry->getPatch());
       }
       else{
         int symbol = entry->bind=='g'?entry->index:entry->belongsTo;

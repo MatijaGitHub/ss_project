@@ -340,6 +340,8 @@
     else{
       value = this->operand.getLiteral();
     }
+    int mask = 0b00000000000000001111111100000000;
+    value&=mask;
     unsigned temp = value;
     temp>>=8;
     value = temp;
