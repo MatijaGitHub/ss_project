@@ -31,6 +31,7 @@ private:
   int firstPass();
   int backpatch();
   void createELF();
+  void objDump();
   void handleDirective(Directive* directive);
   void handleLabel(Label* label);
   void handleInstruction(Instruction* ins);

@@ -5,5 +5,5 @@
 label1:
 .section .data
 loop:
-ldr r2, [r4 + loop]
+ldr r2, [r4 + 5]
 .end

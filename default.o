@@ -1,7 +1,96 @@
-<<ELF>>
+		<<ELF>>
+---------------------------------
 NUMBER OF SYMBOLS
 5
 NUMBER OF SECTIONS
 2
 NUMBER OF RELOCATION RECORDS
-2
+1
+---------------------------------
+SYMBOL TABLE
+////////////////////////////////////////////////////////////
+SYMBOL NAME
+label
+BELONGS TO
+-1
+BIND
+g
+TYPE
+NOTYP
+SIZE
+0
+VALUE
+0
+SYMBOL NAME
+.text
+BELONGS TO
+1
+BIND
+l
+TYPE
+SECT
+SIZE
+6
+VALUE
+6
+SYMBOL NAME
+label1
+BELONGS TO
+1
+BIND
+l
+TYPE
+NOTYP
+SIZE
+0
+VALUE
+0
+SYMBOL NAME
+.data
+BELONGS TO
+3
+BIND
+l
+TYPE
+SECT
+SIZE
+5
+VALUE
+5
+SYMBOL NAME
+loop
+BELONGS TO
+3
+BIND
+l
+TYPE
+NOTYP
+SIZE
+0
+VALUE
+0
+////////////////////////////////////////////////////////////
+SECTION TABLE
+////////////////////////////////////////////////////////////
+SECTION NAME
+.text
+SECTION CONTENT
+00 00 00 03	00 06 
+SECTION NAME
+.data
+SECTION CONTENT
+a0 24 03 00	05 
+////////////////////////////////////////////////////////////
+RELOCATION TABLES
+////////////////////////////////////////////////////////////
+SECTION NAME
+.text
+OFFSET
+0
+TYPE
+R_X86_64_32
+SYMBOL
+0
+ADDEND
+0
+////////////////////////////////////////////////////////////

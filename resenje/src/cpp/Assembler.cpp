@@ -8,19 +8,7 @@ int Assembler::assemble(){
   this->init();
   int res =  this->firstPass();
   int res2 = this->backpatch();
-  if(mySymbolTable){
-      mySymbolTable->printSymbolTable();
-  }
-  else{
-      printf("Symbol table is NULL!\n");
-  }
-  if(sectionTable){
-    sectionTable->printSectionTable();
-    sectionTable->printRelocationTablesForAllSections(this->mySymbolTable);
-  }
-  else{
-    printf("Section table is NULL!\n");
-  }
+  
   createELF();
   return res;
   
@@ -270,17 +258,89 @@ int Assembler::backpatch(){
   return 0;
 }
 
+void Assembler::objDump(){
+    if(mySymbolTable){
+        mySymbolTable->printSymbolTable();
+    }
+    else{
+        printf("Symbol table is NULL!\n");
+    }
+    if(sectionTable){
+      sectionTable->printSectionTable();
+      sectionTable->printRelocationTablesForAllSections(this->mySymbolTable);
+    }
+    else{
+      printf("Section table is NULL!\n");
+    }
+}
+
 void Assembler::createELF(){
-  printf("IMGERE");
   std::ofstream elfFile;
   elfFile.open(this->outputFile);
-  elfFile << "<<ELF>>\n";
+  elfFile << "\t\t<<ELF>>\n";
+  elfFile << "---------------------------------\n";
   elfFile << "NUMBER OF SYMBOLS\n";
   elfFile << this->mySymbolTable->getTableSize() << "\n";
   elfFile << "NUMBER OF SECTIONS\n";
   elfFile << this->sectionTable->getTableSize() << "\n";
   elfFile << "NUMBER OF RELOCATION RECORDS\n"; 
   elfFile << this->sectionTable->getNumberOfRelocations() << "\n";
+  elfFile << "---------------------------------\n";
+  elfFile << "SYMBOL TABLE\n";
+  elfFile << "////////////////////////////////////////////////////////////\n";
+  SymbolTableEntry* curr = this->mySymbolTable->getFirstEntry();
+  while(curr!=nullptr){
+    elfFile << "SYMBOL NAME\n";
+    elfFile << curr->name << "\n";
+    elfFile << "BELONGS TO\n";
+    elfFile << curr->belongsTo << "\n";
+    elfFile << "BIND\n";
+    elfFile << curr->bind << "\n";
+    elfFile << "TYPE\n";
+    elfFile << curr->type << "\n";
+    elfFile << "SIZE\n";
+    elfFile << curr->size << "\n";
+    elfFile << "VALUE\n";
+    elfFile << curr->size << "\n";
+    curr = curr->nextEntry;
+  
+  }
+  elfFile << "////////////////////////////////////////////////////////////\n";
+  elfFile << "SECTION TABLE\n";
+  elfFile << "////////////////////////////////////////////////////////////\n";
+  SectionTable* currSec = this->sectionTable;
+  while (currSec != nullptr)
+  {
+    Section* sec = currSec->getSection();
+    elfFile << "SECTION NAME\n";
+    elfFile << sec->sectionName << "\n";
+    elfFile << "SECTION CONTENT\n";
+    elfFile << sec->sectionContent << "\n";
+    currSec = currSec->getNextEntry();
+  }
+  elfFile << "////////////////////////////////////////////////////////////\n";
+  elfFile << "RELOCATION TABLES\n";
+  elfFile << "////////////////////////////////////////////////////////////\n";
+  SectionTable* currentTable = this->sectionTable;
+  while(currentTable != nullptr){
+    Section* sec = currentTable->getSection();
+    RelocationTableEntry* currentEntry = sec->myRelocationTable->getFirstEntry();
+    while(currentEntry != nullptr){
+        elfFile << "SECTION NAME\n";
+        elfFile << sec->sectionName << "\n";
+        elfFile << "OFFSET\n";
+        elfFile << currentEntry->offset << "\n";
+        elfFile << "TYPE\n";
+        elfFile << currentEntry->getTypeName() << "\n";
+        elfFile << "SYMBOL\n";
+        elfFile << currentEntry->mySymbol << "\n";
+        elfFile << "ADDEND\n";
+        elfFile << currentEntry->addend << "\n";
+        currentEntry = currentEntry->nextEntry;
+    }
+    currentTable = currentTable->getNextEntry();
+  }
+  elfFile << "////////////////////////////////////////////////////////////\n";
   elfFile.close();
 }
 
