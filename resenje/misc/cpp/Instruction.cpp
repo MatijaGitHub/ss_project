@@ -363,3 +363,7 @@
          << std::hex << value;
     return stream.str();
   }
+  bool Instruction::isPCRelative(){
+    if(this->operand.getType() == SYM_RELATIVE) return true;
+    else return false;
+  }

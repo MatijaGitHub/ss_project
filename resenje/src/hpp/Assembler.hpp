@@ -22,6 +22,7 @@ protected:
   SymbolTable* mySymbolTable;
   Section* currentSection;
   SectionTable* sectionTable;
+  bool endOfAssembling;
 private:
   int init();
   void reset();

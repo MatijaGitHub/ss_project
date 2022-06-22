@@ -1,8 +1,8 @@
 .section .text
-jmp label
+jmp %label
 xor r1,r1
-.word 5
-ldr r1,label
-label:
+.skip 3
+ldr r1,%label
 or r1,r1
+label:
 .end

@@ -180,7 +180,7 @@ SymbolTableEntry* SymbolTable::getEntryBySymbolName(std::string name){
   
 }
 
-SymbolTableEntry* SymbolTable::declareSymbolLocal(std::string symbol, Section* currentSection,bool isIns){
+SymbolTableEntry* SymbolTable::declareSymbolLocal(std::string symbol, Section* currentSection,bool isIns,bool isAbsAdr){
   bool found = false;
   SymbolTableEntry* currentEntry = this->firstEntry;
   SymbolTableEntry* prev = nullptr;
@@ -189,10 +189,10 @@ SymbolTableEntry* SymbolTable::declareSymbolLocal(std::string symbol, Section* c
     if(currentEntry->name == symbol){
       found = true;
       retEntry = currentEntry;
-      if(!currentEntry->defined){
+      if(!currentEntry->defined || currentEntry->belongsTo!=currentSection->myEntry->index || isAbsAdr){
         int toPatch = currentSection->locationCounter;
         if(isIns)toPatch+=3;
-        currentEntry->flink->putForwardReferenceEntry(toPatch,currentSection);
+        currentEntry->flink->putForwardReferenceEntry(toPatch,currentSection,isAbsAdr);
       }
       break;
     }
@@ -211,7 +211,7 @@ SymbolTableEntry* SymbolTable::declareSymbolLocal(std::string symbol, Section* c
     newEntry->size = 0;
     int toPatch = currentSection->locationCounter;
     if(isIns)toPatch+=3;
-    newEntry->flink = new ForwardReferenceTableEntry(toPatch,currentSection);
+    newEntry->flink = new ForwardReferenceTableEntry(toPatch,currentSection,isAbsAdr);
     if(prev){
       prev->nextEntry = newEntry;
     }

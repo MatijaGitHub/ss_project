@@ -26,6 +26,7 @@ class Instruction{
   int getAdressTypeLength();
   AddressMode getAddressMode();
   bool isJumpIns();
+  bool isPCRelative();
   std::string generateByteOfInstructions(int i,unsigned long symVal);
   std::string generateFirstByte();
   std::string generateSecondByte();

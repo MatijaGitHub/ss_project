@@ -15,7 +15,7 @@ public:
   int getValueBySymbolName(std::string name);
   SymbolTableEntry* getEntryBySymbolName(std::string name);
   SymbolTableEntry* defineSymbolLocal(std::string symbol, Section* currentSection);
-  SymbolTableEntry* declareSymbolLocal(std::string symbol, Section* currentSection,bool isIns);
+  SymbolTableEntry* declareSymbolLocal(std::string symbol, Section* currentSection,bool isIns,bool isAbs);
 private:
   SymbolTableEntry* firstEntry;
   int indexCounter;

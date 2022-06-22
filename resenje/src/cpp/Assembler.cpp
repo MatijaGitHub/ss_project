@@ -32,6 +32,7 @@ int Assembler::init(){
   this->mySymbolTable = new SymbolTable();
   this->currentSection = nullptr;
   this->sectionTable = new SectionTable();
+  this->endOfAssembling = false;
   return ret;
 }
 
@@ -48,7 +49,7 @@ Assembler::Assembler(std::string input, std::string output){
 }
 int Assembler::firstPass(){
     Line* currLine = Lines::getHead();
-    while(currLine!=nullptr){
+    while(currLine!=nullptr && !endOfAssembling){
       if(currLine->getLabel()){
         this->handleLabel(currLine->getLabel());
       }
@@ -122,7 +123,7 @@ void Assembler::handleInstruction(Instruction* ins){
     AddressMode adr = ins->getAddressMode();
     unsigned long symbolVal = -1;
     if(ins->getOperand().isSymbol()){
-      SymbolTableEntry* entry = this->mySymbolTable->declareSymbolLocal(ins->getOperand().getSymbol(),this->currentSection,true);
+      SymbolTableEntry* entry = this->mySymbolTable->declareSymbolLocal(ins->getOperand().getSymbol(),this->currentSection,true,!ins->isPCRelative());
       symbolVal = entry->value;
     }
     for(int i = 0; i < length; i++){
@@ -149,7 +150,7 @@ void Assembler::initializeSpace(Symbol_Literal_List* symbolsAndLiterals,Section*
   std::string* symbol = symbolsAndLiterals->popSymbol();
   int* literal = symbolsAndLiterals->popLiteral();
   while(symbol!=nullptr){
-    SymbolTableEntry* symbolEntry = this->mySymbolTable->declareSymbolLocal(*symbol,currentSection,false);
+    SymbolTableEntry* symbolEntry = this->mySymbolTable->declareSymbolLocal(*symbol,currentSection,false,true);
     currentSection->locationCounter+=2;
     size+=2;
     int value = this->mySymbolTable->getValueBySymbolName(*symbol);
@@ -215,6 +216,7 @@ std::string Assembler::turnIntTo2Byte(int twobyte){
 }
 
 void Assembler::endCurrentSection(){
+  this->endOfAssembling = true;
   this->currentSection = nullptr;
 }
 
@@ -224,11 +226,13 @@ int Assembler::backpatch(){
   {
     ForwardReferenceTableEntry* flinkEntry = entry->flink;
     while(flinkEntry){
-      if(entry->defined && entry->belongsTo == flinkEntry->getAtSection()->myEntry->index){
+      if(entry->defined && entry->belongsTo == flinkEntry->getAtSection()->myEntry->index && !flinkEntry->isAbsoluteAddressing()){
         flinkEntry->getAtSection()->patchContent(entry->value,flinkEntry->getPatch());
       }
       else{
-        //RELOCATION_TABLE_ENTRY_ADD
+        int symbol = entry->bind=='g'?entry->index:entry->belongsTo;
+        //RelocationTableEntry* newEntry = new RelocationTableEntry(flinkEntry->getAtSection(),symbol)
+        //flinkEntry->getAtSection()->myRelocationTable->addEntry();
       }
       flinkEntry = flinkEntry->getNextEntry();
     }

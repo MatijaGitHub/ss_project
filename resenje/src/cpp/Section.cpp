@@ -56,7 +56,6 @@ void Section::readContent(){
 }
 
 void Section::patchContent(unsigned long content, int patch){
-  printf("The patch location is %d\n",patch);
   int mask = 0b0000000011111111;
   unsigned firstByte = content;
   firstByte>>=8;
