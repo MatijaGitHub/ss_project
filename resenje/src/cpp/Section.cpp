@@ -52,7 +52,7 @@ void Section::writeTwoByteContent(std::string twobyte){
 }
 void Section::readContent(){
   printf("%s\n",this->sectionContent.c_str());
-  printf("Section %s read!\n",this->sectionName.c_str());
+  printf("\n");
 }
 
 void Section::patchContent(unsigned long content, int patch){

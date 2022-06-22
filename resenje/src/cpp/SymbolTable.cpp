@@ -142,7 +142,7 @@ void SymbolTable::printSymbolTable(){
     printf("\n");
     curr = curr->nextEntry;
   }
-  
+  printf("\n");
 }
 std::string SymbolTable::getSymbolNameOfIndex(unsigned int idx){
   SymbolTableEntry* curr = this->getFirstEntry();
