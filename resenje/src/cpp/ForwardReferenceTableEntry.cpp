@@ -1,14 +1,15 @@
 #include "../hpp/ForwardReferenceTableEntry.hpp"
 
 
- ForwardReferenceTableEntry::ForwardReferenceTableEntry(int p,Section* sec,bool isAbs){
+ ForwardReferenceTableEntry::ForwardReferenceTableEntry(int p,Section* sec,bool isAbs,bool isIns){
   this->patch = p;
   this->atSection = sec;
   this->nextEntry = nullptr;
   this->isAbs = isAbs;
+  this->isIns = isIns;
  }
-  void ForwardReferenceTableEntry::putForwardReferenceEntry(int p,Section* sec,bool isAbs){
-    ForwardReferenceTableEntry* entry = new ForwardReferenceTableEntry(p,sec,isAbs);
+  void ForwardReferenceTableEntry::putForwardReferenceEntry(int p,Section* sec,bool isAbs,bool isIns){
+    ForwardReferenceTableEntry* entry = new ForwardReferenceTableEntry(p,sec,isAbs,isIns);
     ForwardReferenceTableEntry* tail = this;
     while(tail->nextEntry != nullptr) tail = tail->nextEntry;
     tail->nextEntry = entry;
@@ -25,4 +26,7 @@
   }
   bool ForwardReferenceTableEntry::isAbsoluteAddressing(){
     return this->isAbs;
+  }
+  bool ForwardReferenceTableEntry::isInstructionPatch(){
+    return this->isIns;
   }

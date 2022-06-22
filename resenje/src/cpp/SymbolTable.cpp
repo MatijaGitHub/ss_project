@@ -192,7 +192,7 @@ SymbolTableEntry* SymbolTable::declareSymbolLocal(std::string symbol, Section* c
       if(!currentEntry->defined || currentEntry->belongsTo!=currentSection->myEntry->index || isAbsAdr){
         int toPatch = currentSection->locationCounter;
         if(isIns)toPatch+=3;
-        currentEntry->flink->putForwardReferenceEntry(toPatch,currentSection,isAbsAdr);
+        currentEntry->flink->putForwardReferenceEntry(toPatch,currentSection,isAbsAdr,isIns);
       }
       break;
     }
@@ -211,7 +211,7 @@ SymbolTableEntry* SymbolTable::declareSymbolLocal(std::string symbol, Section* c
     newEntry->size = 0;
     int toPatch = currentSection->locationCounter;
     if(isIns)toPatch+=3;
-    newEntry->flink = new ForwardReferenceTableEntry(toPatch,currentSection,isAbsAdr);
+    newEntry->flink = new ForwardReferenceTableEntry(toPatch,currentSection,isAbsAdr,isIns);
     if(prev){
       prev->nextEntry = newEntry;
     }

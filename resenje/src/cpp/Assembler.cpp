@@ -16,6 +16,7 @@ int Assembler::assemble(){
   }
   if(sectionTable){
     sectionTable->printSectionTable();
+    sectionTable->printRelocationTablesForAllSections(this->mySymbolTable);
   }
   else{
     printf("Section table is NULL!\n");
@@ -130,7 +131,6 @@ void Assembler::handleInstruction(Instruction* ins){
       }
     }
     for(int i = 0; i < length; i++){
-      //printf("%s ",ins->generateByteOfInstructions(i).c_str());
       size++;
       this->currentSection->locationCounter++;
       this->currentSection->writeOneByteContent(ins->generateByteOfInstructions(i,symbolVal));
@@ -235,8 +235,29 @@ int Assembler::backpatch(){
       }
       else{
         int symbol = entry->bind=='g'?entry->index:entry->belongsTo;
-        //RelocationTableEntry* newEntry = new RelocationTableEntry(flinkEntry->getAtSection(),symbol)
-        //flinkEntry->getAtSection()->myRelocationTable->addEntry();
+        long offset = flinkEntry->getPatch();
+        int addend = 0;
+        if(entry->bind == 'l') addend+=entry->value;
+        if(!flinkEntry->isAbsoluteAddressing()) addend-=2;
+        RelocationType type;
+        if(flinkEntry->isAbsoluteAddressing()){
+            if(flinkEntry->isInstructionPatch()){
+              type = R_X86_64_32S;
+            }
+            else{
+              type = R_X86_64_32;
+            }
+        }
+        else{
+            if(entry->bind == 'l'){
+              type = R_X86_64_PC32;
+            }
+            else{
+              type = R_X86_64_PLT32;
+            }
+        }
+        RelocationTableEntry* newEntry = new RelocationTableEntry(symbol,offset,addend,type);
+        flinkEntry->getAtSection()->myRelocationTable->addEntry(newEntry);
       }
       flinkEntry = flinkEntry->getNextEntry();
     }

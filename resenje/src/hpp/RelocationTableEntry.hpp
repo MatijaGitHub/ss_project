@@ -2,13 +2,17 @@
 #include "./Section.hpp"
 #include <string>
 
+enum RelocationType{
+  R_X86_64_32,R_X86_64_32S,R_X86_64_PLT32,R_X86_64_PC32
+};
 class Section;
 class RelocationTableEntry{
 public: 
   RelocationTableEntry();
-  RelocationTableEntry(Section* section,int symbol,int type);
+  RelocationTableEntry(int symbol,long offset,int addend,RelocationType type);
+  std::string getTypeName();
   long offset;
-  std::string type;
+  RelocationType type;
   int mySymbol;
   int addend;
   RelocationTableEntry* nextEntry;

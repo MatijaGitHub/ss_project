@@ -11,6 +11,7 @@ void setSection(Section* sec);
 void setNextEntry(SectionTable* nxt);
 void addSectionToTail(Section* sec);
 void printSectionTable();
+void printRelocationTablesForAllSections(SymbolTable* symTab);
 private:
 Section* section;
 SectionTable* nextEntry;

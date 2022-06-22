@@ -3,14 +3,26 @@
 
 
   RelocationTableEntry::RelocationTableEntry(){}
-  RelocationTableEntry::RelocationTableEntry(Section* section,int symbol,int type){
+  RelocationTableEntry::RelocationTableEntry(int symbol,long offset,int addend,RelocationType type){
     this->mySymbol = symbol;
     this->nextEntry = nullptr;
-    this->offset = section->locationCounter;
-    this->type = "";
-    this->type = type == 1?"R_X86_64_32S":this->type;
-    this->type = type == 2?"R_X86_64_32S":this->type;
-    this->type = type == 3?"R_X86_64_PLT32":this->type;
-    this->type = type == 4?"R_X86_64_PC32":this->type;
+    this->offset = offset;
+    this->addend = addend;
+    this->type = type;
+  }
+  std::string RelocationTableEntry::getTypeName(){
+    switch (this->type)
+    {
+    case 0:
+      return "R_X86_64_32";
+     case 1:
+      return "R_X86_64_32S";
+     case 2:
+      return "R_X86_64_PLT32";
+     case 3:
+      return "R_X86_64_PC32";
     
+    default:
+      return "NO_TYPE";
+    }
   }

@@ -78,3 +78,15 @@ void Section::patchContent(unsigned long content, int patch){
   this->sectionContent.at(location) = secondByteWritable.at(0);
   this->sectionContent.at(location + 1) = secondByteWritable.at(1);
 }
+
+void Section::printRelocationTable(SymbolTable* symbolTable){
+  RelocationTableEntry* entry = this->myRelocationTable->getFirstEntry();
+  if(entry == nullptr) return;
+  printf("#.rela%s\n",this->sectionName.c_str());
+  printf("Offset\tType\t\tSymbol\t\tAddend\n");
+  
+  while(entry!=nullptr){
+    printf("%ld\t%s\t%d (%s)\t%d\n",entry->offset,entry->getTypeName().c_str(),entry->mySymbol,symbolTable->getSymbolNameOfIndex(entry->mySymbol).c_str(),entry->addend);
+    entry = entry->nextEntry;
+  }
+}

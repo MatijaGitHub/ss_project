@@ -48,3 +48,12 @@ void SectionTable::addSectionToTail(Section* sec){
   curr->nextEntry = newEntry;
   
 }
+void SectionTable::printRelocationTablesForAllSections(SymbolTable* symTab){
+  SectionTable* curr = this;
+  while (curr!=nullptr)
+  {
+    curr->section->printRelocationTable(symTab);
+    printf("\n");
+    curr = curr->nextEntry;
+  }
+}
