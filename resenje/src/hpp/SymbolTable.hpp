@@ -16,8 +16,10 @@ public:
   SymbolTableEntry* getEntryBySymbolName(std::string name);
   SymbolTableEntry* defineSymbolLocal(std::string symbol, Section* currentSection);
   SymbolTableEntry* declareSymbolLocal(std::string symbol, Section* currentSection,bool isIns,bool isAbs);
+  int getTableSize();
 private:
   SymbolTableEntry* firstEntry;
   int indexCounter;
+  int size;
 
 };

@@ -12,7 +12,10 @@ void setNextEntry(SectionTable* nxt);
 void addSectionToTail(Section* sec);
 void printSectionTable();
 void printRelocationTablesForAllSections(SymbolTable* symTab);
+int getTableSize();
+int getNumberOfRelocations();
 private:
 Section* section;
 SectionTable* nextEntry;
+int size;
 };

@@ -1,1 +1,1 @@
-./exec
+./asembler test.s

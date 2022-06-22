@@ -8,6 +8,8 @@
 #include "./SectionTable.hpp"
 #include <string>
 #include <iomanip>
+#include <iostream>
+#include <fstream>
 
 
 class Assembler{
@@ -28,6 +30,7 @@ private:
   void reset();
   int firstPass();
   int backpatch();
+  void createELF();
   void handleDirective(Directive* directive);
   void handleLabel(Label* label);
   void handleInstruction(Instruction* ins);

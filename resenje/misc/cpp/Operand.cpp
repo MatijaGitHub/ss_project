@@ -2,6 +2,7 @@
 
   Operand::Operand(){
     this->type = NO_TYPE;
+    this->reg = -1;
   }
   Operand::Operand(OperandType type,short r){
     this->type = type;
@@ -10,10 +11,12 @@
   Operand::Operand(OperandType type,int l){
     this->type = type;
     this->literal = l;
+    this->reg = -1;
   }
   Operand::Operand(OperandType type,std::string s){
     this->type = type;
     this->symbol = s;
+    this->reg = -1;
   }
   Operand::Operand(OperandType type,short r, int l){
     this->type = type;

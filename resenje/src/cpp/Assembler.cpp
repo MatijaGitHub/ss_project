@@ -21,6 +21,7 @@ int Assembler::assemble(){
   else{
     printf("Section table is NULL!\n");
   }
+  createELF();
   return res;
   
 }
@@ -129,6 +130,7 @@ void Assembler::handleInstruction(Instruction* ins){
       if(entry->defined && entry->belongsTo==currentSection->myEntry->index && ins->isPCRelative()){
         symbolVal-=currentSection->locationCounter;
       }
+      else symbolVal = 0;
     }
     for(int i = 0; i < length; i++){
       size++;
@@ -266,5 +268,19 @@ int Assembler::backpatch(){
   
 
   return 0;
+}
+
+void Assembler::createELF(){
+  printf("IMGERE");
+  std::ofstream elfFile;
+  elfFile.open(this->outputFile);
+  elfFile << "<<ELF>>\n";
+  elfFile << "NUMBER OF SYMBOLS\n";
+  elfFile << this->mySymbolTable->getTableSize() << "\n";
+  elfFile << "NUMBER OF SECTIONS\n";
+  elfFile << this->sectionTable->getTableSize() << "\n";
+  elfFile << "NUMBER OF RELOCATION RECORDS\n"; 
+  elfFile << this->sectionTable->getNumberOfRelocations() << "\n";
+  elfFile.close();
 }
 

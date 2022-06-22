@@ -8,6 +8,8 @@ class RelocationTable{
   RelocationTableEntry* getFirstEntry();
   void addEntry(RelocationTableEntry* newEntry);
   RelocationTableEntry* getEntryByOffset(long offset);
+  int getRelocationTableSize();
   private:
   RelocationTableEntry* firstEntry;
+  int size;
 };

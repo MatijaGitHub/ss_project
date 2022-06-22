@@ -3,6 +3,7 @@
 
 RelocationTable::RelocationTable(){
   this->firstEntry = nullptr;
+  this->size = 0;
 }
 RelocationTableEntry* RelocationTable::getFirstEntry(){
   return this->firstEntry;
@@ -18,6 +19,7 @@ void RelocationTable::addEntry(RelocationTableEntry* newEntry){
     }
     tail->nextEntry = newEntry;
   }
+  size++;
 }
 RelocationTableEntry* RelocationTable::getEntryByOffset(long offset){
   RelocationTableEntry* found = this->firstEntry;
@@ -29,4 +31,7 @@ RelocationTableEntry* RelocationTable::getEntryByOffset(long offset){
    found = found->nextEntry;
   }
   return nullptr;
+}
+int RelocationTable::getRelocationTableSize(){
+  return this->size;
 }

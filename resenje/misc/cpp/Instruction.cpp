@@ -285,6 +285,12 @@
   std::string Instruction::generateSecondByte(){
     short regDest = this->reg1!=-1?this->reg1:15;
     short regSource = this->reg2!=-1?this->reg2:15;
+    if(this->isJumpIns() && regDest==15 && this->operand.getRegister()!=-1){
+      regDest = this->operand.getRegister();
+    }
+    else if(regSource == 15 && this->operand.getRegister()!=-1){
+      regSource = this->operand.getRegister();
+    }
     if(this->name == push || this->name == pop) regSource = 6;
     int secondByte = (regDest << 4)|regSource;
     std::stringstream stream;

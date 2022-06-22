@@ -4,6 +4,7 @@
 SectionTable::SectionTable(){
   this->nextEntry = nullptr;
   this->section = nullptr;
+  this->size = 0;
 }
 Section* SectionTable::getSection(){
   return this->section;
@@ -36,6 +37,7 @@ void SectionTable::addSectionToTail(Section* sec){
   SectionTable* curr = this;
   if(curr->section == nullptr){
     curr->section = sec;
+    this->size++;
     return;
   }
   SectionTable* newEntry = new SectionTable();
@@ -46,6 +48,7 @@ void SectionTable::addSectionToTail(Section* sec){
   }
   
   curr->nextEntry = newEntry;
+  size++;
   
 }
 void SectionTable::printRelocationTablesForAllSections(SymbolTable* symTab){
@@ -56,4 +59,19 @@ void SectionTable::printRelocationTablesForAllSections(SymbolTable* symTab){
     printf("\n");
     curr = curr->nextEntry;
   }
+}
+
+
+int SectionTable::getTableSize(){
+  return this->size;
+}
+
+int SectionTable::getNumberOfRelocations(){
+  int num = 0;
+  SectionTable* curr = this;
+  while(curr!=nullptr){
+    num+=curr->section->myRelocationTable->getRelocationTableSize();
+    curr = curr->nextEntry;
+  }
+  return num;
 }
