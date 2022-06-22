@@ -1,16 +1,16 @@
 		<<ELF>>
 ---------------------------------
 NUMBER OF SYMBOLS
-10
+3
 NUMBER OF SECTIONS
 2
 NUMBER OF RELOCATION RECORDS
-10
+3
 ---------------------------------
 SYMBOL TABLE
 ////////////////////////////////////////////////////////////
 SYMBOL NAME
-ivt
+.text
 BELONGS TO
 0
 BIND
@@ -18,13 +18,13 @@ l
 TYPE
 SECT
 SIZE
-16
+15
 VALUE
-16
+15
 SYMBOL NAME
-isr_reset
+labela1
 BELONGS TO
-6
+2
 BIND
 l
 TYPE
@@ -34,222 +34,60 @@ SIZE
 VALUE
 0
 SYMBOL NAME
-isr_timer
+.data
 BELONGS TO
-6
-BIND
-l
-TYPE
-NOTYP
-SIZE
-0
-VALUE
-0
-SYMBOL NAME
-isr_terminal
-BELONGS TO
-6
-BIND
-l
-TYPE
-NOTYP
-SIZE
-0
-VALUE
-0
-SYMBOL NAME
-my_start
-BELONGS TO
--1
-BIND
-g
-TYPE
-NOTYP
-SIZE
-0
-VALUE
-0
-SYMBOL NAME
-my_counter
-BELONGS TO
--1
-BIND
-g
-TYPE
-NOTYP
-SIZE
-0
-VALUE
-0
-SYMBOL NAME
-isr
-BELONGS TO
-6
+2
 BIND
 l
 TYPE
 SECT
 SIZE
-62
+2
 VALUE
-62
-SYMBOL NAME
-term_out
-BELONGS TO
--1
-BIND
-g
-TYPE
-NOTYP
-SIZE
-0
-VALUE
-0
-SYMBOL NAME
-term_in
-BELONGS TO
--1
-BIND
-g
-TYPE
-NOTYP
-SIZE
-0
-VALUE
-0
-SYMBOL NAME
-ascii_code
-BELONGS TO
--1
-BIND
-g
-TYPE
-NOTYP
-SIZE
-0
-VALUE
-0
+2
 ////////////////////////////////////////////////////////////
 SECTION TABLE
 ////////////////////////////////////////////////////////////
 SECTION NAME
-ivt
+.text
 SECTION CONTENT
-00 00 00 00	00 00 00 00
-00 00 00 00	00 00 00 00
-
+50 f7 05 00	00 a0 07 03
+00 00 a0 0f	04 00 00 
 SECTION NAME
-isr
+.data
 SECTION CONTENT
-50 ff 00 00	00 b0 06 12
-a0 0f 00 00	00 b0 0f 04
-00 00 a0 06	42 20 b0 06
-12 b0 16 12	a0 0f 04 00
-00 b0 0f 04	00 00 a0 0f
-03 00 00 a0	1f 00 00 01
-70 01 b0 0f	04 00 00 a0
-16 42 a0 06	42 20 
+83 11 
 ////////////////////////////////////////////////////////////
 RELOCATION TABLES
 ////////////////////////////////////////////////////////////
 SECTION NAME
-ivt
-OFFSET
-0
-TYPE
-R_X86_64_32
-SYMBOL
-6
-ADDEND
-0
-SECTION NAME
-ivt
-OFFSET
-4
-TYPE
-R_X86_64_32
-SYMBOL
-6
-ADDEND
-5
-SECTION NAME
-ivt
-OFFSET
-6
-TYPE
-R_X86_64_32
-SYMBOL
-6
-ADDEND
-22
-SECTION NAME
-isr
+.text
 OFFSET
 3
 TYPE
-R_X86_64_32S
+R_X86_64_PC32
 SYMBOL
-4
+2
 ADDEND
 0
 SECTION NAME
-isr
+.text
 OFFSET
-41
-TYPE
-R_X86_64_PLT32
-SYMBOL
-5
-ADDEND
--2
-SECTION NAME
-isr
-OFFSET
-53
-TYPE
-R_X86_64_32S
-SYMBOL
-5
-ADDEND
-0
-SECTION NAME
-isr
-OFFSET
-16
-TYPE
-R_X86_64_32S
-SYMBOL
-7
-ADDEND
-0
-SECTION NAME
-isr
-OFFSET
-36
-TYPE
-R_X86_64_32S
-SYMBOL
-7
-ADDEND
-0
-SECTION NAME
-isr
-OFFSET
-31
-TYPE
-R_X86_64_32S
-SYMBOL
 8
+TYPE
+R_X86_64_PC32
+SYMBOL
+2
 ADDEND
 0
 SECTION NAME
-isr
+.text
 OFFSET
-11
+13
 TYPE
 R_X86_64_32S
 SYMBOL
-9
+2
 ADDEND
-0
+2
 ////////////////////////////////////////////////////////////

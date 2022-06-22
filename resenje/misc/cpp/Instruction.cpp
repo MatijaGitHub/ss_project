@@ -288,6 +288,7 @@
     if(regSource == 15 && this->operand.getRegister()!=-1){
       regSource = this->operand.getRegister();
     }
+    if(this->isPCRelative()) regSource = 7;
     if(this->name == push || this->name == pop) regSource = 6;
     int secondByte = (regDest << 4)|regSource;
     std::stringstream stream;
