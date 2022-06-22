@@ -163,6 +163,10 @@ directive:
     $$ = new Directive(section,*$2);
   }
   |
+  SECTION SYMBOL{
+    $$ = new Directive(section,*$2);
+  }
+  |
   WORD list_of_symbols_and_literals{
     $$ = new Directive(word,$2);
     
