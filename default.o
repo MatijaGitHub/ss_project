@@ -5,7 +5,7 @@ NUMBER OF SYMBOLS
 NUMBER OF SECTIONS
 2
 NUMBER OF RELOCATION RECORDS
-1
+2
 ---------------------------------
 SYMBOL TABLE
 ////////////////////////////////////////////////////////////
@@ -54,9 +54,9 @@ l
 TYPE
 SECT
 SIZE
-5
+10
 VALUE
-5
+10
 SYMBOL NAME
 loop
 BELONGS TO
@@ -79,7 +79,8 @@ SECTION CONTENT
 SECTION NAME
 .data
 SECTION CONTENT
-a0 24 03 00	05 
+a0 24 03 00	00 50 f2 01
+83 11 
 ////////////////////////////////////////////////////////////
 RELOCATION TABLES
 ////////////////////////////////////////////////////////////
@@ -93,4 +94,14 @@ SYMBOL
 0
 ADDEND
 0
+SECTION NAME
+.data
+OFFSET
+3
+TYPE
+R_X86_64_32S
+SYMBOL
+1
+ADDEND
+6
 ////////////////////////////////////////////////////////////

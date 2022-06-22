@@ -5,5 +5,8 @@
 label1:
 .section .data
 loop:
-ldr r2, [r4 + 5]
+ldr r2, [r4 + label1]
+jmp *r2
+xor r1,r1
+
 .end

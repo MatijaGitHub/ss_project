@@ -29,5 +29,6 @@ int main(int argc, char *argv[])
   }   
   Assembler * as = new Assembler(inputName,outputName);
   int res = as->assemble();
+  as->objDump();
   return 1;
 }

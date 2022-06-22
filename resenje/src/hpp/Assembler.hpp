@@ -17,6 +17,7 @@ public:
   Assembler(std::string input);
   Assembler(std::string input, std::string output);
   int assemble();
+  void objDump();
   SymbolTable* getSymbolTable();
 protected:
   std::string inputFile;
@@ -31,7 +32,6 @@ private:
   int firstPass();
   int backpatch();
   void createELF();
-  void objDump();
   void handleDirective(Directive* directive);
   void handleLabel(Label* label);
   void handleInstruction(Instruction* ins);
