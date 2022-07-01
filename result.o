@@ -12,7 +12,7 @@ SYMBOL TABLE
 SYMBOL NAME
 labela1
 BELONGS TO
-5
+.data
 BIND
 g
 TYPE
@@ -20,11 +20,11 @@ NOTYP
 SIZE
 0
 VALUE
-0
+7
 SYMBOL NAME
 labela3
 BELONGS TO
-3
+.text
 BIND
 g
 TYPE
@@ -32,11 +32,11 @@ NOTYP
 SIZE
 0
 VALUE
-0
+25
 SYMBOL NAME
 labela2
 BELONGS TO
--1
+UND
 BIND
 g
 TYPE
@@ -48,7 +48,7 @@ VALUE
 SYMBOL NAME
 .text
 BELONGS TO
-3
+.text
 BIND
 l
 TYPE
@@ -56,11 +56,11 @@ SECT
 SIZE
 25
 VALUE
-25
+0
 SYMBOL NAME
 labela5
 BELONGS TO
-5
+.data
 BIND
 l
 TYPE
@@ -68,11 +68,11 @@ NOTYP
 SIZE
 0
 VALUE
-0
+7
 SYMBOL NAME
 .data
 BELONGS TO
-5
+.data
 BIND
 l
 TYPE
@@ -80,7 +80,7 @@ SECT
 SIZE
 9
 VALUE
-9
+0
 ////////////////////////////////////////////////////////////
 SECTION TABLE
 ////////////////////////////////////////////////////////////

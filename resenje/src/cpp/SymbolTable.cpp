@@ -143,7 +143,7 @@ std::string SymbolTable::getSymbolNameOfIndex(unsigned int idx){
     }
     curr = curr->nextEntry;
   }
-  return "";
+  return "UND";
 }
 
 int SymbolTable::getValueBySymbolName(std::string name){

@@ -31,7 +31,7 @@ int main(int argc, char *argv[])
   // }   
   // Assembler * as = new Assembler(inputName,outputName);
   // int res = as->assemble();
-  //as->objDump();
+  // as->objDump();
   Linker linker = Linker();
   std::vector<std::string> links;
   for(int i = 1; i< argc; i++){

@@ -20,7 +20,7 @@ void Linker::readELF(std::string fileName){
     SymbolTableEntry* newSymbol = new SymbolTableEntry();
     elfFile >> newSymbol->name;
     skipLines(2,&elfFile);
-    elfFile >> newSymbol->belongsTo;
+    elfFile >> newSymbol->belongsToSection;
     skipLines(2,&elfFile);
     elfFile >> newSymbol->bind;
     skipLines(2,&elfFile);
@@ -30,8 +30,13 @@ void Linker::readELF(std::string fileName){
     skipLines(2,&elfFile);
     elfFile >> newSymbol->value;
     skipLines(1,&elfFile);
-    if(newSymbol->bind == 'g' && newSymbol->belongsTo != -1){
+    if(newSymbol->bind == 'g' && newSymbol->belongsToSection != "UND"){
         checkIfSymbolIsDefined(newSymbol->name);
+        if(sectionAppearances.find(newSymbol->belongsToSection) == sectionAppearances.end()){
+          newSymbol->belongsToSectionIndex = 0;
+        }else{
+          newSymbol->belongsToSectionIndex = sectionAppearances[newSymbol->belongsToSection];
+        }
         this->symbolTable->addEntry(newSymbol);
         this->externSymbols.erase(newSymbol->name);
     }
@@ -66,6 +71,12 @@ void Linker::readELF(std::string fileName){
       secData.first = sec->size;
       secData.second = sec->sectionContent;
       this->sectionContents[sec->sectionName].push_back(secData);
+      if(sectionAppearances.find(sec->sectionName) == sectionAppearances.end()){
+        sectionAppearances[sec->sectionName] = 1;
+      }
+      else{
+        sectionAppearances[sec->sectionName]++;
+      }
 
   }
   skipLines(3,&elfFile);
@@ -181,12 +192,23 @@ void Linker::placeSection(std::string command){
     printf("SEKCIJA: %s MAPIRANA NA ADRESU: %d\n",section.first.c_str(),section.second);
   }
   resolveSymbols();
+  this->symbolTable->printSymbolTable();
   exoneration();
     
  }
 
 void Linker::resolveSymbols(){
-
+  SymbolTableEntry* entry = this->symbolTable->getFirstEntry();
+  while (entry != nullptr)
+  {
+    unsigned short fileOffset = 0;
+    for(int i = 0; i < entry->belongsToSectionIndex ; i++){
+      fileOffset+=sectionContents[entry->belongsToSection][i].first;
+    }
+    entry->value = entry->value + mappedSections[entry->belongsToSection] + fileOffset;
+    entry = entry->nextEntry;
+  }
+  
 }
 void Linker::exoneration(){
 

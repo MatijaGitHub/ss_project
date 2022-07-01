@@ -12,7 +12,7 @@ SYMBOL TABLE
 SYMBOL NAME
 labela2
 BELONGS TO
-1
+.text
 BIND
 g
 TYPE
@@ -20,11 +20,11 @@ NOTYP
 SIZE
 0
 VALUE
-0
+2
 SYMBOL NAME
 .text
 BELONGS TO
-1
+.text
 BIND
 l
 TYPE
@@ -32,7 +32,7 @@ SECT
 SIZE
 2
 VALUE
-2
+0
 ////////////////////////////////////////////////////////////
 SECTION TABLE
 ////////////////////////////////////////////////////////////

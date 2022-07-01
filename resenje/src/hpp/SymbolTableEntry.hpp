@@ -14,9 +14,11 @@ public:
   std::string type;
   char bind;
   int belongsTo; //Has value -1 if UND
+  std::string belongsToSection;
   std::string name;
   RelocationTableEntry * myRelocationTable;
   bool defined;
+  int belongsToSectionIndex;
   ForwardReferenceTableEntry * flink;
   SymbolTableEntry *nextEntry;
 };

@@ -20,6 +20,7 @@ class Linker{
   std::unordered_map<std::string, RelocationTable*> relocationTables;
   std::unordered_map<std::string,unsigned short> placedSections;
   std::unordered_map<std::string,unsigned short> mappedSections;
+  std::unordered_map<std::string,int> sectionAppearances;
   std::set<std::string> externSymbols;
   int numOfSymbols;
   int numOfSections;

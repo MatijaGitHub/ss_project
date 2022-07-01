@@ -292,7 +292,7 @@ void Assembler::createELF(){
     elfFile << "SYMBOL NAME\n";
     elfFile << curr->name << "\n";
     elfFile << "BELONGS TO\n";
-    elfFile << curr->belongsTo << "\n";
+    elfFile << this->mySymbolTable->getSymbolNameOfIndex(curr->belongsTo) << "\n";
     elfFile << "BIND\n";
     elfFile << curr->bind << "\n";
     elfFile << "TYPE\n";
@@ -300,7 +300,7 @@ void Assembler::createELF(){
     elfFile << "SIZE\n";
     elfFile << curr->size << "\n";
     elfFile << "VALUE\n";
-    elfFile << curr->size << "\n";
+    elfFile << curr->value << "\n";
     curr = curr->nextEntry;
   
   }
