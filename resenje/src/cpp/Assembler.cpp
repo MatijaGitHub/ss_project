@@ -330,9 +330,9 @@ void Assembler::createELF(){
         elfFile << "OFFSET\n";
         elfFile << currentEntry->offset << "\n";
         elfFile << "TYPE\n";
-        elfFile << currentEntry->getTypeName() << "\n";
+        elfFile << currentEntry->type << "\n";
         elfFile << "SYMBOL\n";
-        elfFile << currentEntry->mySymbol << "\n";
+        elfFile << this->mySymbolTable->getSymbolNameOfIndex(currentEntry->mySymbol) << "\n";
         elfFile << "ADDEND\n";
         elfFile << currentEntry->addend << "\n";
         currentEntry = currentEntry->nextEntry;

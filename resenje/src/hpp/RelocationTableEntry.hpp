@@ -14,6 +14,7 @@ public:
   long offset;
   RelocationType type;
   int mySymbol;
+  std::string symbolName;
   int addend;
   RelocationTableEntry* nextEntry;
 };

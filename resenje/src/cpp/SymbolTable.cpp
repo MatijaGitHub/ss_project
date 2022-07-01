@@ -1,7 +1,9 @@
 #include "../hpp/SymbolTable.hpp"
 
 
-SymbolTableEntry::SymbolTableEntry(){}
+SymbolTableEntry::SymbolTableEntry(){
+  this->nextEntry = nullptr;
+}
 SymbolTable::SymbolTable(){
   this->firstEntry = nullptr;
   this->indexCounter = 0;
@@ -216,4 +218,16 @@ SymbolTableEntry* SymbolTable::declareSymbolLocal(std::string symbol, Section* c
 
 int SymbolTable::getTableSize(){
   return this->size;
+}
+
+void SymbolTable::addEntry(SymbolTableEntry* entry){
+  SymbolTableEntry* entryFirst = this->getFirstEntry();
+  if(entryFirst == nullptr){
+    this->firstEntry = entry;
+    return;
+  }
+  while(entryFirst->nextEntry != nullptr){
+    entryFirst = entryFirst->nextEntry;
+  }
+  entryFirst->nextEntry = entry;
 }
