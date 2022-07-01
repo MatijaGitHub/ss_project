@@ -49,6 +49,8 @@ void Linker::readELF(std::string fileName){
       Section* sec = new Section();
       elfFile >> sec->sectionName;
       skipLines(2,&elfFile);
+      elfFile >> sec->size;
+      skipLines(2,&elfFile);
       while(true){
         char* byte = (char*)malloc(sizeof(char)*3);
         elfFile.read(byte,2);
@@ -60,7 +62,10 @@ void Linker::readELF(std::string fileName){
         char* dump = (char*)malloc(sizeof(char));
         elfFile.read(dump,1);
       }
-      this->sectionContents[sec->sectionName].push_back(sec->sectionContent);
+      std::pair<int,std::string> secData;
+      secData.first = sec->size;
+      secData.second = sec->sectionContent;
+      this->sectionContents[sec->sectionName].push_back(secData);
 
   }
   skipLines(3,&elfFile);
@@ -113,7 +118,28 @@ void Linker::readELFS(std::vector<std::string> files){
     readELF(s);
   }
     if(this->externSymbols.size() > 0){
-    printf("NOT ALL EXTERN SYMBOLS DEFINED!");
+    printf("NOT ALL EXTERN SYMBOLS DEFINED!\n");
     exit(-1);
   }
 }
+void Linker::placeSection(std::string command){
+  long lastLoc = command.find_last_of('@');
+  std::string nameOfSection = command.substr(7, lastLoc - 7);
+  std::string placement = command.substr(lastLoc + 1);
+  int placementValue;
+  if(placement.at(1) == 'x') placementValue = std::stoi(placement,nullptr,16);
+  else placementValue = std::stoi(placement);
+  if(placementValue < 0 || placementValue >= USHRT_MAX){
+    printf("INVALID START ADDRESS!\n");
+    exit(-1);
+  }
+  unsigned short convert = placementValue;
+  this->placedSections[nameOfSection] = convert;
+}
+
+ void Linker::map(){
+    unsigned short maxAddress = 0;
+    for(std::pair<std::string,short> placedSection : this->placedSections){
+
+    }
+ }

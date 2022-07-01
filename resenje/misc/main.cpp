@@ -32,12 +32,24 @@ int main(int argc, char *argv[])
   // Assembler * as = new Assembler(inputName,outputName);
   // int res = as->assemble();
   //as->objDump();
+  Linker linker = Linker();
   std::vector<std::string> links;
   for(int i = 1; i< argc; i++){
       std::string arg(argv[i]);
-      links.push_back(arg);
+      if(arg.at(0) == '-' && arg.at(1) == 'p'){
+          linker.placeSection(arg);
+      }
+      else if(arg.at(0) == '-' && arg.at(1) == 'o'){
+
+      }
+      else if(arg.at(0) == '-' && arg.at(1) == 'h'){
+
+      }
+      else{
+        links.push_back(arg);
+      }
   }
-  Linker linker = Linker();
+  
   linker.readELFS(links);
   return 1;
 }

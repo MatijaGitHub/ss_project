@@ -313,6 +313,8 @@ void Assembler::createELF(){
     Section* sec = currSec->getSection();
     elfFile << "SECTION NAME\n";
     elfFile << sec->sectionName << "\n";
+    elfFile << "SECTION SIZE\n";
+    elfFile << sec->myEntry->size << "\n";
     elfFile << "SECTION CONTENT\n";
     elfFile << sec->sectionContent << "\n";
     currSec = currSec->getNextEntry();

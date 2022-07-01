@@ -21,6 +21,7 @@ public:
   void patchContent(unsigned long content, int location);
   void readContent();
   void printRelocationTable(SymbolTable* symbolTable);
+  int size;
   RelocationTable* myRelocationTable;
 
 };

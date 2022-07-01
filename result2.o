@@ -10,9 +10,21 @@ NUMBER OF RELOCATION RECORDS
 SYMBOL TABLE
 ////////////////////////////////////////////////////////////
 SYMBOL NAME
+labela2
+BELONGS TO
+1
+BIND
+g
+TYPE
+NOTYP
+SIZE
+0
+VALUE
+0
+SYMBOL NAME
 .text
 BELONGS TO
-0
+1
 BIND
 l
 TYPE
@@ -21,18 +33,6 @@ SIZE
 2
 VALUE
 2
-SYMBOL NAME
-labela2
-BELONGS TO
-0
-BIND
-l
-TYPE
-NOTYP
-SIZE
-0
-VALUE
-0
 ////////////////////////////////////////////////////////////
 SECTION TABLE
 ////////////////////////////////////////////////////////////

@@ -10,13 +10,17 @@
 #include <unordered_map>
 #include <vector>
 #include <set>
+#include <limits.h>
 
 
 class Linker{
   private:
   SymbolTable* symbolTable;
-  std::unordered_map<std::string, std::vector<std::string>> sectionContents;
+  std::unordered_map<std::string, int> sectionSizes;
+  std::unordered_map<std::string, std::vector<std::pair<int,std::string>>> sectionContents;
   std::unordered_map<std::string, RelocationTable*> relocationTables;
+  std::unordered_map<std::string,short> placedSections;
+  std::unordered_map<std::string,short> mappedSections;
   std::set<std::string> externSymbols;
   int numOfSymbols;
   int numOfSections;
@@ -29,6 +33,7 @@ class Linker{
   Linker();
   void readELFS(std::vector<std::string> files);
   void map();
+  void placeSection(std::string command);
   void resolveSymbols();
   void exoneration();
   
