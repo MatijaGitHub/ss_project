@@ -100,6 +100,7 @@ void Linker::readELF(std::string fileName){
     if(this->relocationTables.find(sectionName) == this->relocationTables.end()){
       this->relocationTables[sectionName] = new RelocationTable();
     }
+    newEntry->belongsToSectionIndex = sectionAppearances[sectionName] - 1;
     this->relocationTables[sectionName]->addEntry(newEntry);
   }
 
@@ -129,7 +130,10 @@ void Linker::readELFS(std::vector<std::string> files){
     readELF(s);
   }
     if(this->externSymbols.size() > 0){
-    printf("NOT ALL EXTERN SYMBOLS DEFINED!\n");
+    printf("THE FOLLOWING SYMBOLS ARE NOT DEFINED:\n");
+    for(std::set<std::string>::iterator begin = this->externSymbols.begin();begin!=this->externSymbols.end();begin++){
+      printf("%s\n",(*begin).c_str());
+    }
     exit(-1);
   }
 }
@@ -158,7 +162,7 @@ void Linker::placeSection(std::string command){
         for(std::pair<int,std::string> size : sectionContents[secName]){
           secSize += size.first;
         }
-        checkIfPlacementPossible(secBegin, secBegin + secSize);
+        checkIfPlacementPossible(secBegin, secBegin + secSize,secName);
         mappedSections[secName] = secBegin;
         if(secBegin + secSize > maxAddress) maxAddress = secBegin + secSize;
     }
@@ -175,10 +179,10 @@ void Linker::placeSection(std::string command){
     }
  }
 
- void Linker::checkIfPlacementPossible(unsigned short min,unsigned short max){
+ void Linker::checkIfPlacementPossible(unsigned short min,unsigned short max, std::string sectionName){
     for(std::pair<std::string,unsigned short> allocatedSection : mappedSections){
       if(allocatedSection.second >= min && allocatedSection.second < max){
-        printf("BAD ALLOCATION, SECTIONS INTERSECTED IN MEMORY!\n");
+        printf("BAD ALLOCATION, SECTIONS %s AND %s ARE INTERSECTED IN MEMORY!\n",sectionName.c_str(),allocatedSection.first.c_str());
         exit(-1);
       }
     }
@@ -194,6 +198,7 @@ void Linker::placeSection(std::string command){
   resolveSymbols();
   this->symbolTable->printSymbolTable();
   exoneration();
+  hex();
     
  }
 
@@ -211,5 +216,62 @@ void Linker::resolveSymbols(){
   
 }
 void Linker::exoneration(){
-
+  for(std::pair<std::string,RelocationTable*> relocTable : this->relocationTables){
+    std::string secName = relocTable.first;
+    RelocationTableEntry* entry = relocTable.second->getFirstEntry();
+    while (entry != nullptr)
+    {
+      std::string content = sectionContents[secName].at(entry->belongsToSectionIndex).second;
+      Section* section = new Section();
+      section->sectionContent = content;
+      unsigned long value;
+      SymbolTableEntry* symbol = symbolTable->getEntryBySymbolName(entry->symbolName);
+      if(symbol == nullptr){
+        value = mappedSections[entry->symbolName];
+      }
+      else{
+        value = symbol->value;
+      }
+      unsigned long toReplace = entry->addend + value;
+      if(entry->type == R_X86_64_PLT32){
+        unsigned short fileOffset = 0;
+        for(int i = 0; i < entry->belongsToSectionIndex ; i++){
+          fileOffset+=sectionContents[secName][i].first;
+        }
+        unsigned long sub = entry->offset + mappedSections[secName] + fileOffset;
+        toReplace-=sub; 
+      }
+      section->patchContent(toReplace,entry->offset);
+      sectionContents[secName].at(entry->belongsToSectionIndex).second = section->sectionContent;
+      entry = entry->nextEntry;
+    }
+    
+  }
+}
+bool cmp(std::pair<std::string, unsigned short>& a,
+         std::pair<std::string, unsigned short>& b)
+{
+    return a.second < b.second;
+}
+std::vector<std::pair<std::string, unsigned short>> sort(std::unordered_map<std::string, unsigned short>& M)
+{
+    std::vector<std::pair<std::string, unsigned short> > A;
+    for (auto& it : M) {
+        A.push_back(it);
+    }
+    sort(A.begin(), A.end(), cmp);
+    return A;
+}
+void Linker::hex(){
+  std::string hexContent = "";
+  std::vector<std::pair<std::string, unsigned short>> sorted = sort(mappedSections);
+  int startAdr = sorted.front().second;
+  for(std::pair<std::string,unsigned short> pair : sorted){
+    unsigned short startLocation = pair.second;
+    std::vector<std::pair<int,std::string>> sectionContent = sectionContents[pair.first];
+    for(std::pair<int,std::string> content : sectionContent){
+      hexContent+=content.second;
+    }
+  }
+  printf("%s\n", hexContent.c_str());
 }

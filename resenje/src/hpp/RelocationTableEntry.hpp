@@ -16,5 +16,6 @@ public:
   int mySymbol;
   std::string symbolName;
   int addend;
+  int belongsToSectionIndex;
   RelocationTableEntry* nextEntry;
 };

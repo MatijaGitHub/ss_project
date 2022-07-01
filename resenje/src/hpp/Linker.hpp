@@ -2,6 +2,7 @@
 #include "./SymbolTable.hpp"
 #include "./Section.hpp"
 #include "./RelocationTable.hpp"
+#include "./RelocationTableEntry.hpp"
 #include <string>
 #include <iomanip>
 #include <iostream>
@@ -11,6 +12,7 @@
 #include <vector>
 #include <set>
 #include <limits.h>
+#include <bits/stdc++.h>
 
 
 class Linker{
@@ -28,12 +30,13 @@ class Linker{
   void skipLines(int n, std::ifstream* file);
   void checkIfSymbolIsDefined(std::string name);
   void readELF(std::string fileName);
-  void checkIfPlacementPossible(unsigned short min,unsigned short max);
+  void checkIfPlacementPossible(unsigned short min,unsigned short max, std::string sectionName);
   /////////////
   void readELFS(std::vector<std::string> files);
   void map();
   void resolveSymbols();
   void exoneration();
+  void hex();
   public:
   Linker();
   void link(std::vector<std::string> files);
