@@ -50,6 +50,6 @@ int main(int argc, char *argv[])
       }
   }
   
-  linker.readELFS(links);
+  linker.link(links);
   return 1;
 }

@@ -139,7 +139,55 @@ void Linker::placeSection(std::string command){
 
  void Linker::map(){
     unsigned short maxAddress = 0;
-    for(std::pair<std::string,short> placedSection : this->placedSections){
-
+    for(std::pair<std::string,unsigned short> placedSection : this->placedSections){
+        std::string secName = placedSection.first;
+        if(sectionContents.find(secName) == sectionContents.end()) continue;
+        unsigned short secBegin = placedSection.second;
+        unsigned short secSize = 0;
+        for(std::pair<int,std::string> size : sectionContents[secName]){
+          secSize += size.first;
+        }
+        checkIfPlacementPossible(secBegin, secBegin + secSize);
+        mappedSections[secName] = secBegin;
+        if(secBegin + secSize > maxAddress) maxAddress = secBegin + secSize;
+    }
+    for(std::pair<std::string, std::vector<std::pair<int,std::string>>> section : sectionContents){
+      std::string secName = section.first;
+      std::vector<std::pair<int,std::string>> content = section.second;
+      if(mappedSections.find(secName) != mappedSections.end()) continue;
+      unsigned short secSize = 0;
+      for(std::pair<int,std::string> size : content){
+        secSize += size.first;
+      }
+      mappedSections[secName] = maxAddress;
+      maxAddress += secSize;
     }
  }
+
+ void Linker::checkIfPlacementPossible(unsigned short min,unsigned short max){
+    for(std::pair<std::string,unsigned short> allocatedSection : mappedSections){
+      if(allocatedSection.second >= min && allocatedSection.second < max){
+        printf("BAD ALLOCATION, SECTIONS INTERSECTED IN MEMORY!\n");
+        exit(-1);
+      }
+    }
+ }
+
+
+ void Linker::link(std::vector<std::string> files){
+  readELFS(files);
+  map();
+  for(std::pair<std::string,unsigned short> section : mappedSections){
+    printf("SEKCIJA: %s MAPIRANA NA ADRESU: %d\n",section.first.c_str(),section.second);
+  }
+  resolveSymbols();
+  exoneration();
+    
+ }
+
+void Linker::resolveSymbols(){
+
+}
+void Linker::exoneration(){
+
+}
