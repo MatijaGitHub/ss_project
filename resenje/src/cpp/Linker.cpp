@@ -342,6 +342,6 @@ void Linker::hex(){
   }
   std::ofstream hexFile;
   hexFile.open(this->outputFile);
-  hexFile << hexContent << '\n';
+  hexFile << hexContent << '\n' << '\n';
   hexFile.close();
 }
