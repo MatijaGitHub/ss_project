@@ -18,7 +18,7 @@ public:
   int sectionContentCounter;
   void writeTwoByteContent(std::string twobyte);
   void writeOneByteContent(std::string byte);
-  void patchContent(unsigned long content, int location);
+  void patchContent(unsigned long content, int location, bool isInstruction);
   void readContent();
   void printRelocationTable(SymbolTable* symbolTable);
   int size;

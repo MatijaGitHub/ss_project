@@ -47,15 +47,16 @@ void Section::writeTwoByteContent(std::string twobyte){
     secondByte += twobyte.at(2);
     secondByte += twobyte.at(3);
   }
-  writeOneByteContent(firstByte);
   writeOneByteContent(secondByte);
+  writeOneByteContent(firstByte);
+  
 }
 void Section::readContent(){
   printf("%s\n",this->sectionContent.c_str());
   printf("\n");
 }
 
-void Section::patchContent(unsigned long content, int patch){
+void Section::patchContent(unsigned long content, int patch, bool isInstruction){
   int mask = 0b0000000011111111;
   unsigned firstByte = content;
   firstByte>>=8;
@@ -72,11 +73,21 @@ void Section::patchContent(unsigned long content, int patch){
   for(int i = 0; i<patch; i++){
       location+=3;
   }
-  this->sectionContent.at(location) = firstByteWritable.at(0);
-  this->sectionContent.at(location + 1) = firstByteWritable.at(1);
-  location+=3;
-  this->sectionContent.at(location) = secondByteWritable.at(0);
-  this->sectionContent.at(location + 1) = secondByteWritable.at(1);
+  if(isInstruction){
+    this->sectionContent.at(location) = firstByteWritable.at(0);
+    this->sectionContent.at(location + 1) = firstByteWritable.at(1);
+    location+=3;
+    this->sectionContent.at(location) = secondByteWritable.at(0);
+    this->sectionContent.at(location + 1) = secondByteWritable.at(1);
+  }
+  else{
+    this->sectionContent.at(location) = secondByteWritable.at(0);
+    this->sectionContent.at(location + 1) = secondByteWritable.at(1);
+    location+=3;
+    this->sectionContent.at(location) = firstByteWritable.at(0);
+    this->sectionContent.at(location + 1) = firstByteWritable.at(1);
+  }
+
 }
 
 void Section::printRelocationTable(SymbolTable* symbolTable){

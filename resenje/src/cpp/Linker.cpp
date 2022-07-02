@@ -260,7 +260,8 @@ void Linker::exoneration(){
         unsigned long sub = entry->offset + mappedSections[secName] + fileOffset;
         toReplace-=sub; 
       }
-      section->patchContent(toReplace,entry->offset);
+      
+      section->patchContent(toReplace,entry->offset,entry->type != R_X86_64_32);
       sectionContents[secName].at(entry->belongsToSectionIndex).second = section->sectionContent;
       entry = entry->nextEntry;
     }

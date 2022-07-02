@@ -220,7 +220,7 @@ int Assembler::backpatch(){
     while(flinkEntry){
       if(entry->defined && entry->belongsTo == flinkEntry->getAtSection()->myEntry->index && !flinkEntry->isAbsoluteAddressing()){
         int value = entry->value - (flinkEntry->getPatch() + 2);
-        flinkEntry->getAtSection()->patchContent(value,flinkEntry->getPatch());
+        flinkEntry->getAtSection()->patchContent(value,flinkEntry->getPatch(),flinkEntry->isInstructionPatch());
       }
       else{
         int symbol = entry->bind=='g'?entry->index:entry->belongsTo;
