@@ -10,9 +10,21 @@ NUMBER OF RELOCATION RECORDS
 SYMBOL TABLE
 ////////////////////////////////////////////////////////////
 SYMBOL NAME
-labela2
+isr
 BELONGS TO
-.text
+isr
+BIND
+l
+TYPE
+SECT
+SIZE
+1
+VALUE
+0
+SYMBOL NAME
+isr_timer
+BELONGS TO
+isr
 BIND
 g
 TYPE
@@ -20,28 +32,16 @@ NOTYP
 SIZE
 0
 VALUE
-2
-SYMBOL NAME
-.text
-BELONGS TO
-.text
-BIND
-l
-TYPE
-SECT
-SIZE
-2
-VALUE
 0
 ////////////////////////////////////////////////////////////
 SECTION TABLE
 ////////////////////////////////////////////////////////////
 SECTION NAME
-.text
+isr
 SECTION SIZE
-2
+1
 SECTION CONTENT
-83 11 
+20 
 ////////////////////////////////////////////////////////////
 RELOCATION TABLES
 ////////////////////////////////////////////////////////////

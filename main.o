@@ -1,18 +1,18 @@
 		<<ELF>>
 ---------------------------------
 NUMBER OF SYMBOLS
-2
+5
 NUMBER OF SECTIONS
-1
+2
 NUMBER OF RELOCATION RECORDS
-0
+2
 ---------------------------------
 SYMBOL TABLE
 ////////////////////////////////////////////////////////////
 SYMBOL NAME
-labela2
+my_start
 BELONGS TO
-.text
+my_code
 BIND
 g
 TYPE
@@ -20,11 +20,47 @@ NOTYP
 SIZE
 0
 VALUE
-2
+0
 SYMBOL NAME
-.text
+my_counter
 BELONGS TO
-.text
+my_data
+BIND
+g
+TYPE
+NOTYP
+SIZE
+0
+VALUE
+0
+SYMBOL NAME
+my_code
+BELONGS TO
+my_code
+BIND
+l
+TYPE
+SECT
+SIZE
+33
+VALUE
+0
+SYMBOL NAME
+wait
+BELONGS TO
+my_code
+BIND
+l
+TYPE
+NOTYP
+SIZE
+0
+VALUE
+15
+SYMBOL NAME
+my_data
+BELONGS TO
+my_data
 BIND
 l
 TYPE
@@ -37,12 +73,42 @@ VALUE
 SECTION TABLE
 ////////////////////////////////////////////////////////////
 SECTION NAME
-.text
+my_code
+SECTION SIZE
+33
+SECTION CONTENT
+a0 6f 00 fe	fe a0 0f 00
+00 01 b0 0f	04 ff 10 a0
+0f 04 00 00	a0 1f 00 00
+14 74 01 52	ff 00 00 00
+00 
+SECTION NAME
+my_data
 SECTION SIZE
 2
 SECTION CONTENT
-83 11 
+00 00 
 ////////////////////////////////////////////////////////////
 RELOCATION TABLES
 ////////////////////////////////////////////////////////////
+SECTION NAME
+my_code
+OFFSET
+18
+TYPE
+1
+SYMBOL
+my_counter
+ADDEND
+0
+SECTION NAME
+my_code
+OFFSET
+30
+TYPE
+1
+SYMBOL
+my_code
+ADDEND
+15
 ////////////////////////////////////////////////////////////

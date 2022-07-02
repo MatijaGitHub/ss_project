@@ -1,18 +1,18 @@
 		<<ELF>>
 ---------------------------------
 NUMBER OF SYMBOLS
-2
+3
 NUMBER OF SECTIONS
 1
 NUMBER OF RELOCATION RECORDS
-0
+2
 ---------------------------------
 SYMBOL TABLE
 ////////////////////////////////////////////////////////////
 SYMBOL NAME
-labela2
+my_counter
 BELONGS TO
-.text
+UND
 BIND
 g
 TYPE
@@ -20,29 +20,66 @@ NOTYP
 SIZE
 0
 VALUE
-2
+0
 SYMBOL NAME
-.text
+isr
 BELONGS TO
-.text
+isr
 BIND
 l
 TYPE
 SECT
 SIZE
-2
+47
+VALUE
+0
+SYMBOL NAME
+isr_terminal
+BELONGS TO
+isr
+BIND
+g
+TYPE
+NOTYP
+SIZE
+0
 VALUE
 0
 ////////////////////////////////////////////////////////////
 SECTION TABLE
 ////////////////////////////////////////////////////////////
 SECTION NAME
-.text
+isr
 SECTION SIZE
-2
+47
 SECTION CONTENT
-83 11 
+b0 06 12 b0	16 12 a0 0f
+04 ff 02 a0	1f 00 00 02
+70 01 b0 0f	04 ff 00 a0
+07 03 00 00	a0 1f 00 00
+01 70 01 b0	0f 04 00 00
+a0 16 42 a0	06 42 20 
 ////////////////////////////////////////////////////////////
 RELOCATION TABLES
 ////////////////////////////////////////////////////////////
+SECTION NAME
+isr
+OFFSET
+26
+TYPE
+2
+SYMBOL
+my_counter
+ADDEND
+-2
+SECTION NAME
+isr
+OFFSET
+38
+TYPE
+1
+SYMBOL
+my_counter
+ADDEND
+0
 ////////////////////////////////////////////////////////////

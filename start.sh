@@ -1,4 +1,9 @@
-/usr/bin/lex ./resenje/misc/lexer.l 
-/usr/bin/bison ./resenje/misc/parser.y
-g++ ./resenje/src/cpp/*  ./resenje/misc/cpp/* ./resenje/misc/FlexAndBison/* ./resenje/misc/main.cpp -o asembler
-./asembler test.s
+ASSEMBLER=./asembler
+LINKER=./linker
+
+${ASSEMBLER} -o main.o main.s
+${ASSEMBLER} -o ivt.o ivt.s
+${ASSEMBLER} -o isr_reset.o isr_reset.s
+${ASSEMBLER} -o isr_terminal.o isr_terminal.s
+${ASSEMBLER} -o isr_timer.o isr_timer.s
+${LINKER} -hex -place=ivt@0x0000 -o program.hex main.o isr_reset.o isr_terminal.o isr_timer.o ivt.o

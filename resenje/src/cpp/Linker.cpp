@@ -137,6 +137,11 @@ void Linker::readELFS(std::vector<std::string> files){
   for(std::string s : files){
     readELF(s);
   }
+  SymbolTableEntry* entry = this->symbolTable->getFirstEntry();
+  while(entry!=nullptr){
+    this->externSymbols.erase(entry->name);
+    entry = entry->nextEntry;
+  }
     if(this->externSymbols.size() > 0){
     printf("THE FOLLOWING SYMBOLS ARE NOT DEFINED:\n");
     for(std::set<std::string>::iterator begin = this->externSymbols.begin();begin!=this->externSymbols.end();begin++){
@@ -203,11 +208,11 @@ void Linker::placeSection(std::string command){
  void Linker::link(std::vector<std::string> files){
   readELFS(files);
   map();
-  // for(std::pair<std::string,unsigned short> section : mappedSections){
-  //   printf("SEKCIJA: %s MAPIRANA NA ADRESU: %d\n",section.first.c_str(),section.second);
-  // }
+  for(std::pair<std::string,unsigned short> section : mappedSections){
+    printf("SEKCIJA: %s MAPIRANA NA ADRESU: %d\n",section.first.c_str(),section.second);
+  }
   resolveSymbols();
-  // this->symbolTable->printSymbolTable();
+  this->symbolTable->printSymbolTable();
   exoneration();
   if(this->toHex){
     hex();

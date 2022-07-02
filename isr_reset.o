@@ -1,18 +1,18 @@
 		<<ELF>>
 ---------------------------------
 NUMBER OF SYMBOLS
-2
+3
 NUMBER OF SECTIONS
 1
 NUMBER OF RELOCATION RECORDS
-0
+1
 ---------------------------------
 SYMBOL TABLE
 ////////////////////////////////////////////////////////////
 SYMBOL NAME
-labela2
+my_start
 BELONGS TO
-.text
+UND
 BIND
 g
 TYPE
@@ -20,29 +20,51 @@ NOTYP
 SIZE
 0
 VALUE
-2
+0
 SYMBOL NAME
-.text
+isr
 BELONGS TO
-.text
+isr
 BIND
 l
 TYPE
 SECT
 SIZE
-2
+5
+VALUE
+0
+SYMBOL NAME
+isr_reset
+BELONGS TO
+isr
+BIND
+g
+TYPE
+NOTYP
+SIZE
+0
 VALUE
 0
 ////////////////////////////////////////////////////////////
 SECTION TABLE
 ////////////////////////////////////////////////////////////
 SECTION NAME
-.text
+isr
 SECTION SIZE
-2
+5
 SECTION CONTENT
-83 11 
+50 ff 00 00	00 
 ////////////////////////////////////////////////////////////
 RELOCATION TABLES
 ////////////////////////////////////////////////////////////
+SECTION NAME
+isr
+OFFSET
+3
+TYPE
+1
+SYMBOL
+my_start
+ADDEND
+0
 ////////////////////////////////////////////////////////////
