@@ -73,6 +73,7 @@ void Linker::readELF(std::string fileName){
       this->sectionContents[sec->sectionName].push_back(secData);
       if(sectionAppearances.find(sec->sectionName) == sectionAppearances.end()){
         sectionAppearances[sec->sectionName] = 1;
+        orderOfSections.push_back(sec->sectionName);
       }
       else{
         sectionAppearances[sec->sectionName]++;
@@ -166,17 +167,20 @@ void Linker::placeSection(std::string command){
         mappedSections[secName] = secBegin;
         if(secBegin + secSize > maxAddress) maxAddress = secBegin + secSize;
     }
-    for(std::pair<std::string, std::vector<std::pair<int,std::string>>> section : sectionContents){
-      std::string secName = section.first;
-      std::vector<std::pair<int,std::string>> content = section.second;
-      if(mappedSections.find(secName) != mappedSections.end()) continue;
-      unsigned short secSize = 0;
-      for(std::pair<int,std::string> size : content){
-        secSize += size.first;
-      }
-      mappedSections[secName] = maxAddress;
-      maxAddress += secSize;
+    for(std::string sectionName : orderOfSections){
+      
+            std::vector<std::pair<int,std::string>> content = sectionContents[sectionName];
+            std::string secName = sectionName;
+            if(mappedSections.find(secName) != mappedSections.end()) continue;
+            unsigned short secSize = 0;
+            for(std::pair<int,std::string> size : content){
+              secSize += size.first;
+            }
+            mappedSections[secName] = maxAddress;
+            maxAddress += secSize;
+       
     }
+   
  }
 
  void Linker::checkIfPlacementPossible(unsigned short min,unsigned short max, std::string sectionName){
@@ -233,7 +237,7 @@ void Linker::exoneration(){
         value = symbol->value;
       }
       unsigned long toReplace = entry->addend + value;
-      if(entry->type == R_X86_64_PLT32){
+      if(entry->type == R_X86_64_PLT32 || entry->type == R_X86_64_PC32){
         unsigned short fileOffset = 0;
         for(int i = 0; i < entry->belongsToSectionIndex ; i++){
           fileOffset+=sectionContents[secName][i].first;
@@ -262,16 +266,37 @@ std::vector<std::pair<std::string, unsigned short>> sort(std::unordered_map<std:
     sort(A.begin(), A.end(), cmp);
     return A;
 }
+std::string addAddresses(std::string content, int* currentAdr){
+  int at = 0;
+  while(at < content.size()){
+    std::stringstream stream;
+    stream << std::setfill ('0') << std::setw(sizeof(int)) 
+          << std::hex << *currentAdr;
+    std::string adr = stream.str();
+    stream.str("");
+    adr+=": ";
+    content.insert(at,adr);
+    at+=30;
+    *currentAdr+=8;
+  }
+  if(at!=content.size()){
+    *currentAdr-=((at - content.size())/3);
+  }
+  return content;
+
+
+}
 void Linker::hex(){
   std::string hexContent = "";
   std::vector<std::pair<std::string, unsigned short>> sorted = sort(mappedSections);
-  int startAdr = sorted.front().second;
   for(std::pair<std::string,unsigned short> pair : sorted){
+    int startAdr = pair.second;
     unsigned short startLocation = pair.second;
     std::vector<std::pair<int,std::string>> sectionContent = sectionContents[pair.first];
     for(std::pair<int,std::string> content : sectionContent){
-      hexContent+=content.second;
+      hexContent+=addAddresses(content.second,&startAdr);
     }
+   
   }
   printf("%s\n", hexContent.c_str());
 }

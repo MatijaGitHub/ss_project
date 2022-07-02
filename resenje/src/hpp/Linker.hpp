@@ -18,6 +18,7 @@
 class Linker{
   private:
   SymbolTable* symbolTable;
+  std::vector<std::string> orderOfSections;
   std::unordered_map<std::string, std::vector<std::pair<int,std::string>>> sectionContents;
   std::unordered_map<std::string, RelocationTable*> relocationTables;
   std::unordered_map<std::string,unsigned short> placedSections;
