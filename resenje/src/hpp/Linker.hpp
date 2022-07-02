@@ -15,6 +15,8 @@
 #include <bits/stdc++.h>
 
 
+
+
 class Linker{
   private:
   SymbolTable* symbolTable;
@@ -28,6 +30,8 @@ class Linker{
   int numOfSymbols;
   int numOfSections;
   int numOfRelocations;
+  std::string outputFile;
+  bool toHex;
   void skipLines(int n, std::ifstream* file);
   void checkIfSymbolIsDefined(std::string name);
   void readELF(std::string fileName);
@@ -40,6 +44,8 @@ class Linker{
   void hex();
   public:
   Linker();
+  void setOutput(std::string out);
+  void setToHex();
   void link(std::vector<std::string> files);
   void placeSection(std::string command);
 

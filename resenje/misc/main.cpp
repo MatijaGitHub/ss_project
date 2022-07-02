@@ -34,19 +34,24 @@ int main(int argc, char *argv[])
   // as->objDump();
   Linker linker = Linker();
   std::vector<std::string> links;
+  bool isOutputArg = false;
   for(int i = 1; i< argc; i++){
       std::string arg(argv[i]);
       if(arg.at(0) == '-' && arg.at(1) == 'p'){
           linker.placeSection(arg);
       }
       else if(arg.at(0) == '-' && arg.at(1) == 'o'){
-
+          isOutputArg = true;
       }
       else if(arg.at(0) == '-' && arg.at(1) == 'h'){
-
+        linker.setToHex();
+      }
+      else if(!isOutputArg){
+        links.push_back(arg);
       }
       else{
-        links.push_back(arg);
+        linker.setOutput(arg);
+        isOutputArg = false;
       }
   }
   

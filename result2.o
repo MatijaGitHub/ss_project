@@ -20,7 +20,7 @@ NOTYP
 SIZE
 0
 VALUE
-2
+10
 SYMBOL NAME
 .text
 BELONGS TO
@@ -30,7 +30,7 @@ l
 TYPE
 SECT
 SIZE
-2
+10
 VALUE
 0
 ////////////////////////////////////////////////////////////
@@ -39,8 +39,9 @@ SECTION TABLE
 SECTION NAME
 .text
 SECTION SIZE
-2
+10
 SECTION CONTENT
+83 11 83 11	83 11 83 11
 83 11 
 ////////////////////////////////////////////////////////////
 RELOCATION TABLES

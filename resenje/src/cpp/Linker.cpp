@@ -3,8 +3,15 @@
 
 Linker::Linker(){
   this->symbolTable = new SymbolTable();
+  this->toHex = false;
+  this->outputFile = "defaultOutput.hex";
 }
-
+void Linker::setOutput(std::string out){
+  this->outputFile = out;
+}
+void Linker::setToHex(){
+  this->toHex = true;
+}
 void Linker::readELF(std::string fileName){
   std::ifstream elfFile;
   elfFile.open(fileName);
@@ -196,13 +203,16 @@ void Linker::placeSection(std::string command){
  void Linker::link(std::vector<std::string> files){
   readELFS(files);
   map();
-  for(std::pair<std::string,unsigned short> section : mappedSections){
-    printf("SEKCIJA: %s MAPIRANA NA ADRESU: %d\n",section.first.c_str(),section.second);
-  }
+  // for(std::pair<std::string,unsigned short> section : mappedSections){
+  //   printf("SEKCIJA: %s MAPIRANA NA ADRESU: %d\n",section.first.c_str(),section.second);
+  // }
   resolveSymbols();
-  this->symbolTable->printSymbolTable();
+  // this->symbolTable->printSymbolTable();
   exoneration();
-  hex();
+  if(this->toHex){
+    hex();
+  }
+  
     
  }
 
@@ -266,37 +276,66 @@ std::vector<std::pair<std::string, unsigned short>> sort(std::unordered_map<std:
     sort(A.begin(), A.end(), cmp);
     return A;
 }
-std::string addAddresses(std::string content, int* currentAdr){
-  int at = 0;
-  while(at < content.size()){
-    std::stringstream stream;
-    stream << std::setfill ('0') << std::setw(sizeof(int)) 
-          << std::hex << *currentAdr;
-    std::string adr = stream.str();
-    stream.str("");
-    adr+=": ";
-    content.insert(at,adr);
-    at+=30;
-    *currentAdr+=8;
+std::string replaceStringWith(char from,char to,std::string str){
+  for(int i = 0; i<str.size();i++){
+    if(str.at(i) == from){
+      str[i] = to;
+    }
   }
-  if(at!=content.size()){
-    *currentAdr-=((at - content.size())/3);
-  }
-  return content;
+  return str;
+}
+std::string addAddresses(std::string content, int* currentAdr, int* counter){
+      int at = 0;
+      while(at < content.size()){
+        if(*counter % 8 == 0){
+          std::stringstream stream;
+          stream << std::setfill ('0') << std::setw(sizeof(int)) 
+                << std::hex << *currentAdr;
+          std::string adr = stream.str();
+          stream.str("");
+          adr+=": ";
+          
+          content.insert(at,adr);
+          if(at!=0) content[at-1] = '\n';
+          *currentAdr+=8;
+          at+=30;
+        }
+        else{
+          at+=((8-(*counter%8))*3);
+          *currentAdr+=(8-(*counter%8));
+          *counter = 0;
+        }
+      }
+      if(at!=content.size()){
+        *currentAdr-=((at-content.size())/3);
+        *counter+=8;
+        *counter-=((at-content.size())/3);
+      }
+      return content;
+    
+  
 
 
 }
 void Linker::hex(){
   std::string hexContent = "";
   std::vector<std::pair<std::string, unsigned short>> sorted = sort(mappedSections);
+  int counter,startAdr = -1,prev;
   for(std::pair<std::string,unsigned short> pair : sorted){
-    int startAdr = pair.second;
-    unsigned short startLocation = pair.second;
     std::vector<std::pair<int,std::string>> sectionContent = sectionContents[pair.first];
+    prev = startAdr;
+    startAdr = pair.second;
+    if(prev!=startAdr) counter = 0;
     for(std::pair<int,std::string> content : sectionContent){
-      hexContent+=addAddresses(content.second,&startAdr);
+      std::string currSection = content.second;
+      currSection = replaceStringWith('\t',' ',currSection);
+      if(counter%8==0 && prev!=-1) hexContent+="\n";
+      hexContent+=addAddresses(replaceStringWith('\n',' ',currSection),&startAdr,&counter);
     }
    
   }
-  printf("%s\n", hexContent.c_str());
+  std::ofstream hexFile;
+  hexFile.open(this->outputFile);
+  hexFile << hexContent << '\n';
+  hexFile.close();
 }
