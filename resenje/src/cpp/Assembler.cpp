@@ -114,8 +114,10 @@ void Assembler::handleInstruction(Instruction* ins){
     if(ins->getOperand().isSymbol()){
       SymbolTableEntry* entry = this->mySymbolTable->declareSymbolLocal(ins->getOperand().getSymbol(),this->currentSection,true,!ins->isPCRelative());
       symbolVal = entry->value;
+      
       if(entry->defined && entry->belongsTo==currentSection->myEntry->index && ins->isPCRelative()){
         symbolVal-=currentSection->locationCounter;
+        symbolVal-=ins->getInstructionLength();
       }
       else symbolVal = 0;
     }

@@ -51,11 +51,11 @@ class Emulator{
     void shlInstruction();
     void shrInstruction();
 
-    std::unordered_map<char,bool> opCodes;
+    std::unordered_map<char,void(Emulator::*)()> opCodes;
     std::unordered_map<char,ADDR_MODE> addressModes;
     std::unordered_map<char,UP_MODE> upModes;
     void handleInterrupts();
-
+    short getOperand(unsigned char adrMode,unsigned char upMod, unsigned char rD, unsigned char rS,bool* isValid,short** operandDest);
 
   public:
     Emulator();

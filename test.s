@@ -1,17 +1,13 @@
-.global labela1
-.global labela3
-.extern labela2
 .section .text
-jmp %labela5
-ldr r0, %labela1
-ldr r0,labela1
-ldr r0, [r0 + 0x13]
-jmp *[r1 + labela1]
-labela3:
-.section .data
-jmp labela1
-add r1,r1
-labela1:
-labela5:
-xor r1, r1
-.end
+.word GAGA
+.word 1000
+GAGA:
+
+ldr r0, %GAGA
+
+ldr r1, r2
+ldr r2, [r1 + GAGA]
+ldr r6, $0
+pop r4
+pop r5
+halt

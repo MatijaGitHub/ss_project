@@ -73,7 +73,7 @@ r[0-7]      {WRITE_REGISTER; return REGISTER;}
 ";"         {return SEMI_COLON;}
 ","         {return COMMA;}
 "."         {return DOT;}
-\"[a-zA-Z_\\][a-zA-Z0-9_\\]*\"    {WRITE_SYMBOL;return STRING;}
+\"[a-zA-Z0-9_\\ ]*\"    {WRITE_SYMBOL;return STRING;}
 \.[a-zA-Z_][a-zA-Z0-9_]* {WRITE_SYMBOL; return DIR;}
 "\n"        {return NEW_LINE;}
 [ \t]+      {;}

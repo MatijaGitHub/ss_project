@@ -1,0 +1,71 @@
+		<<ELF>>
+---------------------------------
+NUMBER OF SYMBOLS
+2
+NUMBER OF SECTIONS
+1
+NUMBER OF RELOCATION RECORDS
+2
+---------------------------------
+SYMBOL TABLE
+////////////////////////////////////////////////////////////
+SYMBOL NAME
+.text
+BELONGS TO
+.text
+BIND
+l
+TYPE
+SECT
+SIZE
+29
+VALUE
+0
+SYMBOL NAME
+GAGA
+BELONGS TO
+.text
+BIND
+l
+TYPE
+NOTYP
+SIZE
+0
+VALUE
+4
+////////////////////////////////////////////////////////////
+SECTION TABLE
+////////////////////////////////////////////////////////////
+SECTION NAME
+.text
+SECTION SIZE
+29
+SECTION CONTENT
+00 00 e8 03	a0 07 03 ff
+fb a0 12 01	a0 21 03 00
+00 a0 6f 00	00 00 a0 46
+42 a0 56 42	00 
+////////////////////////////////////////////////////////////
+RELOCATION TABLES
+////////////////////////////////////////////////////////////
+SECTION NAME
+.text
+OFFSET
+0
+TYPE
+0
+SYMBOL
+.text
+ADDEND
+4
+SECTION NAME
+.text
+OFFSET
+15
+TYPE
+1
+SYMBOL
+.text
+ADDEND
+4
+////////////////////////////////////////////////////////////
