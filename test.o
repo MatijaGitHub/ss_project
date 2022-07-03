@@ -5,7 +5,7 @@ NUMBER OF SYMBOLS
 NUMBER OF SECTIONS
 1
 NUMBER OF RELOCATION RECORDS
-2
+1
 ---------------------------------
 SYMBOL TABLE
 ////////////////////////////////////////////////////////////
@@ -18,7 +18,7 @@ l
 TYPE
 SECT
 SIZE
-29
+17
 VALUE
 0
 SYMBOL NAME
@@ -39,12 +39,11 @@ SECTION TABLE
 SECTION NAME
 .text
 SECTION SIZE
-29
+17
 SECTION CONTENT
-00 00 e8 03	a0 07 03 ff
-fb a0 12 01	a0 21 03 00
-00 a0 6f 00	00 00 a0 46
-42 a0 56 42	00 
+00 00 e8 03	a0 0f 00 00
+10 a0 1f 00	00 01 90 10
+00 
 ////////////////////////////////////////////////////////////
 RELOCATION TABLES
 ////////////////////////////////////////////////////////////
@@ -54,16 +53,6 @@ OFFSET
 0
 TYPE
 0
-SYMBOL
-.text
-ADDEND
-4
-SECTION NAME
-.text
-OFFSET
-15
-TYPE
-1
 SYMBOL
 .text
 ADDEND

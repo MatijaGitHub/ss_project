@@ -61,7 +61,7 @@ void Emulator::start(std::string inputFile){
     }
     handleInterrupts();
   }
-  printf("REGISTER VALUES: r0 := %d, r1 := %d, r2 := %d, r3 := %d, r4 := %d, r5 := %d, r6 := %d, r7 := %d\n",this->registers[0] ,this->registers[1] ,this->registers[2] ,this->registers[3] ,this->registers[4] ,this->registers[5] ,this->registers[6] ,this->registers[7]);
+  printf("REGISTER VALUES: r0 := %d, r1 := %d, r2 := %d, r3 := %d, r4 := %d, r5 := %dr6 := %d, r7 := %d PSW := %d\n",this->registers[0] ,this->registers[1] ,this->registers[2] ,this->registers[3] ,this->registers[4] ,this->registers[5] ,this->registers[6] ,this->registers[7],this->registers[PSW]);
   
 }
 void Emulator::handleInterrupts(){
@@ -228,17 +228,124 @@ void Emulator::loadIntoMemory(std::string inputFile){
       if((unsigned short)rSVal > (unsigned short)rDVal){
         this->registers[PSW] |= 4;
       }
-      if((rSVal > 0 && rDVal > 0 && temp < 0) || (rSVal < 0 && rDVal < 0 && temp >= 0)){
+      if((rSVal < 0 && rDVal > 0 && temp < 0) || (rSVal > 0 && rDVal < 0 && temp > 0)){
         this->registers[PSW] |= 2;
       }
     }
-    void Emulator::notInstruction(){}
-    void Emulator::andInstruction(){}
-    void Emulator::orInstruction(){}
-    void Emulator::xorInstruction(){}
-    void Emulator::testInstruction(){}
-    void Emulator::shlInstruction(){}
-    void Emulator::shrInstruction(){}
+    void Emulator::notInstruction(){
+      unsigned char registerByte = memory[(SYSTEM_REGISTER)(this->registers[PC_REG]) + 1];
+      unsigned char rD = (registerByte & 0b11110000) >> 4;
+      unsigned char rS = registerByte & 0b00001111;
+      if(rD >= 0b1000 || rS != 0b1111){
+        return;
+      }
+      this->registers[PC_REG] +=2;
+      short rDVal = this->registers[rD];
+      this->registers[rD] = ~rDVal; 
+    }
+    void Emulator::andInstruction(){
+      unsigned char registerByte = memory[(SYSTEM_REGISTER)(this->registers[PC_REG]) + 1];
+      unsigned char rD = (registerByte & 0b11110000) >> 4;
+      unsigned char rS = registerByte & 0b00001111;
+      if(rD >= 0b1000 || rS >=0b1000){
+        return;
+      }
+      this->registers[PC_REG] +=2;
+      short rDVal = this->registers[rD];
+      short rSVal = this->registers[rS];
+      this->registers[rD] = rDVal & rSVal;
+    }
+    void Emulator::orInstruction(){
+      unsigned char registerByte = memory[(SYSTEM_REGISTER)(this->registers[PC_REG]) + 1];
+      unsigned char rD = (registerByte & 0b11110000) >> 4;
+      unsigned char rS = registerByte & 0b00001111;
+      if(rD >= 0b1000 || rS >=0b1000){
+        return;
+      }
+      this->registers[PC_REG] +=2;
+      short rDVal = this->registers[rD];
+      short rSVal = this->registers[rS];
+      this->registers[rD] = rDVal | rSVal;
+    }
+    void Emulator::xorInstruction(){
+      unsigned char registerByte = memory[(SYSTEM_REGISTER)(this->registers[PC_REG]) + 1];
+      unsigned char rD = (registerByte & 0b11110000) >> 4;
+      unsigned char rS = registerByte & 0b00001111;
+      if(rD >= 0b1000 || rS >=0b1000){
+        return;
+      }
+      this->registers[PC_REG] +=2;
+      short rDVal = this->registers[rD];
+      short rSVal = this->registers[rS];
+      this->registers[rD] = rDVal ^ rSVal;
+    }
+    void Emulator::testInstruction(){
+      unsigned char registerByte = memory[(SYSTEM_REGISTER)(this->registers[PC_REG]) + 1];
+      unsigned char rD = (registerByte & 0b11110000) >> 4;
+      unsigned char rS = registerByte & 0b00001111;
+      if(rD >= 0b1000 || rS >=0b1000){
+        return;
+      }
+      this->registers[PC_REG] +=2;
+      short rDVal = this->registers[rD];
+      short rSVal = this->registers[rS];
+      short temp = rDVal & rSVal;
+      if(temp == 0){
+        this->registers[PSW] |= 1;
+      }
+      if(temp < 0){
+        this->registers[PSW] |= 8;
+      }
+      
+    }
+    void Emulator::shlInstruction(){
+     unsigned char registerByte = memory[(SYSTEM_REGISTER)(this->registers[PC_REG]) + 1];
+      unsigned char rD = (registerByte & 0b11110000) >> 4;
+      unsigned char rS = registerByte & 0b00001111;
+      if(rD >= 0b1000 || rS >=0b1000){
+        return;
+      }
+      this->registers[PC_REG] +=2;
+      short rDVal = this->registers[rD];
+      short rSVal = this->registers[rS];
+      this->registers[rD] = rDVal << rSVal;
+      if(rSVal <= 16 && rSVal > 0){
+          short isOne = (0b1000000000000000 >> (rSVal-1))&rDVal;
+          if(isOne){
+            this->registers[PSW] |= 4;
+          }
+      }
+      if(this->registers[rD] == 0){
+        this->registers[PSW] |= 1;
+      }
+      if(this->registers[rD] < 0){
+        this->registers[PSW] |= 8;
+      }
+    }
+    void Emulator::shrInstruction(){
+      unsigned char registerByte = memory[(SYSTEM_REGISTER)(this->registers[PC_REG]) + 1];
+      unsigned char rD = (registerByte & 0b11110000) >> 4;
+      unsigned char rS = registerByte & 0b00001111;
+      if(rD >= 0b1000 || rS >=0b1000){
+        return;
+      }
+      this->registers[PC_REG] +=2;
+      short rDVal = this->registers[rD];
+      short rSVal = this->registers[rS];
+      this->registers[rD] = rDVal >> rSVal;
+      if(rSVal <=16 && rSVal > 0){
+        short isOne = (0b0000000000000001 << (rSVal - 1)) & rDVal;
+        if(isOne > 0){
+          this->registers[PSW] |= 4;
+        }
+      }
+      if(this->registers[rD] == 0){
+        this->registers[PSW] |= 1;
+      }
+      if(this->registers[rD] < 0){
+        this->registers[PSW] |= 8;
+      }
+    }
 
 
     short Emulator::getOperand(unsigned char adrMode,unsigned char upMod, unsigned char rD, unsigned char rS, bool* isValid,short** operandDest){
