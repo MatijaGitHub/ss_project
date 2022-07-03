@@ -12,6 +12,7 @@ typedef short REGISTER;
 typedef unsigned short SYSTEM_REGISTER;
 #define PC_REG 7
 #define PSW 8
+#define SP 6
 enum ADDR_MODE{
   IMMED_ADR,REGDIR_ADR,REGDIR16_ADR,REGIND_ADR,REGIND16_ADR,MEM_ADR
 };

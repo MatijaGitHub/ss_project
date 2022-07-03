@@ -3,16 +3,16 @@
 NUMBER OF SYMBOLS
 4
 NUMBER OF SECTIONS
-1
-NUMBER OF RELOCATION RECORDS
 2
+NUMBER OF RELOCATION RECORDS
+0
 ---------------------------------
 SYMBOL TABLE
 ////////////////////////////////////////////////////////////
 SYMBOL NAME
 array
 BELONGS TO
-UND
+.data
 BIND
 g
 TYPE
@@ -24,13 +24,25 @@ VALUE
 SYMBOL NAME
 array_size
 BELONGS TO
-UND
+.data
 BIND
 g
 TYPE
 NOTYP
 SIZE
 0
+VALUE
+20
+SYMBOL NAME
+.data
+BELONGS TO
+.data
+BIND
+l
+TYPE
+SECT
+SIZE
+22
 VALUE
 0
 SYMBOL NAME
@@ -42,58 +54,28 @@ l
 TYPE
 SECT
 SIZE
-58
+11
 VALUE
 0
-SYMBOL NAME
-for
-BELONGS TO
-.text
-BIND
-l
-TYPE
-NOTYP
-SIZE
-0
-VALUE
-22
 ////////////////////////////////////////////////////////////
 SECTION TABLE
 ////////////////////////////////////////////////////////////
 SECTION NAME
+.data
+SECTION SIZE
+22
+SECTION CONTENT
+01 00 02 00	03 00 04 00
+05 00 06 00	07 00 08 00
+09 00 0a 00	0a 00 
+SECTION NAME
 .text
 SECTION SIZE
-58
+11
 SECTION CONTENT
-02 00 a0 2f	00 00 02 a0
-0f 00 00 00	a0 50 03 00
-00 a0 4f 00	00 00 a0 2f
-00 00 02 a0	30 03 00 00
-70 43 70 02	a0 2f 00 00
-01 71 52 a0	2f 00 00 00
-74 52 52 f7	05 ff df b0
-46 12 
+a0 46 42 a0	0f 00 00 42
+70 40 00 
 ////////////////////////////////////////////////////////////
 RELOCATION TABLES
 ////////////////////////////////////////////////////////////
-SECTION NAME
-.text
-OFFSET
-30
-TYPE
-1
-SYMBOL
-array
-ADDEND
-0
-SECTION NAME
-.text
-OFFSET
-15
-TYPE
-1
-SYMBOL
-array_size
-ADDEND
-0
 ////////////////////////////////////////////////////////////

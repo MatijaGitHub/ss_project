@@ -61,7 +61,7 @@ void Emulator::start(std::string inputFile){
     }
     handleInterrupts();
   }
-  printf("REGISTER VALUES: r0 := %d, r1 := %d, r2 := %d, r3 := %d, r4 := %d, r5 := %dr6 := %d, r7 := %d PSW := %d\n",this->registers[0] ,this->registers[1] ,this->registers[2] ,this->registers[3] ,this->registers[4] ,this->registers[5] ,this->registers[6] ,this->registers[7],this->registers[PSW]);
+  printf("REGISTER VALUES: r0 := %d, r1 := %d, r2 := %d, r3 := %d, r4 := %d, r5 := %d, r6 := %d, r7 := %d PSW := %d\n",this->registers[0] ,this->registers[1] ,this->registers[2] ,this->registers[3] ,this->registers[4] ,this->registers[5] ,this->registers[6] ,this->registers[7],this->registers[PSW]);
   
 }
 void Emulator::handleInterrupts(){
@@ -99,15 +99,123 @@ void Emulator::loadIntoMemory(std::string inputFile){
       this->registers[PC_REG]++;
     }
     void Emulator::intInstruction(){
+      unsigned char registerByte = memory[(SYSTEM_REGISTER)(this->registers[PC_REG]) + 1];
+      unsigned char rD = (registerByte & 0b11110000) >> 4;
+      unsigned char rS = registerByte & 0b00001111;
+      if(rS!=0b1111 || rD>=0b1000){
+        this->registers[PC_REG] += 2;
+        return;
+      }
+      this->registers[SP]-=2;
+      *((short*)memory[(SYSTEM_REGISTER)this->registers[SP]]) = this->registers[PSW];
+      this->registers[PC_REG] = *((short*)memory[(this->registers[rD]%8)*2]);
 
     }
-    void Emulator::iretInstruction(){}
-    void Emulator::callInstruction(){}
-    void Emulator::retInstruction(){}
-    void Emulator::jmpInstruction(){}
-    void Emulator::jeqInstruction(){}
-    void Emulator::jneInstruction(){}
-    void Emulator::jgtInstruction(){}
+    void Emulator::iretInstruction(){
+      this->registers[PSW] = *((short*)memory[this->registers[SP]]);
+      this->registers[SP]+=2;
+      this->registers[PC_REG] = *((short*)memory[this->registers[SP]]);
+      this->registers[SP]+=2;
+    }
+    void Emulator::callInstruction(){
+      unsigned char registerByte = memory[(SYSTEM_REGISTER)(this->registers[PC_REG]) + 1];
+      unsigned char addressByte = memory[(SYSTEM_REGISTER)(this->registers[PC_REG]) + 2];
+      unsigned char addressMode = addressByte & 0b00001111;
+      unsigned char upMode = (addressByte & 0b11110000) >> 4;
+      unsigned char rD = (registerByte & 0b11110000) >> 4;
+      unsigned char rS = registerByte & 0b00001111;
+      bool isValid = true;
+      short* operandDest = nullptr;
+      short operand = getOperand(addressMode,upMode,rD,rS,&isValid,&operandDest);
+      if(!isValid){
+        this->registers[PC_REG] += 3;
+        return;
+      }
+      this->registers[SP]-=2;
+      *((short*)memory[(SYSTEM_REGISTER)this->registers[SP]]) = this->registers[PC_REG];
+      this->registers[PC_REG] = operand;
+    }
+    void Emulator::retInstruction(){
+      this->registers[PC_REG] = *((short*)memory[this->registers[SP]]);
+      this->registers[SP]+=2;
+    }
+    void Emulator::jmpInstruction(){
+      unsigned char registerByte = memory[(SYSTEM_REGISTER)(this->registers[PC_REG]) + 1];
+      unsigned char addressByte = memory[(SYSTEM_REGISTER)(this->registers[PC_REG]) + 2];
+      unsigned char addressMode = addressByte & 0b00001111;
+      unsigned char upMode = (addressByte & 0b11110000) >> 4;
+      unsigned char rD = (registerByte & 0b11110000) >> 4;
+      unsigned char rS = registerByte & 0b00001111;
+      bool isValid = true;
+      short* operandDest = nullptr;
+      short operand = getOperand(addressMode,upMode,rD,rS,&isValid,&operandDest);
+      if(!isValid){
+        this->registers[PC_REG] += 3;
+        return;
+      }
+      this->registers[PC_REG] = operand;
+    }
+    void Emulator::jeqInstruction(){
+      unsigned char registerByte = memory[(SYSTEM_REGISTER)(this->registers[PC_REG]) + 1];
+      unsigned char addressByte = memory[(SYSTEM_REGISTER)(this->registers[PC_REG]) + 2];
+      unsigned char addressMode = addressByte & 0b00001111;
+      unsigned char upMode = (addressByte & 0b11110000) >> 4;
+      unsigned char rD = (registerByte & 0b11110000) >> 4;
+      unsigned char rS = registerByte & 0b00001111;
+      bool isValid = true;
+      short* operandDest = nullptr;
+      short operand = getOperand(addressMode,upMode,rD,rS,&isValid,&operandDest);
+      if(!isValid){
+        this->registers[PC_REG] += 3;
+        return;
+      }
+      if((this->registers[PSW]&1) == 1){
+        this->registers[PC_REG] = operand;
+      }
+    }
+    void Emulator::jneInstruction(){
+      unsigned char registerByte = memory[(SYSTEM_REGISTER)(this->registers[PC_REG]) + 1];
+      unsigned char addressByte = memory[(SYSTEM_REGISTER)(this->registers[PC_REG]) + 2];
+      unsigned char addressMode = addressByte & 0b00001111;
+      unsigned char upMode = (addressByte & 0b11110000) >> 4;
+      unsigned char rD = (registerByte & 0b11110000) >> 4;
+      unsigned char rS = registerByte & 0b00001111;
+      bool isValid = true;
+      short* operandDest = nullptr;
+      short operand = getOperand(addressMode,upMode,rD,rS,&isValid,&operandDest);
+      if(!isValid){
+        this->registers[PC_REG] += 3;
+        return;
+      }
+      if((this->registers[PSW]&1) == 0){
+        this->registers[PC_REG] = operand;
+      }
+    }
+    void Emulator::jgtInstruction(){
+      unsigned char registerByte = memory[(SYSTEM_REGISTER)(this->registers[PC_REG]) + 1];
+      unsigned char addressByte = memory[(SYSTEM_REGISTER)(this->registers[PC_REG]) + 2];
+      unsigned char addressMode = addressByte & 0b00001111;
+      unsigned char upMode = (addressByte & 0b11110000) >> 4;
+      unsigned char rD = (registerByte & 0b11110000) >> 4;
+      unsigned char rS = registerByte & 0b00001111;
+      bool isValid = true;
+      short* operandDest = nullptr;
+      short operand = getOperand(addressMode,upMode,rD,rS,&isValid,&operandDest);
+      if(!isValid){
+        this->registers[PC_REG] += 3;
+        return;
+      }
+      char NF,ZF,OF;
+      NF = this->registers[PSW] >> 3 & 0b0000000000000001;
+      ZF = this->registers[PSW] & 0b0000000000000001;
+      OF = this->registers[PSW] >> 1 & 0b0000000000000001;
+      NF = NF==1?true:false;
+      ZF = ZF==1?true:false;
+      OF = OF==1?true:false;
+      if((!(NF^OF))&&(!ZF)){
+        this->registers[PC_REG] = operand;
+      }
+    }
     void Emulator::loadInstruction(){
       unsigned char registerByte = memory[(SYSTEM_REGISTER)(this->registers[PC_REG]) + 1];
       unsigned char addressByte = memory[(SYSTEM_REGISTER)(this->registers[PC_REG]) + 2];
