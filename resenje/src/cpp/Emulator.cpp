@@ -168,8 +168,8 @@ void Emulator::loadIntoMemory(std::string inputFile){
         return;
       }
       this->registers[PC_REG] +=2;
-      unsigned short rDVal = this->registers[rD];
-      unsigned short rSVal = this->registers[rS];
+      short rDVal = this->registers[rD];
+      short rSVal = this->registers[rS];
       this->registers[rD] = rDVal + rSVal;
     }
     void Emulator::subInstruction(){
@@ -180,8 +180,8 @@ void Emulator::loadIntoMemory(std::string inputFile){
         return;
       }
       this->registers[PC_REG] +=2;
-      unsigned short rDVal = this->registers[rD];
-      unsigned short rSVal = this->registers[rS];
+      short rDVal = this->registers[rD];
+      short rSVal = this->registers[rS];
       this->registers[rD] = rDVal - rSVal;
     }
     void Emulator::mulInstruction(){
@@ -192,8 +192,8 @@ void Emulator::loadIntoMemory(std::string inputFile){
         return;
       }
       this->registers[PC_REG] +=2;
-      unsigned short rDVal = this->registers[rD];
-      unsigned short rSVal = this->registers[rS];
+      short rDVal = this->registers[rD];
+      short rSVal = this->registers[rS];
       this->registers[rD] = rDVal * rSVal;
     }
     void Emulator::divInstruction(){
@@ -204,11 +204,34 @@ void Emulator::loadIntoMemory(std::string inputFile){
         return;
       }
       this->registers[PC_REG] +=2;
-      unsigned short rDVal = this->registers[rD];
-      unsigned short rSVal = this->registers[rS];
+      short rDVal = this->registers[rD];
+      short rSVal = this->registers[rS];
       this->registers[rD] = rDVal / rSVal;
     }
-    void Emulator::cmpInstruction(){}
+    void Emulator::cmpInstruction(){
+      unsigned char registerByte = memory[(SYSTEM_REGISTER)(this->registers[PC_REG]) + 1];
+      unsigned char rD = (registerByte & 0b11110000) >> 4;
+      unsigned char rS = registerByte & 0b00001111;
+      if(rD >= 0b1000 || rS >=0b1000){
+        return;
+      }
+      this->registers[PC_REG] +=2;
+      short rDVal = this->registers[rD];
+      short rSVal = this->registers[rS];
+      short temp = rDVal - rSVal;
+      if(temp == 0){
+        this->registers[PSW] |= 1;
+      }
+      if(temp < 0){
+        this->registers[PSW] |= 8;
+      }
+      if((unsigned short)rSVal > (unsigned short)rDVal){
+        this->registers[PSW] |= 4;
+      }
+      if((rSVal > 0 && rDVal > 0 && temp < 0) || (rSVal < 0 && rDVal < 0 && temp >= 0)){
+        this->registers[PSW] |= 2;
+      }
+    }
     void Emulator::notInstruction(){}
     void Emulator::andInstruction(){}
     void Emulator::orInstruction(){}
