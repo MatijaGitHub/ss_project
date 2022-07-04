@@ -1,0 +1,125 @@
+		<<ELF>>
+---------------------------------
+NUMBER OF SYMBOLS
+5
+NUMBER OF SECTIONS
+2
+NUMBER OF RELOCATION RECORDS
+3
+---------------------------------
+SYMBOL TABLE
+////////////////////////////////////////////////////////////
+SYMBOL NAME
+.text
+BELONGS TO
+.text
+BIND
+l
+TYPE
+SECT
+SIZE
+29
+VALUE
+0
+SYMBOL NAME
+KEYBOARD
+BELONGS TO
+.keyboard
+BIND
+l
+TYPE
+NOTYP
+SIZE
+0
+VALUE
+0
+SYMBOL NAME
+LOOP
+BELONGS TO
+.text
+BIND
+l
+TYPE
+NOTYP
+SIZE
+0
+VALUE
+16
+SYMBOL NAME
+END
+BELONGS TO
+.text
+BIND
+l
+TYPE
+NOTYP
+SIZE
+0
+VALUE
+28
+SYMBOL NAME
+.keyboard
+BELONGS TO
+.keyboard
+BIND
+l
+TYPE
+SECT
+SIZE
+23
+VALUE
+0
+////////////////////////////////////////////////////////////
+SECTION TABLE
+////////////////////////////////////////////////////////////
+SECTION NAME
+.text
+SECTION SIZE
+29
+SECTION CONTENT
+06 00 64 00	00 00 a0 6f
+00 fe fe a0	1f 00 00 00
+a0 2f 00 00	01 70 12 50
+ff 00 00 00	00 
+SECTION NAME
+.keyboard
+SECTION SIZE
+23
+SECTION CONTENT
+a0 2f 04 ff	02 a0 1f 00
+00 0a 74 12	51 ff 00 00
+00 b0 2f 04	ff 00 20 
+////////////////////////////////////////////////////////////
+RELOCATION TABLES
+////////////////////////////////////////////////////////////
+SECTION NAME
+.text
+OFFSET
+4
+TYPE
+0
+SYMBOL
+.keyboard
+ADDEND
+0
+SECTION NAME
+.text
+OFFSET
+26
+TYPE
+1
+SYMBOL
+.text
+ADDEND
+16
+SECTION NAME
+.keyboard
+OFFSET
+15
+TYPE
+1
+SYMBOL
+.text
+ADDEND
+28
+////////////////////////////////////////////////////////////

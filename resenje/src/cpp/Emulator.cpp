@@ -1,10 +1,14 @@
 #include "../hpp/Emulator.hpp"
+#include "../hpp/TerminalInputThread.hpp"
+#include "../hpp/TerminalOutputThread.hpp"
 
 
 Emulator::Emulator(){
   this->memory = (unsigned char*)malloc(USHRT_MAX + 1);
   this->working = false;
   this->psw = 0;
+  this->input = new TerminalInputThread(this);
+  this->output = new TerminalOutputThread(this);
 }
 void Emulator::init(){
     this->registers[PC_REG] = *(SYSTEM_REGISTER*)(this->memory + 0);
@@ -43,6 +47,8 @@ void Emulator::init(){
     upModes[0b0010] = PRE_INC;
     upModes[0b0011] = POST_DEC;
     upModes[0b0100] = POST_INC;
+    this->input->start();
+    this->output->start();
 }
 void Emulator::start(std::string inputFile){
   loadIntoMemory(inputFile);
@@ -54,14 +60,17 @@ void Emulator::start(std::string inputFile){
     if(opCodes.find(opCode) == opCodes.end()){
         this->registers[PC_REG]++;
         this->intr_enabled[1] = 1;
-        printf("ERROR!\n");
+        printf("INVALID OPCODE %04X AT %04X!\n",opCode,registers[PC_REG]);
     }
     else{
+        //printf("INSTR: %02X\n",opCode);
         (this->*opCodes[opCode])();
     }
     handleInterrupts();
   }
-  printf("REGISTER VALUES: r0 := %d, r1 := %d, r2 := %d, r3 := %d, r4 := %d, r5 := %d, r6 := %d, r7 := %d PSW := %d\n",this->registers[0] ,this->registers[1] ,this->registers[2] ,this->registers[3] ,this->registers[4] ,this->registers[5] ,this->registers[6] ,this->registers[7],this->registers[PSW]);
+  this->input->exit();
+  this->output->exit();
+  printf("REGISTER VALUES: r0 := %d, r1 := %d, r2 := %d, r3 := %d, r4 := %d, r5 := %d, r6 := %04X, r7 := %04X PSW := %04X\n",this->registers[0] ,this->registers[1] ,this->registers[2] ,this->registers[3] ,this->registers[4] ,this->registers[5] ,(SYSTEM_REGISTER)(this->registers[6] & 0xFFFF) ,(SYSTEM_REGISTER)(this->registers[7]& 0xFFFF),(SYSTEM_REGISTER)(this->registers[PSW]& 0xFFFF));
   
 }
 
@@ -69,38 +78,42 @@ void Emulator::handleInterrupts(){
   if(intr_enabled[0] == 1){
     intr_enabled[0] = 0;
     registers[SP] -= 2;
-    *((short*)memory + (SYSTEM_REGISTER)registers[SP]) = registers[PSW];
+    *((short*)(memory + (SYSTEM_REGISTER)registers[SP])) = registers[PC_REG];
     registers[SP] -= 2;
-    *((short*)memory + (SYSTEM_REGISTER)registers[SP]) = registers[PC_REG];
-    registers[PSW] &= 0x7fff;
-    registers[PC_REG] = *((short*)memory + 0*2)
+    *((short*)(memory + (SYSTEM_REGISTER)registers[SP])) = registers[PSW];
+    registers[PSW] |= 0x8000;
+    registers[PC_REG] = *((short*)(memory + 0*2));
   }
   else if(intr_enabled[1] == 1){
     intr_enabled[1] = 0;
     registers[SP] -= 2;
-    *((short*)memory + (SYSTEM_REGISTER)registers[SP]) = registers[PSW];
+    *((short*)(memory + (SYSTEM_REGISTER)registers[SP])) = registers[PC_REG];
     registers[SP] -= 2;
-    *((short*)memory + (SYSTEM_REGISTER)registers[SP]) = registers[PC_REG];
-    registers[PSW] &= 0x7fff;
-    registers[PC_REG] = *((short*)memory + 1*2)
+    *((short*)(memory + (SYSTEM_REGISTER)registers[SP])) = registers[PSW];
+    registers[PSW] |= 0x8000;
+    registers[PC_REG] = *((short*)(memory + 1*2));
   }
-  else if(intr_enabled[2] == 1){
+  else if(intr_enabled[2] == 1
+    && (registers[PSW]&0b1000000000000000) == 0){
     intr_enabled[2] = 0;
     registers[SP] -= 2;
-    *((short*)memory + (SYSTEM_REGISTER)registers[SP]) = registers[PSW];
+    *((short*)(memory + (SYSTEM_REGISTER)registers[SP])) = registers[PC_REG];
     registers[SP] -= 2;
-    *((short*)memory + (SYSTEM_REGISTER)registers[SP]) = registers[PC_REG];
-    registers[PSW] &= 0x7fff;
-    registers[PC_REG] = *((short*)memory + 2*2)
+    
+    *((short*)(memory + (SYSTEM_REGISTER)registers[SP])) = registers[PSW];
+    registers[PSW] |= 0x8000;
+    registers[PC_REG] = *((short*)(memory + 2*2));
+    
   }
-  else if(intr_enabled[3] == 1){
+  else if(intr_enabled[3] == 1
+    &&  registers[PSW] & 8192 == 0 && registers[PSW] & 32768 == 0){
     intr_enabled[3] = 0;
     registers[SP] -= 2;
-    *((short*)memory + (SYSTEM_REGISTER)registers[SP]) = registers[PSW];
+    *((short*)(memory + (SYSTEM_REGISTER)registers[SP])) = registers[PC_REG];
     registers[SP] -= 2;
-    *((short*)memory + (SYSTEM_REGISTER)registers[SP]) = registers[PC_REG];
-    registers[PSW] &= 0x7fff;
-    registers[PC_REG] = *((short*)memory + 3*2)
+    *((short*)(memory + (SYSTEM_REGISTER)registers[SP])) = registers[PSW];
+    registers[PSW] |= 0x8000;
+    registers[PC_REG] = *((short*)(memory + 3*2));
   }
 }
 
@@ -128,7 +141,7 @@ void Emulator::loadIntoMemory(std::string inputFile){
 
     void Emulator::haltInstruction(){
       this->working = false;
-      this->registers[PC_REG]++;
+      //this->registers[PC_REG]++;
     }
     void Emulator::intInstruction(){
       unsigned char registerByte = memory[(SYSTEM_REGISTER)(this->registers[PC_REG]) + 1];
@@ -139,15 +152,16 @@ void Emulator::loadIntoMemory(std::string inputFile){
         return;
       }
       this->registers[SP]-=2;
-      *((short*)memory[(SYSTEM_REGISTER)this->registers[SP]]) = this->registers[PSW];
-      this->registers[PC_REG] = *((short*)memory[(this->registers[rD]%8)*2]);
+      *((short*)(memory + (SYSTEM_REGISTER)this->registers[SP])) = this->registers[PSW];
+      this->registers[PC_REG] = *((short*)(memory + (this->registers[rD]%8)*2));
 
     }
     void Emulator::iretInstruction(){
-      this->registers[PSW] = *((short*)memory[this->registers[SP]]);
+      this->registers[PSW] = *((short*)(memory + (SYSTEM_REGISTER)this->registers[SP]));
       this->registers[SP]+=2;
-      this->registers[PC_REG] = *((short*)memory[this->registers[SP]]);
+      this->registers[PC_REG] = *((short*)(memory + (SYSTEM_REGISTER)this->registers[SP]));
       this->registers[SP]+=2;
+      printf("IN IRET: %04X",(SYSTEM_REGISTER)registers[PC_REG]);
     }
     void Emulator::callInstruction(){
       unsigned char registerByte = memory[(SYSTEM_REGISTER)(this->registers[PC_REG]) + 1];
@@ -164,16 +178,16 @@ void Emulator::loadIntoMemory(std::string inputFile){
         return;
       }
       this->registers[SP]-=2;
-      *((short*)memory[(SYSTEM_REGISTER)this->registers[SP]]) = this->registers[PC_REG];
+      *((short*)(memory + (SYSTEM_REGISTER)this->registers[SP])) = this->registers[PC_REG];
       this->registers[PC_REG] = operand;
     }
     void Emulator::retInstruction(){
-      this->registers[PC_REG] = *((short*)memory[this->registers[SP]]);
+      this->registers[PC_REG] = *((short*)(memory + this->registers[SP]));
       this->registers[SP]+=2;
     }
     void Emulator::jmpInstruction(){
-      unsigned char registerByte = memory[(SYSTEM_REGISTER)(this->registers[PC_REG]) + 1];
-      unsigned char addressByte = memory[(SYSTEM_REGISTER)(this->registers[PC_REG]) + 2];
+      unsigned char registerByte = *(memory + (SYSTEM_REGISTER)(this->registers[PC_REG]) + 1);
+      unsigned char addressByte = *(memory + (SYSTEM_REGISTER)(this->registers[PC_REG]) + 2);
       unsigned char addressMode = addressByte & 0b00001111;
       unsigned char upMode = (addressByte & 0b11110000) >> 4;
       unsigned char rD = (registerByte & 0b11110000) >> 4;
@@ -197,13 +211,17 @@ void Emulator::loadIntoMemory(std::string inputFile){
       bool isValid = true;
       short* operandDest = nullptr;
       short operand = getOperand(addressMode,upMode,rD,rS,&isValid,&operandDest);
+      printf("OPERAND VAL: %d ISNULL: %d\n", operand,(this->registers[PSW]&1));
       if(!isValid){
         this->registers[PC_REG] += 3;
         return;
       }
       if((this->registers[PSW]&1) == 1){
+        printf("HI\n");
         this->registers[PC_REG] = operand;
+        
       }
+      
     }
     void Emulator::jneInstruction(){
       unsigned char registerByte = memory[(SYSTEM_REGISTER)(this->registers[PC_REG]) + 1];
@@ -216,10 +234,12 @@ void Emulator::loadIntoMemory(std::string inputFile){
       short* operandDest = nullptr;
       short operand = getOperand(addressMode,upMode,rD,rS,&isValid,&operandDest);
       if(!isValid){
+        
         this->registers[PC_REG] += 3;
         return;
       }
       if((this->registers[PSW]&1) == 0){
+        
         this->registers[PC_REG] = operand;
       }
     }
@@ -359,18 +379,32 @@ void Emulator::loadIntoMemory(std::string inputFile){
       short rDVal = this->registers[rD];
       short rSVal = this->registers[rS];
       short temp = rDVal - rSVal;
+      printf("%d %d",rDVal,rSVal);
       if(temp == 0){
         this->registers[PSW] |= 1;
+      }
+      else{
+        this->registers[PSW] &= 0xFFFE;
       }
       if(temp < 0){
         this->registers[PSW] |= 8;
       }
+      else{
+        this->registers[PSW] &= 0xFFF7;
+      }
       if((unsigned short)rSVal > (unsigned short)rDVal){
         this->registers[PSW] |= 4;
+      }
+      else{
+        this->registers[PSW] &= 0xFFFB;
       }
       if((rSVal < 0 && rDVal > 0 && temp < 0) || (rSVal > 0 && rDVal < 0 && temp > 0)){
         this->registers[PSW] |= 2;
       }
+      else{
+        this->registers[PSW] &= 0xFFFD;
+      }
+      printf("PSW: %04X\n",(SYSTEM_REGISTER)registers[PSW]);
     }
     void Emulator::notInstruction(){
       unsigned char registerByte = memory[(SYSTEM_REGISTER)(this->registers[PC_REG]) + 1];
@@ -597,7 +631,7 @@ void Emulator::loadIntoMemory(std::string inputFile){
             break;
           }
           this->registers[PC_REG] += 3;
-          *operandDest = (short*)(memory[this->registers[rS]]);
+          *operandDest = (short*)(memory + this->registers[rS]);
           short operand = *((short*)(memory + this->registers[rS]));
           switch (upMode)
           {
@@ -636,7 +670,7 @@ void Emulator::loadIntoMemory(std::string inputFile){
           addend|=dataLow;
           this->registers[PC_REG] += 5;
           short operand =*((short*)(memory + addend + this->registers[rS]));
-          *operandDest = (short*)memory[addend + this->registers[rS]];
+          *operandDest = (short*)(memory + addend + this->registers[rS]);
           
           switch (upMode)
           {
@@ -663,7 +697,7 @@ void Emulator::loadIntoMemory(std::string inputFile){
           operand <<= 8;
           operand|=dataLow;
           this->registers[PC_REG] += 5;
-          *operandDest = (short*)memory[operand];
+          *operandDest = (short*)(memory + operand);
           return *((short*)(memory + operand));
         }
         default:

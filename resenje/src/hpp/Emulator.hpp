@@ -7,7 +7,8 @@
 #include <istream>
 #include <unordered_map>
 #include <vector>
-
+class TerminalInputThread;
+class TerminalOutputThread;
 typedef short REGISTER;
 typedef unsigned short SYSTEM_REGISTER;
 #define PC_REG 7
@@ -63,6 +64,9 @@ class Emulator{
     Emulator();
     void start(std::string inputFile);
     
-
-
+  
+  friend TerminalInputThread;
+  friend TerminalOutputThread;
+  TerminalInputThread* input;
+  TerminalOutputThread* output;
 };
