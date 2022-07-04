@@ -1,6 +1,7 @@
 #include "../hpp/Emulator.hpp"
 #include "../hpp/TerminalInputThread.hpp"
 #include "../hpp/TerminalOutputThread.hpp"
+#include "../hpp/Timer.hpp"
 
 Emulator::Emulator(){
   this->memory = (unsigned char*)malloc(USHRT_MAX + 1);
@@ -8,6 +9,7 @@ Emulator::Emulator(){
   this->psw = 0;
   this->input = new TerminalInputThread(this);
   this->output = new TerminalOutputThread(this);
+  this->timer = new Timer(this);
 }
 void Emulator::init(){
     this->registers[PC_REG] = *(SYSTEM_REGISTER*)(this->memory + 0);
@@ -48,11 +50,14 @@ void Emulator::init(){
     upModes[0b0100] = POST_INC;
     this->input->start();
     this->output->start();
+    this->timer->start();
 }
 void Emulator::start(std::string inputFile){
   loadIntoMemory(inputFile);
   working = true;
   init();
+  struct termios oldtc;
+  tcgetattr(STDIN_FILENO, &oldtc);
   while (working)
   {
     unsigned char opCode = memory[(SYSTEM_REGISTER)(registers[PC_REG])];
@@ -66,9 +71,12 @@ void Emulator::start(std::string inputFile){
     }
     handleInterrupts();
   }
+  
   this->input->exit();
   this->output->exit();
+  this->timer->exit();
   printf("\nREGISTER VALUES: r0 := %d, r1 := %d, r2 := %d, r3 := %d, r4 := %d, r5 := %d, r6 := %04X, r7 := %04X PSW := %04X\n",this->registers[0] ,this->registers[1] ,this->registers[2] ,this->registers[3] ,this->registers[4] ,this->registers[5] ,(SYSTEM_REGISTER)(this->registers[6] & 0xFFFF) ,(SYSTEM_REGISTER)(this->registers[7]& 0xFFFF),(SYSTEM_REGISTER)(this->registers[PSW]& 0xFFFF));
+  tcsetattr(STDIN_FILENO, TCSANOW, &oldtc);
   
 }
 

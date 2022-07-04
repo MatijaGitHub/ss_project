@@ -1,11 +1,11 @@
 		<<ELF>>
 ---------------------------------
 NUMBER OF SYMBOLS
-5
+6
 NUMBER OF SECTIONS
 2
 NUMBER OF RELOCATION RECORDS
-3
+4
 ---------------------------------
 SYMBOL TABLE
 ////////////////////////////////////////////////////////////
@@ -18,7 +18,7 @@ l
 TYPE
 SECT
 SIZE
-29
+41
 VALUE
 0
 SYMBOL NAME
@@ -34,9 +34,9 @@ SIZE
 VALUE
 0
 SYMBOL NAME
-LOOP
+TIMER
 BELONGS TO
-.text
+.keyboard
 BIND
 l
 TYPE
@@ -44,9 +44,9 @@ NOTYP
 SIZE
 0
 VALUE
-16
+23
 SYMBOL NAME
-END
+LOOP
 BELONGS TO
 .text
 BIND
@@ -58,6 +58,18 @@ SIZE
 VALUE
 28
 SYMBOL NAME
+END
+BELONGS TO
+.text
+BIND
+l
+TYPE
+NOTYP
+SIZE
+0
+VALUE
+40
+SYMBOL NAME
 .keyboard
 BELONGS TO
 .keyboard
@@ -66,7 +78,7 @@ l
 TYPE
 SECT
 SIZE
-23
+34
 VALUE
 0
 ////////////////////////////////////////////////////////////
@@ -75,20 +87,24 @@ SECTION TABLE
 SECTION NAME
 .text
 SECTION SIZE
-29
+41
 SECTION CONTENT
-06 00 64 00	00 00 a0 6f
-00 fe fe a0	1f 00 00 00
-a0 2f 00 00	01 70 12 50
-ff 00 00 00	00 
+08 00 64 00	00 00 00 00
+a0 6f 00 fe	fe a0 1f 00
+00 00 a0 3f	00 00 04 b0
+3f 04 ff 10	a0 2f 00 00
+01 70 12 50	ff 00 00 00
+00 
 SECTION NAME
 .keyboard
 SECTION SIZE
-23
+34
 SECTION CONTENT
 a0 2f 04 ff	02 a0 1f 00
-00 0a 74 12	51 ff 00 00
-00 b0 2f 04	ff 00 20 
+00 0f 74 12	51 ff 00 00
+00 b0 2f 04	ff 00 20 a0
+2f 00 00 41	b0 2f 04 ff
+00 20 
 ////////////////////////////////////////////////////////////
 RELOCATION TABLES
 ////////////////////////////////////////////////////////////
@@ -105,13 +121,23 @@ ADDEND
 SECTION NAME
 .text
 OFFSET
-26
+6
+TYPE
+0
+SYMBOL
+.keyboard
+ADDEND
+23
+SECTION NAME
+.text
+OFFSET
+38
 TYPE
 1
 SYMBOL
 .text
 ADDEND
-16
+28
 SECTION NAME
 .keyboard
 OFFSET
@@ -121,5 +147,5 @@ TYPE
 SYMBOL
 .text
 ADDEND
-28
+40
 ////////////////////////////////////////////////////////////

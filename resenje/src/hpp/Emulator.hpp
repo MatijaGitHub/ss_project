@@ -7,8 +7,12 @@
 #include <istream>
 #include <unordered_map>
 #include <vector>
+#include <stdio.h>
+#include <unistd.h>
+#include <termios.h>
 class TerminalInputThread;
 class TerminalOutputThread;
+class Timer;
 typedef short REGISTER;
 typedef unsigned short SYSTEM_REGISTER;
 #define PC_REG 7
@@ -69,6 +73,8 @@ class Emulator{
   
   friend TerminalInputThread;
   friend TerminalOutputThread;
+  friend Timer;
   TerminalInputThread* input;
   TerminalOutputThread* output;
+  Timer* timer;
 };
