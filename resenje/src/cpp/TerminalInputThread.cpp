@@ -25,9 +25,7 @@ void TerminalInputThread::run(){
   while (true)
   {
     short input = getch();
-    this->mutexWrite.try_lock();
     *((short*)(this->myEmulator->memory + 0xFF02)) = input;
-    this->mutexWrite.unlock();
     this->myEmulator->intr_enabled[2] = 1;
   }
 }
