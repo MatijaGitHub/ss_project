@@ -2,7 +2,7 @@
 #include "../hpp/TerminalInputThread.hpp"
 #include "../hpp/TerminalOutputThread.hpp"
 
-
+bool afterSex = false;
 Emulator::Emulator(){
   this->memory = (unsigned char*)malloc(USHRT_MAX + 1);
   this->working = false;
@@ -63,7 +63,7 @@ void Emulator::start(std::string inputFile){
         printf("INVALID OPCODE %04X AT %04X!\n",opCode,registers[PC_REG]);
     }
     else{
-        //printf("INSTR: %02X\n",opCode);
+        if(afterSex)printf("INSTR: %02X\n",opCode);
         (this->*opCodes[opCode])();
     }
     handleInterrupts();
@@ -106,7 +106,7 @@ void Emulator::handleInterrupts(){
     
   }
   else if(intr_enabled[3] == 1
-    &&  registers[PSW] & 8192 == 0 && registers[PSW] & 32768 == 0){
+    &&  (registers[PSW] & 8192) == 0 && (registers[PSW] & 32768) == 0){
     intr_enabled[3] = 0;
     registers[SP] -= 2;
     *((short*)(memory + (SYSTEM_REGISTER)registers[SP])) = registers[PC_REG];
@@ -124,7 +124,7 @@ unsigned char getByteAtPosition(std::string line, int position){
 }
 void Emulator::loadIntoMemory(std::string inputFile){
   std::ifstream hexFile;
-  hexFile.open(inputFile);
+  hexFile.open(inputFile,std::ios::in);
   std::string line = " ";
   while (true)
   {
@@ -381,25 +381,26 @@ void Emulator::loadIntoMemory(std::string inputFile){
       short temp = rDVal - rSVal;
       printf("%d %d",rDVal,rSVal);
       if(temp == 0){
-        this->registers[PSW] |= 1;
+        afterSex = true;
+        this->registers[PSW]|=0b0000000000000001;
       }
       else{
         this->registers[PSW] &= 0xFFFE;
       }
       if(temp < 0){
-        this->registers[PSW] |= 8;
+        this->registers[PSW] |= 0b0000000000001000;
       }
       else{
         this->registers[PSW] &= 0xFFF7;
       }
       if((unsigned short)rSVal > (unsigned short)rDVal){
-        this->registers[PSW] |= 4;
+        this->registers[PSW] |= 0b0000000000000100;
       }
       else{
         this->registers[PSW] &= 0xFFFB;
       }
       if((rSVal < 0 && rDVal > 0 && temp < 0) || (rSVal > 0 && rDVal < 0 && temp > 0)){
-        this->registers[PSW] |= 2;
+        this->registers[PSW] |= 0000000000000010;
       }
       else{
         this->registers[PSW] &= 0xFFFD;

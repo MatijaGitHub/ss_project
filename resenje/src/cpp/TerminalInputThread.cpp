@@ -12,9 +12,9 @@ void TerminalInputThread::run(){
   {
     short input = getchar();
     printf("IGET\n");
-    // this->mutexWrite.lock();
+    this->mutexWrite.try_lock();
     *((short*)(this->myEmulator->memory + 0xFF02)) = input;
-    // this->mutexWrite.unlock();
+    this->mutexWrite.unlock();
     this->myEmulator->intr_enabled[2] = 1;
   }
 }
