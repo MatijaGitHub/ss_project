@@ -100,7 +100,8 @@ void Emulator::handleInterrupts(){
     registers[PC_REG] = *((short*)(memory + 1*2));
   }
   else if(intr_enabled[2] == 1
-    && ((registers[PSW]&0b1000000000000000) == 0)){
+    && ((registers[PSW]&0b1000000000000000) == 0)
+    && ((registers[PSW]&0b0100000000000000) == 0)){
     intr_enabled[2] = 0;
     registers[SP] -= 2;
     *((short*)(memory + (SYSTEM_REGISTER)registers[SP])) = registers[PC_REG];
@@ -112,7 +113,8 @@ void Emulator::handleInterrupts(){
     
   }
   else if(intr_enabled[3] == 1
-    &&  (registers[PSW] & 8192) == 0 && (registers[PSW] & 32768) == 0){
+    && ((registers[PSW]&0b1000000000000000) == 0)
+    && ((registers[PSW]&0b0010000000000000) == 0)){
     intr_enabled[3] = 0;
     registers[SP] -= 2;
     *((short*)(memory + (SYSTEM_REGISTER)registers[SP])) = registers[PC_REG];
