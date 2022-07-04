@@ -87,7 +87,7 @@ SECTION SIZE
 23
 SECTION CONTENT
 a0 2f 04 ff	02 a0 1f 00
-00 0a 74 12	51 ff 00 00
+00 73 74 12	51 ff 00 00
 00 b0 2f 04	ff 00 20 
 ////////////////////////////////////////////////////////////
 RELOCATION TABLES

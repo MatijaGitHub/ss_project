@@ -2,7 +2,6 @@
 #include "../hpp/TerminalInputThread.hpp"
 #include "../hpp/TerminalOutputThread.hpp"
 
-bool afterSex = false;
 Emulator::Emulator(){
   this->memory = (unsigned char*)malloc(USHRT_MAX + 1);
   this->working = false;
@@ -63,7 +62,6 @@ void Emulator::start(std::string inputFile){
         printf("INVALID OPCODE %04X AT %04X!\n",opCode,registers[PC_REG]);
     }
     else{
-        if(afterSex)printf("INSTR: %02X\n",opCode);
         (this->*opCodes[opCode])();
     }
     handleInterrupts();
@@ -161,7 +159,6 @@ void Emulator::loadIntoMemory(std::string inputFile){
       this->registers[SP]+=2;
       this->registers[PC_REG] = *((short*)(memory + (SYSTEM_REGISTER)this->registers[SP]));
       this->registers[SP]+=2;
-      printf("IN IRET: %04X",(SYSTEM_REGISTER)registers[PC_REG]);
     }
     void Emulator::callInstruction(){
       unsigned char registerByte = memory[(SYSTEM_REGISTER)(this->registers[PC_REG]) + 1];
@@ -211,13 +208,11 @@ void Emulator::loadIntoMemory(std::string inputFile){
       bool isValid = true;
       short* operandDest = nullptr;
       short operand = getOperand(addressMode,upMode,rD,rS,&isValid,&operandDest);
-      printf("OPERAND VAL: %d ISNULL: %d\n", operand,(this->registers[PSW]&1));
       if(!isValid){
         this->registers[PC_REG] += 3;
         return;
       }
       if((this->registers[PSW]&1) == 1){
-        printf("HI\n");
         this->registers[PC_REG] = operand;
         
       }
@@ -379,9 +374,8 @@ void Emulator::loadIntoMemory(std::string inputFile){
       short rDVal = this->registers[rD];
       short rSVal = this->registers[rS];
       short temp = rDVal - rSVal;
-      printf("%d %d",rDVal,rSVal);
       if(temp == 0){
-        afterSex = true;
+        
         this->registers[PSW]|=0b0000000000000001;
       }
       else{
@@ -405,7 +399,7 @@ void Emulator::loadIntoMemory(std::string inputFile){
       else{
         this->registers[PSW] &= 0xFFFD;
       }
-      printf("PSW: %04X\n",(SYSTEM_REGISTER)registers[PSW]);
+    
     }
     void Emulator::notInstruction(){
       unsigned char registerByte = memory[(SYSTEM_REGISTER)(this->registers[PC_REG]) + 1];
