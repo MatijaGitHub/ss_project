@@ -130,10 +130,12 @@ void Assembler::handleInstruction(Instruction* ins){
     
 }
  void Assembler::declareSymbolsGlobal(Symbol_Literal_List* globalSymbolList,int isExtern){
-      std::string* symbol = globalSymbolList->popSymbol();
+      Symbol_Literal_Element* elem = globalSymbolList->popLiteralSymbol();
+      std::string* symbol = elem->symbol;
       while(symbol!=nullptr){
         this->getSymbolTable()->declareSymbolGlobal(*symbol,isExtern,currentSection);
-        symbol = globalSymbolList->popSymbol();
+        Symbol_Literal_Element* element = globalSymbolList->popLiteralSymbol();
+        symbol = element->symbol;
       }
  }
  SymbolTable* Assembler::getSymbolTable(){
@@ -141,21 +143,23 @@ void Assembler::handleInstruction(Instruction* ins){
  }
 void Assembler::initializeSpace(Symbol_Literal_List* symbolsAndLiterals,Section* currentSection){
   int size = 0;
-  std::string* symbol = symbolsAndLiterals->popSymbol();
-  int* literal = symbolsAndLiterals->popLiteral();
-  while(symbol!=nullptr){
-    SymbolTableEntry* symbolEntry = this->mySymbolTable->declareSymbolLocal(*symbol,currentSection,false,true);
-    currentSection->locationCounter+=2;
-    size+=2;
-    int value = this->mySymbolTable->getValueBySymbolName(*symbol);
-    currentSection->writeTwoByteContent(turnIntTo2Byte(this->mySymbolTable->getValueBySymbolName(*symbol)));
-    symbol = symbolsAndLiterals->popSymbol();
-  }
-  while(literal!=nullptr){
-    size+=2;
-    currentSection->locationCounter+=2;
-    currentSection->writeTwoByteContent(turnIntTo2Byte(*literal));
-    literal = symbolsAndLiterals->popLiteral();
+  Symbol_Literal_Element* element = symbolsAndLiterals->popLiteralSymbol();
+  while(element!=nullptr){
+    if(element->isSymbol){
+      SymbolTableEntry* symbolEntry = this->mySymbolTable->declareSymbolLocal(*(element->symbol),currentSection,false,true);
+      currentSection->locationCounter+=2;
+      size+=2;
+      int value = this->mySymbolTable->getValueBySymbolName(*(element->symbol));
+      currentSection->writeTwoByteContent(turnIntTo2Byte(this->mySymbolTable->getValueBySymbolName(*(element->symbol))));
+      
+    }
+    else{
+        size+=2;
+        currentSection->locationCounter+=2;
+        currentSection->writeTwoByteContent(turnIntTo2Byte(*(element->literal)));
+      
+    }
+    element = symbolsAndLiterals->popLiteralSymbol();
   }
   this->mySymbolTable->getEntryBySymbolName(currentSection->sectionName)->size+=size;
 }

@@ -1,9 +1,8 @@
 .section .text
-.word 8,100
-.word KEYBOARD,TIMER
+.word 8,100,KEYBOARD,TIMER
 ldr r6,$0xFEFE
 ldr r1,$0
-ldr r3,$4
+ldr r3,$2
 str r3,0xFF10
 LOOP:
 ldr r2,$1
@@ -15,7 +14,7 @@ halt
 .section .keyboard
 KEYBOARD:
 ldr r2, 0xFF02
-ldr r1, $15
+ldr r1, $102
 cmp r1,r2
 jeq END
 str r2,0xFF00

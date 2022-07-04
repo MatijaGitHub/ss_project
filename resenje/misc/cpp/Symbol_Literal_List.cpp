@@ -2,30 +2,23 @@
 
 
   Symbol_Literal_List::Symbol_Literal_List(){
-    this->literals = new std::vector<int*>();
-    this->symbols  = new std::vector<std::string*>();
+    this->symbols_and_literals = new std::vector<Symbol_Literal_Element*>();
   }
   void Symbol_Literal_List::pushSymbol(std::string* sym){
-    this->symbols->push_back(sym);
+    this->symbols_and_literals->push_back(new Symbol_Literal_Element(true,sym,nullptr));  
   }
   void Symbol_Literal_List::pushLiteral(int lit){
     int* litP = new int(lit);
     *litP = lit;
-    this->literals->push_back(litP);
+    this->symbols_and_literals->push_back(new Symbol_Literal_Element(false,nullptr,litP));
   }
-  std::string* Symbol_Literal_List::popSymbol(){
-    if(!this->symbols->empty()){
-      std::string * retVal = this->symbols->front();
-      this->symbols->erase(this->symbols->begin());
+
+  Symbol_Literal_Element* Symbol_Literal_List::popLiteralSymbol(){
+    if(!this->symbols_and_literals->empty()){
+      Symbol_Literal_Element* retVal = this->symbols_and_literals->front();
+      this->symbols_and_literals->erase(this->symbols_and_literals->begin());
       return retVal;
     }
     return nullptr;
   }
-  int* Symbol_Literal_List::popLiteral(){
-    if(!this->literals->empty()){
-      int* retVal = this->literals->front();
-      this->literals->erase(this->literals->begin());
-      return retVal;
-    }
-    return nullptr;
-  }
+ 
