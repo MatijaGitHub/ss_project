@@ -64,9 +64,46 @@ void Emulator::start(std::string inputFile){
   printf("REGISTER VALUES: r0 := %d, r1 := %d, r2 := %d, r3 := %d, r4 := %d, r5 := %d, r6 := %d, r7 := %d PSW := %d\n",this->registers[0] ,this->registers[1] ,this->registers[2] ,this->registers[3] ,this->registers[4] ,this->registers[5] ,this->registers[6] ,this->registers[7],this->registers[PSW]);
   
 }
-void Emulator::handleInterrupts(){
 
+void Emulator::handleInterrupts(){
+  if(intr_enabled[0] == 1){
+    intr_enabled[0] = 0;
+    registers[SP] -= 2;
+    *((short*)memory + (SYSTEM_REGISTER)registers[SP]) = registers[PSW];
+    registers[SP] -= 2;
+    *((short*)memory + (SYSTEM_REGISTER)registers[SP]) = registers[PC_REG];
+    registers[PSW] &= 0x7fff;
+    registers[PC_REG] = *((short*)memory + 0*2)
+  }
+  else if(intr_enabled[1] == 1){
+    intr_enabled[1] = 0;
+    registers[SP] -= 2;
+    *((short*)memory + (SYSTEM_REGISTER)registers[SP]) = registers[PSW];
+    registers[SP] -= 2;
+    *((short*)memory + (SYSTEM_REGISTER)registers[SP]) = registers[PC_REG];
+    registers[PSW] &= 0x7fff;
+    registers[PC_REG] = *((short*)memory + 1*2)
+  }
+  else if(intr_enabled[2] == 1){
+    intr_enabled[2] = 0;
+    registers[SP] -= 2;
+    *((short*)memory + (SYSTEM_REGISTER)registers[SP]) = registers[PSW];
+    registers[SP] -= 2;
+    *((short*)memory + (SYSTEM_REGISTER)registers[SP]) = registers[PC_REG];
+    registers[PSW] &= 0x7fff;
+    registers[PC_REG] = *((short*)memory + 2*2)
+  }
+  else if(intr_enabled[3] == 1){
+    intr_enabled[3] = 0;
+    registers[SP] -= 2;
+    *((short*)memory + (SYSTEM_REGISTER)registers[SP]) = registers[PSW];
+    registers[SP] -= 2;
+    *((short*)memory + (SYSTEM_REGISTER)registers[SP]) = registers[PC_REG];
+    registers[PSW] &= 0x7fff;
+    registers[PC_REG] = *((short*)memory + 3*2)
+  }
 }
+
 unsigned char getByteAtPosition(std::string line, int position){
   std::string byte = line.substr(position*3,2);
   unsigned char result =std::stoul(byte, nullptr, 16);
@@ -85,12 +122,7 @@ void Emulator::loadIntoMemory(std::string inputFile){
     for(int i = 0; i < (content.size()+1)/3; i++){
       this->memory[address + i] = getByteAtPosition(content,i);
     }
-    
-   
-  }
-  
-  
-  
+  } 
 }
 
 

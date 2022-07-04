@@ -11,4 +11,5 @@ array_size:
   pop r4
   ldr r0,$66
   add r4,r0
+  xchg r4,r3
   halt
