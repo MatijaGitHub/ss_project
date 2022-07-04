@@ -22,10 +22,11 @@ enum UP_MODE{
 };
 class Emulator{
   private:
+    SYSTEM_REGISTER psw;
     unsigned char* memory;
     void loadIntoMemory(std::string inputFile);
-    SYSTEM_REGISTER psw;
-    REGISTER registers[8] = {0,0,0,0,0,0,0,0};
+    
+    REGISTER registers[9] = {0,0,0,0,0,0,0,0,0};
     char intr_enabled[8] = {0,0,0,0,0,0,0,0};
     bool working;
     void init();
@@ -57,6 +58,7 @@ class Emulator{
     std::unordered_map<char,void(Emulator::*)()> opCodes;
     std::unordered_map<char,ADDR_MODE> addressModes;
     std::unordered_map<char,UP_MODE> upModes;
+    
     void handleInterrupts();
     short getOperand(unsigned char adrMode,unsigned char upMod, unsigned char rD, unsigned char rS,bool* isValid,short** operandDest);
 

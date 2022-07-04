@@ -15,7 +15,7 @@ KEYBOARD:
 ldr r2, 0xFF02
 ldr r1, $10
 cmp r1,r2
-jmp END
+jeq END
 str r2,0xFF00
 iret
 

@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
   
   // linker.link(links);
   Emulator emulator = Emulator();
-  emulator.start("program.hex");
+  emulator.start("/home/ss/Desktop/ss_project/program.hex");
 
   return 1;
 }
