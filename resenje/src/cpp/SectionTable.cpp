@@ -24,8 +24,10 @@ void SectionTable::printSectionTable(){
   Section* current = currentTable->section;
   while (current!=nullptr)
   {
-    printf("#%s\n",current->sectionName.c_str());
-    current->readContent();
+    if(current->locationCounter > 0){
+      printf("#%s\n",current->sectionName.c_str());
+      current->readContent();
+    }
     currentTable = currentTable->nextEntry;
     if(currentTable == nullptr) break;
     current = currentTable->section;
