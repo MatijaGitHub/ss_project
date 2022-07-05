@@ -56,6 +56,7 @@
 "ldr"       {return LDR;}
 "str"       {return STR;}
 "+"         {return PLUS;}
+"-"         {return MINUS;}
 #.*         {return COMMENT;}
 "sp"        {WRITE_SP; return REGISTER;}
 "pc"        {WRITE_PC; return REGISTER;}

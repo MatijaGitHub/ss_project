@@ -91,6 +91,11 @@ void Assembler::handleDirective(Directive* directive){
         initializeSpaceForString(directive->getString(),currentSection);
         break;
       }
+    case 6:
+      {
+        handleEqu(directive->getExp());
+        break;
+      }
     case 7:
       {
         endCurrentSection();
@@ -102,6 +107,9 @@ void Assembler::handleDirective(Directive* directive){
         break;
       }
     }
+}
+void Assembler::handleEqu(Expression* exp){
+
 }
 void Assembler::handleLabel(Label* label){
      this->mySymbolTable->defineSymbolLocal(label->getLabel(),this->currentSection);

@@ -19,6 +19,7 @@
 %code requires {
 
 #include "../hpp/Lines.hpp"
+#include "../hpp/Expression.hpp"
 
 
 }
@@ -28,6 +29,7 @@
 %union{
   Line *line;
   Symbol_Literal_List * sym_lit_list;
+  Expression* exp;
   //Symbol_Literal_List *list_of_symbols;
   std::string *symbol;
   Directive* dir;
@@ -46,12 +48,13 @@
 %token<number> NUMBER;
 %token<token> GLOBAL EXTERN SECTION WORD SKIP ASCII EQU END;
 %token<token> HALT INT IRET RET CALL JMP JGT JEQ JNE PUSH POP XCHG ADD SUB MUL DIV CMP NOT AND OR XOR;
-%token<token> TEST SHL SHR LDR STR PLUS COMMENT PERCENT STAR DOLLAR LEFT_BR RIGHT_BR COLON SEMI_COLON;
+%token<token> TEST SHL SHR LDR STR PLUS MINUS COMMENT PERCENT STAR DOLLAR LEFT_BR RIGHT_BR COLON SEMI_COLON;
 %token<token> NEW_LINE;
 %token<token> COMMA DOT;
 %token<symbol> DIR;
 
 
+%type<exp> expr;
 %type<line> line;
 %type<sym_lit_list> list_of_symbols;
 %type<sym_lit_list> list_of_symbols_and_literals;
@@ -172,6 +175,10 @@ directive:
     
   }
   |
+  EQU SYMBOL COMMA expr{
+    $$ = new Directive(equ,$4);
+  }
+  |
   SKIP NUMBER{
     $$ = new Directive(skip,$2);
   }
@@ -184,7 +191,33 @@ directive:
     $$ = new Directive(end);
   }
   ;
-
+expr:
+  SYMBOL{
+    $$ = new Expression();
+    $$->pushOperand(new Operand(SYM_VALUE,*$1),-1);
+  }
+  |
+  NUMBER{
+    $$ = new Expression();
+    $$->pushOperand(new Operand(LIT_VALUE,$1),-1);
+  }
+  |
+  expr MINUS NUMBER{
+    $$->pushOperand(new Operand(LIT_VALUE,$3),0);
+  }
+  |
+  expr PLUS NUMBER{
+    $$->pushOperand(new Operand(LIT_VALUE,$3),1);
+  }
+  |
+  expr MINUS SYMBOL{
+    $$->pushOperand(new Operand(SYM_VALUE,*$3),0);
+  }
+  |
+  expr PLUS SYMBOL{
+      $$->pushOperand(new Operand(SYM_VALUE,*$3),1);
+  }
+  ;
 instruction:
   HALT{
       $$ = new Instruction(InstructionName::halt);

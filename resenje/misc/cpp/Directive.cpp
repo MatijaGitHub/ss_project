@@ -24,12 +24,18 @@ Directive::Directive(DirectiveName dirID,std::string name){
   this->dir = dirID;
   this->stringUse = name;
 }
-
+Directive::Directive(DirectiveName dirID,Expression* expression){
+  this->dir = dirID;
+  this->expression = expression;
+}
 std::string Directive::getString(){
   return this->stringUse;
 }
 Symbol_Literal_List *Directive::getSymLitList(){
   return this->sym_lit_list;
+}
+Expression* Directive::getExp(){
+  return this->expression;
 }
 std::string Directive::getDirNameString(){
   switch (this->dir)

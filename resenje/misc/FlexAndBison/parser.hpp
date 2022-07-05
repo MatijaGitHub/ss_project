@@ -48,10 +48,11 @@ extern int yydebug;
 
 
 #include "../hpp/Lines.hpp"
+#include "../hpp/Expression.hpp"
 
 
 
-#line 55 "./resenje/misc/FlexAndBison/parser.hpp"
+#line 56 "./resenje/misc/FlexAndBison/parser.hpp"
 
 /* Token type.  */
 #ifndef YYTOKENTYPE
@@ -97,18 +98,19 @@ extern int yydebug;
     LDR = 294,
     STR = 295,
     PLUS = 296,
-    COMMENT = 297,
-    PERCENT = 298,
-    STAR = 299,
-    DOLLAR = 300,
-    LEFT_BR = 301,
-    RIGHT_BR = 302,
-    COLON = 303,
-    SEMI_COLON = 304,
-    NEW_LINE = 305,
-    COMMA = 306,
-    DOT = 307,
-    DIR = 308
+    MINUS = 297,
+    COMMENT = 298,
+    PERCENT = 299,
+    STAR = 300,
+    DOLLAR = 301,
+    LEFT_BR = 302,
+    RIGHT_BR = 303,
+    COLON = 304,
+    SEMI_COLON = 305,
+    NEW_LINE = 306,
+    COMMA = 307,
+    DOT = 308,
+    DIR = 309
   };
 #endif
 
@@ -116,10 +118,11 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 28 "./resenje/misc/parser.y"
+#line 29 "./resenje/misc/parser.y"
 
   Line *line;
   Symbol_Literal_List * sym_lit_list;
+  Expression* exp;
   //Symbol_Literal_List *list_of_symbols;
   std::string *symbol;
   Directive* dir;
@@ -132,7 +135,7 @@ union YYSTYPE
   int number;
   int token;
 
-#line 136 "./resenje/misc/FlexAndBison/parser.hpp"
+#line 139 "./resenje/misc/FlexAndBison/parser.hpp"
 
 };
 typedef union YYSTYPE YYSTYPE;
