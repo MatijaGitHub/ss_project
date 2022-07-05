@@ -2,10 +2,12 @@
 #include "../../misc/hpp/Lines.hpp"
 #include "./SymbolTable.hpp"
 #include "./Section.hpp"
+#include "../../misc/hpp/Expression.hpp"
 #include "./SymbolTableEntry.hpp"
 #include "./ForwardReferenceTableEntry.hpp"
 #include "./RelocationTableEntry.hpp"
 #include "./SectionTable.hpp"
+#include "../../misc/hpp/TNSTable.hpp"
 #include <string>
 #include <iomanip>
 #include <iostream>
@@ -20,6 +22,8 @@ public:
   void objDump();
   SymbolTable* getSymbolTable();
 protected:
+  TNSTable* myTNS;
+  Section* ABSsection;
   std::string inputFile;
   std::string outputFile;
   SymbolTable* mySymbolTable;
@@ -39,7 +43,7 @@ private:
   void initializeSpace(Symbol_Literal_List* symbolsAndLiterals,Section* currentSection);
   void initializeSpaceWithZeros(int literal,Section* currentSection);
   void initializeSpaceForString(std::string string,Section* currentSection);
-  void handleEqu(Expression* exp);
+  void handleEqu(std::string name,Expression* exp);
   void endCurrentSection();
   static std::string turnIntTo2Byte(int twobyte);
   

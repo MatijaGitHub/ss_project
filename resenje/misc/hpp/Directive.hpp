@@ -12,7 +12,7 @@ public:
   Directive(DirectiveName dirID,int lit);
   Directive(DirectiveName dirID,Symbol_Literal_List *list);
   Directive(DirectiveName dirID,std::string name);
-  Directive(DirectiveName dirID,Expression* expression);
+  Directive(DirectiveName dirID,std::string name,Expression* expression);
   void putSymbol(std::string symbol);
   DirectiveName getDirectiveName();
   int getLiteral();

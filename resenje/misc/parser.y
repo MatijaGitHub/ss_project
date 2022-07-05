@@ -176,7 +176,7 @@ directive:
   }
   |
   EQU SYMBOL COMMA expr{
-    $$ = new Directive(equ,$4);
+    $$ = new Directive(equ,*$2,$4);
   }
   |
   SKIP NUMBER{

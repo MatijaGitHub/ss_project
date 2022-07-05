@@ -24,8 +24,9 @@ Directive::Directive(DirectiveName dirID,std::string name){
   this->dir = dirID;
   this->stringUse = name;
 }
-Directive::Directive(DirectiveName dirID,Expression* expression){
+Directive::Directive(DirectiveName dirID,std::string name,Expression* expression){
   this->dir = dirID;
+  this->stringUse = name;
   this->expression = expression;
 }
 std::string Directive::getString(){

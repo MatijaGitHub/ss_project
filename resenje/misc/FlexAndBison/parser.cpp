@@ -1690,7 +1690,7 @@ yyreduce:
   case 22:
 #line 178 "./resenje/misc/parser.y"
                        {
-    (yyval.dir) = new Directive(equ,(yyvsp[0].exp));
+    (yyval.dir) = new Directive(equ,*(yyvsp[-2].symbol),(yyvsp[0].exp));
   }
 #line 1696 "./resenje/misc/FlexAndBison/parser.cpp"
     break;

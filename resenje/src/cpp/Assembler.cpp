@@ -8,9 +8,9 @@ int Assembler::assemble(){
   this->init();
   int res =  this->firstPass();
   int res2 = this->backpatch();
-  
+  this->myTNS->printTNS();
   createELF();
-  return res;
+  return 0;
   
 }
 
@@ -38,6 +38,13 @@ Assembler::Assembler(std::string input, std::string output){
   this->outputFile = output;
 }
 int Assembler::firstPass(){
+    this->myTNS = new TNSTable();
+    this->ABSsection = new Section();
+    this->ABSsection->sectionName = "*ABS*";
+    this->ABSsection->myEntry = this->mySymbolTable->declareSection("*ABS*",ABSsection);
+    this->sectionTable->addSectionToTail(ABSsection);
+    
+    
     Line* currLine = Lines::getHead();
     while(currLine!=nullptr && !endOfAssembling){
       if(currLine->getLabel()){
@@ -93,7 +100,7 @@ void Assembler::handleDirective(Directive* directive){
       }
     case 6:
       {
-        handleEqu(directive->getExp());
+        handleEqu(directive->getString(), directive->getExp());
         break;
       }
     case 7:
@@ -108,8 +115,43 @@ void Assembler::handleDirective(Directive* directive){
       }
     }
 }
-void Assembler::handleEqu(Expression* exp){
-
+void Assembler::handleEqu(std::string symName,Expression* exp){
+    bool definable = true;
+    std::vector<std::pair<Operand*,int>> expressionList = exp->getExpression();
+    std::pair<Operand*,int> partOfExp = expressionList.front();
+    int index = 0;
+    int value = 0;
+    while(index < expressionList.size()){
+      if(partOfExp.first->getType() == LIT_VALUE){
+        if(partOfExp.second == -1 || partOfExp.second == 1)
+          value+=partOfExp.first->getLiteral();
+        else  
+          value-=partOfExp.first->getLiteral();
+      }
+      else{
+        SymbolTableEntry* entry = this->mySymbolTable->getEntryBySymbolName(partOfExp.first->getSymbol());
+        if(entry == nullptr || entry->defined == false){
+          definable = false;
+          this->myTNS->addToTNS(symName,exp);
+          //break;
+        }
+        else{
+        if(partOfExp.second == -1 || partOfExp.second == 1)
+          value+=entry->value;
+        else  
+          value-=entry->value;
+        }
+      }
+      index++;
+      if(index < expressionList.size()){
+        partOfExp = expressionList.at(index);
+      }
+      
+    }
+    if(definable){
+     SymbolTableEntry* entry = this->mySymbolTable->defineSymbolLocal(symName,this->ABSsection);
+     entry->value = value;
+    }
 }
 void Assembler::handleLabel(Label* label){
      this->mySymbolTable->defineSymbolLocal(label->getLabel(),this->currentSection);
