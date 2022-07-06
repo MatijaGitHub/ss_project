@@ -1,14 +1,26 @@
 		<<ELF>>
 ---------------------------------
 NUMBER OF SYMBOLS
-3
+4
 NUMBER OF SECTIONS
-1
+2
 NUMBER OF RELOCATION RECORDS
 2
 ---------------------------------
 SYMBOL TABLE
 ////////////////////////////////////////////////////////////
+SYMBOL NAME
+*ABS*
+BELONGS TO
+*ABS*
+BIND
+l
+TYPE
+SECT
+SIZE
+0
+VALUE
+0
 SYMBOL NAME
 my_counter
 BELONGS TO
@@ -48,6 +60,12 @@ VALUE
 ////////////////////////////////////////////////////////////
 SECTION TABLE
 ////////////////////////////////////////////////////////////
+SECTION NAME
+*ABS*
+SECTION SIZE
+0
+SECTION CONTENT
+
 SECTION NAME
 isr
 SECTION SIZE

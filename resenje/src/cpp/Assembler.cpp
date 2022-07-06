@@ -182,9 +182,10 @@ void Assembler::handleInstruction(Instruction* ins){
  void Assembler::declareSymbolsGlobal(Symbol_Literal_List* globalSymbolList,int isExtern){
       Symbol_Literal_Element* elem = globalSymbolList->popLiteralSymbol();
       std::string* symbol = elem->symbol;
-      while(symbol!=nullptr){
+      while(true){
         this->getSymbolTable()->declareSymbolGlobal(*symbol,isExtern,currentSection);
         Symbol_Literal_Element* element = globalSymbolList->popLiteralSymbol();
+        if(element == nullptr) break;
         symbol = element->symbol;
       }
  }
@@ -366,6 +367,7 @@ void Assembler::createELF(){
   SectionTable* currSec = this->sectionTable;
   while (currSec != nullptr)
   {
+    
     Section* sec = currSec->getSection();
     elfFile << "SECTION NAME\n";
     elfFile << sec->sectionName << "\n";
@@ -373,6 +375,7 @@ void Assembler::createELF(){
     elfFile << sec->myEntry->size << "\n";
     elfFile << "SECTION CONTENT\n";
     elfFile << sec->sectionContent << "\n";
+    
     currSec = currSec->getNextEntry();
   }
   elfFile << "////////////////////////////////////////////////////////////\n";
@@ -382,7 +385,9 @@ void Assembler::createELF(){
   while(currentTable != nullptr){
     Section* sec = currentTable->getSection();
     RelocationTableEntry* currentEntry = sec->myRelocationTable->getFirstEntry();
+    
     while(currentEntry != nullptr){
+      
         elfFile << "SECTION NAME\n";
         elfFile << sec->sectionName << "\n";
         elfFile << "OFFSET\n";

@@ -1,14 +1,26 @@
 		<<ELF>>
 ---------------------------------
 NUMBER OF SYMBOLS
-5
+6
 NUMBER OF SECTIONS
-2
+3
 NUMBER OF RELOCATION RECORDS
 2
 ---------------------------------
 SYMBOL TABLE
 ////////////////////////////////////////////////////////////
+SYMBOL NAME
+*ABS*
+BELONGS TO
+*ABS*
+BIND
+l
+TYPE
+SECT
+SIZE
+0
+VALUE
+0
 SYMBOL NAME
 my_start
 BELONGS TO
@@ -72,6 +84,12 @@ VALUE
 ////////////////////////////////////////////////////////////
 SECTION TABLE
 ////////////////////////////////////////////////////////////
+SECTION NAME
+*ABS*
+SECTION SIZE
+0
+SECTION CONTENT
+
 SECTION NAME
 my_code
 SECTION SIZE

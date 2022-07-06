@@ -48,8 +48,8 @@ void Linker::readELF(std::string fileName){
         this->externSymbols.erase(newSymbol->name);
     }
     else if(newSymbol->bind == 'g'){
-      this->externSymbols.insert(newSymbol->name);
-      delete newSymbol;
+        this->externSymbols.insert(newSymbol->name);
+        delete newSymbol;
     }
     else{
       delete newSymbol;
@@ -77,7 +77,7 @@ void Linker::readELF(std::string fileName){
       std::pair<int,std::string> secData;
       secData.first = sec->size;
       secData.second = sec->sectionContent;
-      this->sectionContents[sec->sectionName].push_back(secData);
+      if(sec->size>0)this->sectionContents[sec->sectionName].push_back(secData);
       if(sectionAppearances.find(sec->sectionName) == sectionAppearances.end()){
         sectionAppearances[sec->sectionName] = 1;
         orderOfSections.push_back(sec->sectionName);
@@ -337,6 +337,7 @@ void Linker::hex(){
       currSection = replaceStringWith('\t',' ',currSection);
       if(counter%8==0 && prev!=-1) hexContent+="\n";
       hexContent+=addAddresses(replaceStringWith('\n',' ',currSection),&startAdr,&counter);
+    
     }
    
   }

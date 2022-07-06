@@ -50,7 +50,7 @@ void Emulator::init(){
     upModes[0b0100] = POST_INC;
     this->input->start();
     this->output->start();
-    this->timer->start();
+    //this->timer->start();
 }
 void Emulator::start(std::string inputFile){
   loadIntoMemory(inputFile);
@@ -74,7 +74,7 @@ void Emulator::start(std::string inputFile){
   
   this->input->exit();
   this->output->exit();
-  this->timer->exit();
+  //this->timer->exit();
   printf("\nREGISTER VALUES: r0 := %d, r1 := %d, r2 := %d, r3 := %d, r4 := %d, r5 := %d, r6 := %04X, r7 := %04X PSW := %04X\n",this->registers[0] ,this->registers[1] ,this->registers[2] ,this->registers[3] ,this->registers[4] ,this->registers[5] ,(SYSTEM_REGISTER)(this->registers[6] & 0xFFFF) ,(SYSTEM_REGISTER)(this->registers[7]& 0xFFFF),(SYSTEM_REGISTER)(this->registers[PSW]& 0xFFFF));
   tcsetattr(STDIN_FILENO, TCSANOW, &oldtc);
   
