@@ -38,7 +38,7 @@ void Timer::run(){
     short time = *((short*)(this->myEmulator->memory + 0xFF10));
     unsigned long sleepTime = getTime(time);
     std::this_thread::sleep_for(std::chrono::milliseconds(sleepTime));
-    this->myEmulator->intr_enabled[3] = 1;
+    this->myEmulator->intr_enabled[2] = 1;
     
   }
 }

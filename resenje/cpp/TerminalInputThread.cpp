@@ -26,6 +26,6 @@ void TerminalInputThread::run(){
   {
     short input = getch();
     *((short*)(this->myEmulator->memory + 0xFF02)) = input;
-    this->myEmulator->intr_enabled[2] = 1;
+    this->myEmulator->intr_enabled[3] = 1;
   }
 }

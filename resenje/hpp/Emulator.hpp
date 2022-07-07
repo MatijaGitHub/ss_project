@@ -7,6 +7,8 @@
 #include <istream>
 #include <unordered_map>
 #include <vector>
+#include <mutex>
+#include <semaphore.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <termios.h>
@@ -29,7 +31,9 @@ class Emulator{
     SYSTEM_REGISTER psw;
     unsigned char* memory;
     void loadIntoMemory(std::string inputFile);
-    
+    bool exitedEmulator;
+    sem_t *memoryAccess;
+    sem_t *canEndSem;
     REGISTER registers[9] = {0,0,0,0,0,0,0,0,0};
     char intr_enabled[8] = {0,0,0,0,0,0,0,0};
     bool working;

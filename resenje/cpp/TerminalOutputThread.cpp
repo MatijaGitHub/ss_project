@@ -13,6 +13,6 @@ void TerminalOutputThread::run(){
     short character = 0;
     character = *((short*)(this->myEmulator->memory + 0xFF00));
     *((short*)(this->myEmulator->memory + 0xFF00)) = 0;
-    putc(character,stdout);
+    putc(character,stdout); 
   }
 }

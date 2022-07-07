@@ -1,13 +1,13 @@
 #pragma once
-#include "../../misc/hpp/Lines.hpp"
+#include "../misc/hpp/Lines.hpp"
 #include "./SymbolTable.hpp"
 #include "./Section.hpp"
-#include "../../misc/hpp/Expression.hpp"
+#include "../misc/hpp/Expression.hpp"
 #include "./SymbolTableEntry.hpp"
 #include "./ForwardReferenceTableEntry.hpp"
 #include "./RelocationTableEntry.hpp"
 #include "./SectionTable.hpp"
-#include "../../misc/hpp/TNSTable.hpp"
+#include "../misc/hpp/TNSTable.hpp"
 #include <string>
 #include <iomanip>
 #include <iostream>

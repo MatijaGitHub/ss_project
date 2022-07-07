@@ -10,6 +10,14 @@ Emulator::Emulator(){
   this->input = new TerminalInputThread(this);
   this->output = new TerminalOutputThread(this);
   this->timer = new Timer(this);
+  this->exitedEmulator = false;
+}
+void printPSW(unsigned short psw)
+{
+    for(int i = 0; i < 16; i++){
+      if(((1 << (15 - i)) & psw) == 1) printf("1");
+      else printf("0");
+    }
 }
 void Emulator::init(){
     this->registers[PC_REG] = *(SYSTEM_REGISTER*)(this->memory + 0);
@@ -54,9 +62,9 @@ void Emulator::init(){
 }
 void Emulator::start(std::string inputFile){
   loadIntoMemory(inputFile);
-  working = true;
   init();
   struct termios oldtc;
+  working = true;
   tcgetattr(STDIN_FILENO, &oldtc);
   while (working)
   {
@@ -71,11 +79,19 @@ void Emulator::start(std::string inputFile){
     }
     handleInterrupts();
   }
+  exitedEmulator = true;
+
+  
   
   this->input->exit();
   this->output->exit();
+  
   //this->timer->exit();
-  printf("\nREGISTER VALUES: r0 := %d, r1 := %d, r2 := %d, r3 := %d, r4 := %d, r5 := %d, r6 := %04X, r7 := %04X PSW := %04X\n",this->registers[0] ,this->registers[1] ,this->registers[2] ,this->registers[3] ,this->registers[4] ,this->registers[5] ,(SYSTEM_REGISTER)(this->registers[6] & 0xFFFF) ,(SYSTEM_REGISTER)(this->registers[7]& 0xFFFF),(SYSTEM_REGISTER)(this->registers[PSW]& 0xFFFF));
+  printf("\n------------------------------------------------\n");
+  printf("Emulated processor executed halt instruction\n");
+  printf("Emulated processor state: psw=0b");printPSW(this->registers[PSW]);printf("\n");
+  printf("r0=0x%04X    r1=0x%04X    r2=0x%04X    r3=0x%04X\n",(SYSTEM_REGISTER)this->registers[0],(SYSTEM_REGISTER)this->registers[1],(SYSTEM_REGISTER)this->registers[2],(SYSTEM_REGISTER)this->registers[3]);
+  printf("r4=0x%04X    r5=0x%04X    r6=0x%04X    r7=0x%04X\n",(SYSTEM_REGISTER)this->registers[4],(SYSTEM_REGISTER)this->registers[5],(SYSTEM_REGISTER)this->registers[6],(SYSTEM_REGISTER)this->registers[7]);
   tcsetattr(STDIN_FILENO, TCSANOW, &oldtc);
   
 }
@@ -84,44 +100,59 @@ void Emulator::handleInterrupts(){
   if(intr_enabled[0] == 1){
     intr_enabled[0] = 0;
     registers[SP] -= 2;
+
     *((short*)(memory + (SYSTEM_REGISTER)registers[SP])) = registers[PC_REG];
+
     registers[SP] -= 2;
+
     *((short*)(memory + (SYSTEM_REGISTER)registers[SP])) = registers[PSW];
+
     registers[PSW] |= 0x8000;
     registers[PC_REG] = *((short*)(memory + 0*2));
   }
   else if(intr_enabled[1] == 1){
     intr_enabled[1] = 0;
     registers[SP] -= 2;
+  
     *((short*)(memory + (SYSTEM_REGISTER)registers[SP])) = registers[PC_REG];
+   
     registers[SP] -= 2;
+  
     *((short*)(memory + (SYSTEM_REGISTER)registers[SP])) = registers[PSW];
+  
     registers[PSW] |= 0x8000;
     registers[PC_REG] = *((short*)(memory + 1*2));
   }
-  else if(intr_enabled[2] == 1
-    && ((registers[PSW]&0b1000000000000000) == 0)
-    && ((registers[PSW]&0b0100000000000000) == 0)){
-    intr_enabled[2] = 0;
-    registers[SP] -= 2;
-    *((short*)(memory + (SYSTEM_REGISTER)registers[SP])) = registers[PC_REG];
-    registers[SP] -= 2;
-    
-    *((short*)(memory + (SYSTEM_REGISTER)registers[SP])) = registers[PSW];
-    registers[PSW] |= 0x8000;
-    registers[PC_REG] = *((short*)(memory + 2*2));
-    
-  }
   else if(intr_enabled[3] == 1
     && ((registers[PSW]&0b1000000000000000) == 0)
-    && ((registers[PSW]&0b0010000000000000) == 0)){
+    && ((registers[PSW]&0b0100000000000000) == 0)){
     intr_enabled[3] = 0;
     registers[SP] -= 2;
+    
     *((short*)(memory + (SYSTEM_REGISTER)registers[SP])) = registers[PC_REG];
+  
     registers[SP] -= 2;
+  
     *((short*)(memory + (SYSTEM_REGISTER)registers[SP])) = registers[PSW];
+ 
     registers[PSW] |= 0x8000;
     registers[PC_REG] = *((short*)(memory + 3*2));
+    
+  }
+  else if(intr_enabled[2] == 1
+    && ((registers[PSW]&0b1000000000000000) == 0)
+    && ((registers[PSW]&0b0010000000000000) == 0)){
+    intr_enabled[2] = 0;
+    registers[SP] -= 2;
+   
+    *((short*)(memory + (SYSTEM_REGISTER)registers[SP])) = registers[PC_REG];
+   
+    registers[SP] -= 2;
+    
+    *((short*)(memory + (SYSTEM_REGISTER)registers[SP])) = registers[PSW];
+    
+    registers[PSW] |= 0x8000;
+    registers[PC_REG] = *((short*)(memory + 2*2));
   }
 }
 
@@ -157,6 +188,7 @@ void Emulator::loadIntoMemory(std::string inputFile){
       unsigned char rS = registerByte & 0b00001111;
       if(rS!=0b1111 || rD>=0b1000){
         this->registers[PC_REG] += 2;
+        this->intr_enabled[1] = 1;
         return;
       }
       this->registers[SP]-=2;
@@ -182,6 +214,7 @@ void Emulator::loadIntoMemory(std::string inputFile){
       short operand = getOperand(addressMode,upMode,rD,rS,&isValid,&operandDest);
       if(!isValid){
         this->registers[PC_REG] += 3;
+        this->intr_enabled[1] = 1;
         return;
       }
       this->registers[SP]-=2;
@@ -204,6 +237,7 @@ void Emulator::loadIntoMemory(std::string inputFile){
       short operand = getOperand(addressMode,upMode,rD,rS,&isValid,&operandDest);
       if(!isValid){
         this->registers[PC_REG] += 3;
+        this->intr_enabled[1] = 1;
         return;
       }
       this->registers[PC_REG] = operand;
@@ -220,6 +254,7 @@ void Emulator::loadIntoMemory(std::string inputFile){
       short operand = getOperand(addressMode,upMode,rD,rS,&isValid,&operandDest);
       if(!isValid){
         this->registers[PC_REG] += 3;
+        this->intr_enabled[1] = 1;
         return;
       }
       if((this->registers[PSW]&1) == 1){
@@ -239,7 +274,7 @@ void Emulator::loadIntoMemory(std::string inputFile){
       short* operandDest = nullptr;
       short operand = getOperand(addressMode,upMode,rD,rS,&isValid,&operandDest);
       if(!isValid){
-        
+        this->intr_enabled[1] = 1;
         this->registers[PC_REG] += 3;
         return;
       }
@@ -259,6 +294,7 @@ void Emulator::loadIntoMemory(std::string inputFile){
       short* operandDest = nullptr;
       short operand = getOperand(addressMode,upMode,rD,rS,&isValid,&operandDest);
       if(!isValid){
+        this->intr_enabled[1] = 1;
         this->registers[PC_REG] += 3;
         return;
       }
@@ -284,6 +320,7 @@ void Emulator::loadIntoMemory(std::string inputFile){
       short* operandDest = nullptr;
       short operand = getOperand(addressMode,upMode,rD,rS,&isValid,&operandDest);
       if(!isValid){
+        this->intr_enabled[1] = 1;
         this->registers[PC_REG] += 3;
         return;
       }
@@ -303,6 +340,7 @@ void Emulator::loadIntoMemory(std::string inputFile){
       short operand = getOperand(addressMode,upMode,rD,rS,&isValid,&operandDest);
       if(!isValid || operandDest == nullptr){
         this->registers[PC_REG] += 3;
+        this->intr_enabled[1] = 1;
         return;
       }
       *operandDest = this->registers[rD];
@@ -312,10 +350,12 @@ void Emulator::loadIntoMemory(std::string inputFile){
       unsigned char registerByte = memory[(SYSTEM_REGISTER)(this->registers[PC_REG]) + 1];
       unsigned char rD = (registerByte & 0b11110000) >> 4;
       unsigned char rS = registerByte & 0b00001111;
+      this->registers[PC_REG] +=2;
       if(rD >= 0b1000 || rS >=0b1000){
+        this->intr_enabled[1] = 1;
         return;
       }
-      this->registers[PC_REG] +=2;
+      
       unsigned short rDVal = this->registers[rD];
       unsigned short rSVal = this->registers[rS];
       unsigned short temp = rDVal;
@@ -329,10 +369,12 @@ void Emulator::loadIntoMemory(std::string inputFile){
       unsigned char registerByte = memory[(SYSTEM_REGISTER)(this->registers[PC_REG]) + 1];
       unsigned char rD = (registerByte & 0b11110000) >> 4;
       unsigned char rS = registerByte & 0b00001111;
+      this->registers[PC_REG] +=2;
       if(rD >= 0b1000 || rS >=0b1000){
+        this->intr_enabled[1] = 1;
         return;
       }
-      this->registers[PC_REG] +=2;
+      
       short rDVal = this->registers[rD];
       short rSVal = this->registers[rS];
       this->registers[rD] = rDVal + rSVal;
@@ -341,10 +383,11 @@ void Emulator::loadIntoMemory(std::string inputFile){
       unsigned char registerByte = memory[(SYSTEM_REGISTER)(this->registers[PC_REG]) + 1];
       unsigned char rD = (registerByte & 0b11110000) >> 4;
       unsigned char rS = registerByte & 0b00001111;
+      this->registers[PC_REG] +=2;
       if(rD >= 0b1000 || rS >=0b1000){
+        this->intr_enabled[1] = 1;
         return;
       }
-      this->registers[PC_REG] +=2;
       short rDVal = this->registers[rD];
       short rSVal = this->registers[rS];
       this->registers[rD] = rDVal - rSVal;
@@ -353,10 +396,12 @@ void Emulator::loadIntoMemory(std::string inputFile){
       unsigned char registerByte = memory[(SYSTEM_REGISTER)(this->registers[PC_REG]) + 1];
       unsigned char rD = (registerByte & 0b11110000) >> 4;
       unsigned char rS = registerByte & 0b00001111;
+      this->registers[PC_REG] +=2;
       if(rD >= 0b1000 || rS >=0b1000){
+        this->intr_enabled[1] = 1;
         return;
       }
-      this->registers[PC_REG] +=2;
+    
       short rDVal = this->registers[rD];
       short rSVal = this->registers[rS];
       this->registers[rD] = rDVal * rSVal;
@@ -365,10 +410,11 @@ void Emulator::loadIntoMemory(std::string inputFile){
       unsigned char registerByte = memory[(SYSTEM_REGISTER)(this->registers[PC_REG]) + 1];
       unsigned char rD = (registerByte & 0b11110000) >> 4;
       unsigned char rS = registerByte & 0b00001111;
+      this->registers[PC_REG] +=2;
       if(rD >= 0b1000 || rS >=0b1000){
+        this->intr_enabled[1] = 1;
         return;
       }
-      this->registers[PC_REG] +=2;
       short rDVal = this->registers[rD];
       short rSVal = this->registers[rS];
       this->registers[rD] = rDVal / rSVal;
@@ -377,10 +423,11 @@ void Emulator::loadIntoMemory(std::string inputFile){
       unsigned char registerByte = memory[(SYSTEM_REGISTER)(this->registers[PC_REG]) + 1];
       unsigned char rD = (registerByte & 0b11110000) >> 4;
       unsigned char rS = registerByte & 0b00001111;
+      this->registers[PC_REG] +=2;
       if(rD >= 0b1000 || rS >=0b1000){
+        this->intr_enabled[1] = 1;
         return;
       }
-      this->registers[PC_REG] +=2;
       short rDVal = this->registers[rD];
       short rSVal = this->registers[rS];
       short temp = rDVal - rSVal;
@@ -415,10 +462,11 @@ void Emulator::loadIntoMemory(std::string inputFile){
       unsigned char registerByte = memory[(SYSTEM_REGISTER)(this->registers[PC_REG]) + 1];
       unsigned char rD = (registerByte & 0b11110000) >> 4;
       unsigned char rS = registerByte & 0b00001111;
+      this->registers[PC_REG] +=2;
       if(rD >= 0b1000 || rS != 0b1111){
+        this->intr_enabled[1] = 1;
         return;
       }
-      this->registers[PC_REG] +=2;
       short rDVal = this->registers[rD];
       this->registers[rD] = ~rDVal; 
     }
@@ -426,10 +474,11 @@ void Emulator::loadIntoMemory(std::string inputFile){
       unsigned char registerByte = memory[(SYSTEM_REGISTER)(this->registers[PC_REG]) + 1];
       unsigned char rD = (registerByte & 0b11110000) >> 4;
       unsigned char rS = registerByte & 0b00001111;
+      this->registers[PC_REG] +=2;
       if(rD >= 0b1000 || rS >=0b1000){
+        this->intr_enabled[1] = 1;
         return;
       }
-      this->registers[PC_REG] +=2;
       short rDVal = this->registers[rD];
       short rSVal = this->registers[rS];
       this->registers[rD] = rDVal & rSVal;
@@ -438,10 +487,11 @@ void Emulator::loadIntoMemory(std::string inputFile){
       unsigned char registerByte = memory[(SYSTEM_REGISTER)(this->registers[PC_REG]) + 1];
       unsigned char rD = (registerByte & 0b11110000) >> 4;
       unsigned char rS = registerByte & 0b00001111;
+      this->registers[PC_REG] +=2;
       if(rD >= 0b1000 || rS >=0b1000){
+        this->intr_enabled[1] = 1;
         return;
       }
-      this->registers[PC_REG] +=2;
       short rDVal = this->registers[rD];
       short rSVal = this->registers[rS];
       this->registers[rD] = rDVal | rSVal;
@@ -450,10 +500,12 @@ void Emulator::loadIntoMemory(std::string inputFile){
       unsigned char registerByte = memory[(SYSTEM_REGISTER)(this->registers[PC_REG]) + 1];
       unsigned char rD = (registerByte & 0b11110000) >> 4;
       unsigned char rS = registerByte & 0b00001111;
+      this->registers[PC_REG] +=2;
       if(rD >= 0b1000 || rS >=0b1000){
+        this->intr_enabled[1] = 1;
         return;
       }
-      this->registers[PC_REG] +=2;
+      
       short rDVal = this->registers[rD];
       short rSVal = this->registers[rS];
       this->registers[rD] = rDVal ^ rSVal;
@@ -462,10 +514,11 @@ void Emulator::loadIntoMemory(std::string inputFile){
       unsigned char registerByte = memory[(SYSTEM_REGISTER)(this->registers[PC_REG]) + 1];
       unsigned char rD = (registerByte & 0b11110000) >> 4;
       unsigned char rS = registerByte & 0b00001111;
+      this->registers[PC_REG] +=2;
       if(rD >= 0b1000 || rS >=0b1000){
+        this->intr_enabled[1] = 1;
         return;
       }
-      this->registers[PC_REG] +=2;
       short rDVal = this->registers[rD];
       short rSVal = this->registers[rS];
       short temp = rDVal & rSVal;
@@ -481,10 +534,12 @@ void Emulator::loadIntoMemory(std::string inputFile){
      unsigned char registerByte = memory[(SYSTEM_REGISTER)(this->registers[PC_REG]) + 1];
       unsigned char rD = (registerByte & 0b11110000) >> 4;
       unsigned char rS = registerByte & 0b00001111;
+      this->registers[PC_REG] +=2;
       if(rD >= 0b1000 || rS >=0b1000){
+        this->intr_enabled[1] = 1;
         return;
       }
-      this->registers[PC_REG] +=2;
+   
       short rDVal = this->registers[rD];
       short rSVal = this->registers[rS];
       this->registers[rD] = rDVal << rSVal;
@@ -505,10 +560,11 @@ void Emulator::loadIntoMemory(std::string inputFile){
       unsigned char registerByte = memory[(SYSTEM_REGISTER)(this->registers[PC_REG]) + 1];
       unsigned char rD = (registerByte & 0b11110000) >> 4;
       unsigned char rS = registerByte & 0b00001111;
+         this->registers[PC_REG] +=2;
       if(rD >= 0b1000 || rS >=0b1000){
+        this->intr_enabled[1] = 1;
         return;
       }
-      this->registers[PC_REG] +=2;
       short rDVal = this->registers[rD];
       short rSVal = this->registers[rS];
       this->registers[rD] = rDVal >> rSVal;
@@ -636,8 +692,10 @@ void Emulator::loadIntoMemory(std::string inputFile){
             break;
           }
           this->registers[PC_REG] += 3;
+         
           *operandDest = (short*)(memory + this->registers[rS]);
           short operand = *((short*)(memory + this->registers[rS]));
+          
           switch (upMode)
           {
           case POST_DEC:
@@ -674,8 +732,10 @@ void Emulator::loadIntoMemory(std::string inputFile){
           addend <<= 8;
           addend|=dataLow;
           this->registers[PC_REG] += 5;
+          
           short operand =*((short*)(memory + addend + this->registers[rS]));
           *operandDest = (short*)(memory + addend + this->registers[rS]);
+          
           
           switch (upMode)
           {
@@ -702,8 +762,11 @@ void Emulator::loadIntoMemory(std::string inputFile){
           operand <<= 8;
           operand|=dataLow;
           this->registers[PC_REG] += 5;
+          
           *operandDest = (short*)(memory + operand);
-          return *((short*)(memory + operand));
+          short resultOp =  *((short*)(memory + operand));
+          
+          return resultOp;
         }
         default:
           break;
