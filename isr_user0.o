@@ -1,11 +1,11 @@
 		<<ELF>>
 ---------------------------------
 NUMBER OF SYMBOLS
-5
+4
 NUMBER OF SECTIONS
-3
+2
 NUMBER OF RELOCATION RECORDS
-0
+1
 ---------------------------------
 SYMBOL TABLE
 ////////////////////////////////////////////////////////////
@@ -22,9 +22,9 @@ SIZE
 VALUE
 0
 SYMBOL NAME
-array
+value0
 BELONGS TO
-.data
+UND
 BIND
 g
 TYPE
@@ -34,39 +34,27 @@ SIZE
 VALUE
 0
 SYMBOL NAME
-array_size
+isr
 BELONGS TO
-.data
+isr
+BIND
+l
+TYPE
+SECT
+SIZE
+26
+VALUE
+0
+SYMBOL NAME
+isr_user0
+BELONGS TO
+isr
 BIND
 g
 TYPE
 NOTYP
 SIZE
 0
-VALUE
-20
-SYMBOL NAME
-.data
-BELONGS TO
-.data
-BIND
-l
-TYPE
-SECT
-SIZE
-22
-VALUE
-0
-SYMBOL NAME
-.text
-BELONGS TO
-.text
-BIND
-l
-TYPE
-SECT
-SIZE
-13
 VALUE
 0
 ////////////////////////////////////////////////////////////
@@ -79,21 +67,25 @@ SECTION SIZE
 SECTION CONTENT
 
 SECTION NAME
-.data
+isr
 SECTION SIZE
-22
+26
 SECTION CONTENT
-01 00 02 00	03 00 04 00
-05 00 06 00	07 00 08 00
-09 00 0a 00	0a 00 
-SECTION NAME
-.text
-SECTION SIZE
-13
-SECTION CONTENT
-a0 46 42 a0	0f 00 00 42
-70 40 60 43	00 
+b0 06 12 b0	16 12 a0 0f
+00 ab cd a0	1f 00 00 00
+b0 01 02 a0	16 42 a0 06
+42 20 
 ////////////////////////////////////////////////////////////
 RELOCATION TABLES
 ////////////////////////////////////////////////////////////
+SECTION NAME
+isr
+OFFSET
+14
+TYPE
+1
+SYMBOL
+value0
+ADDEND
+0
 ////////////////////////////////////////////////////////////

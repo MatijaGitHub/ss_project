@@ -1,11 +1,11 @@
 		<<ELF>>
 ---------------------------------
 NUMBER OF SYMBOLS
-5
+1
 NUMBER OF SECTIONS
-2
+1
 NUMBER OF RELOCATION RECORDS
-3
+0
 ---------------------------------
 SYMBOL TABLE
 ////////////////////////////////////////////////////////////
@@ -21,54 +21,6 @@ SIZE
 0
 VALUE
 0
-SYMBOL NAME
-isr_reset
-BELONGS TO
-UND
-BIND
-g
-TYPE
-NOTYP
-SIZE
-0
-VALUE
-0
-SYMBOL NAME
-ivt
-BELONGS TO
-ivt
-BIND
-l
-TYPE
-SECT
-SIZE
-16
-VALUE
-0
-SYMBOL NAME
-isr_terminal
-BELONGS TO
-UND
-BIND
-l
-TYPE
-NOTYP
-SIZE
-0
-VALUE
-0
-SYMBOL NAME
-isr_timer
-BELONGS TO
-UND
-BIND
-l
-TYPE
-NOTYP
-SIZE
-0
-VALUE
-0
 ////////////////////////////////////////////////////////////
 SECTION TABLE
 ////////////////////////////////////////////////////////////
@@ -78,45 +30,7 @@ SECTION SIZE
 0
 SECTION CONTENT
 
-SECTION NAME
-ivt
-SECTION SIZE
-16
-SECTION CONTENT
-00 00 00 00	00 00 00 00
-00 00 00 00	00 00 00 00
-
 ////////////////////////////////////////////////////////////
 RELOCATION TABLES
 ////////////////////////////////////////////////////////////
-SECTION NAME
-ivt
-OFFSET
-0
-TYPE
-0
-SYMBOL
-isr_reset
-ADDEND
-0
-SECTION NAME
-ivt
-OFFSET
-4
-TYPE
-0
-SYMBOL
-UND
-ADDEND
-0
-SECTION NAME
-ivt
-OFFSET
-6
-TYPE
-0
-SYMBOL
-UND
-ADDEND
-0
 ////////////////////////////////////////////////////////////

@@ -69,10 +69,12 @@ void Emulator::start(std::string inputFile){
   while (working)
   {
     unsigned char opCode = memory[(SYSTEM_REGISTER)(registers[PC_REG])];
+
     if(opCodes.find(opCode) == opCodes.end()){
         this->registers[PC_REG]++;
         this->intr_enabled[1] = 1;
         printf("INVALID OPCODE %04X AT %04X!\n",opCode,registers[PC_REG]);
+        exit(-1);
     }
     else{
         (this->*opCodes[opCode])();
@@ -191,9 +193,13 @@ void Emulator::loadIntoMemory(std::string inputFile){
         this->intr_enabled[1] = 1;
         return;
       }
+      
+      this->registers[SP]-=2;
+      *((short*)(memory + (SYSTEM_REGISTER)this->registers[SP])) = this->registers[PC_REG] + 2;
       this->registers[SP]-=2;
       *((short*)(memory + (SYSTEM_REGISTER)this->registers[SP])) = this->registers[PSW];
-      this->registers[PC_REG] = *((short*)(memory + (this->registers[rD]%8)*2));
+
+      this->registers[PC_REG] = *((short*)(memory + (registers[rD]%8)*2));
 
     }
     void Emulator::iretInstruction(){
@@ -222,7 +228,7 @@ void Emulator::loadIntoMemory(std::string inputFile){
       this->registers[PC_REG] = operand;
     }
     void Emulator::retInstruction(){
-      this->registers[PC_REG] = *((short*)(memory + this->registers[SP]));
+      this->registers[PC_REG] = *((short*)(memory + (SYSTEM_REGISTER)this->registers[SP]));
       this->registers[SP]+=2;
     }
     void Emulator::jmpInstruction(){
@@ -307,6 +313,7 @@ void Emulator::loadIntoMemory(std::string inputFile){
       OF = OF==1?true:false;
       if((!(NF^OF))&&(!ZF)){
         this->registers[PC_REG] = operand;
+        printf("%d %d %d\n",NF,ZF,OF);
       }
     }
     void Emulator::loadInstruction(){
@@ -542,7 +549,7 @@ void Emulator::loadIntoMemory(std::string inputFile){
    
       short rDVal = this->registers[rD];
       short rSVal = this->registers[rS];
-      this->registers[rD] = rDVal << rSVal;
+      this->registers[rD] <<=rSVal;
       if(rSVal <= 16 && rSVal > 0){
           short isOne = (0b1000000000000000 >> (rSVal-1))&rDVal;
           if(isOne){
@@ -567,7 +574,7 @@ void Emulator::loadIntoMemory(std::string inputFile){
       }
       short rDVal = this->registers[rD];
       short rSVal = this->registers[rS];
-      this->registers[rD] = rDVal >> rSVal;
+      this->registers[rD] >>=rSVal;
       if(rSVal <=16 && rSVal > 0){
         short isOne = (0b0000000000000001 << (rSVal - 1)) & rDVal;
         if(isOne > 0){

@@ -1,1 +1,0 @@
-./asembler test.s
