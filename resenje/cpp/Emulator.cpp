@@ -185,7 +185,7 @@ void Emulator::loadIntoMemory(std::string inputFile){
       //this->registers[PC_REG]++;
     }
     void Emulator::intInstruction(){
-      unsigned char registerByte = memory[(SYSTEM_REGISTER)(this->registers[PC_REG]) + 1];
+      unsigned char registerByte = *((short*)(memory+(SYSTEM_REGISTER)(this->registers[PC_REG]) + 1);
       unsigned char rD = (registerByte & 0b11110000) >> 4;
       unsigned char rS = registerByte & 0b00001111;
       if(rS!=0b1111 || rD>=0b1000){

@@ -47,7 +47,7 @@ my_start:
 
   ldr r0, $5
   push r0
-  ldr r0, $100
+  ldr r0, $25
   push r0
   ldr r0, $6
   ldr r1, $destinations
@@ -64,12 +64,6 @@ my_start:
   ldr r5, value5
   ldr r6, value6
 
-  ldr r0, $8
-  ldr r1, $10
-  test r0,r1
-  jgt END
-  ldr r4,$1000
-END:
   halt
 
 .section my_data
